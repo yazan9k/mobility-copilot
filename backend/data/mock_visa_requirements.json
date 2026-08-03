@@ -18,7 +18,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Short-Term Business Entry (synthetic)",
+          "permit_name": "Short-Term Business Entry",
           "max_stay_months": 3,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -28,7 +28,7 @@
           "notes": "Cannot be converted to a work permit in place. A fresh application outside the country is required."
         },
         "work_permit": {
-          "permit_name": "Employment Pass Class B (synthetic)",
+          "permit_name": "Employment Pass Class B",
           "max_stay_months": 24,
           "processing_weeks": [6, 10],
           "sponsored_by_company": true,
@@ -38,7 +38,7 @@
           "notes": "External immigration counsel files on Meridian's behalf. Required for any assignment of 6 months or longer."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Residence Pass (synthetic)",
+          "permit_name": "Dependant Residence Pass",
           "max_stay_months": 24,
           "processing_weeks": [3, 6],
           "sponsored_by_company": true,
@@ -48,7 +48,7 @@
           "notes": "Cannot be filed until the employee Employment Pass has issued. Does not confer the right to work."
         },
         "renewal": {
-          "permit_name": "Employment Pass Renewal (synthetic)",
+          "permit_name": "Employment Pass Renewal",
           "max_stay_months": 24,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -64,7 +64,7 @@
       "destination_tier": 1,
       "routes": {
         "short_term_business": {
-          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "permit_name": "Schengen Business Short Stay",
           "max_stay_months": 3,
           "processing_weeks": [2, 3],
           "sponsored_by_company": true,
@@ -74,7 +74,7 @@
           "notes": "Not convertible. Employees expecting to stay beyond 3 months should apply for the work permit route from the outset."
         },
         "work_permit": {
-          "permit_name": "Highly Skilled Migrant Permit (synthetic)",
+          "permit_name": "Highly Skilled Migrant Permit",
           "max_stay_months": 60,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -84,7 +84,7 @@
           "notes": "Filed directly by Meridian's in-house immigration team. Tier 1 destinations require the lightest document set."
         },
         "dependent_residence": {
-          "permit_name": "Family Reunification Permit (synthetic)",
+          "permit_name": "Family Reunification Permit",
           "max_stay_months": 60,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -94,7 +94,7 @@
           "notes": "May be filed concurrently with the employee permit in this destination. Work rights are a separate question and are not covered by this permit."
         },
         "renewal": {
-          "permit_name": "Highly Skilled Migrant Renewal (synthetic)",
+          "permit_name": "Highly Skilled Migrant Renewal",
           "max_stay_months": 60,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -110,7 +110,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Short-Term Business Entry (synthetic)",
+          "permit_name": "Short-Term Business Entry",
           "max_stay_months": 3,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -120,7 +120,7 @@
           "notes": "Suitable only for assignments under 3 months. A 5-month assignment does not fit this route."
         },
         "work_permit": {
-          "permit_name": "Employment Pass Class B (synthetic)",
+          "permit_name": "Employment Pass Class B",
           "max_stay_months": 24,
           "processing_weeks": [6, 10],
           "sponsored_by_company": true,
@@ -130,7 +130,7 @@
           "notes": "Required for assignments of 6 months or longer, and the practical route for assignments between 3 and 6 months."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Residence Pass (synthetic)",
+          "permit_name": "Dependant Residence Pass",
           "max_stay_months": 24,
           "processing_weeks": [3, 6],
           "sponsored_by_company": true,
@@ -140,7 +140,7 @@
           "notes": "Filed only after the employee permit issues."
         },
         "renewal": {
-          "permit_name": "Employment Pass Renewal (synthetic)",
+          "permit_name": "Employment Pass Renewal",
           "max_stay_months": 24,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -156,7 +156,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visitor Entry (synthetic)",
+          "permit_name": "Business Visitor Entry",
           "max_stay_months": 3,
           "processing_weeks": [2, 3],
           "sponsored_by_company": true,
@@ -166,7 +166,7 @@
           "notes": "Quota-free but strictly time-limited."
         },
         "work_permit": {
-          "permit_name": "B Permit — Non-EU National (synthetic)",
+          "permit_name": "B Permit — Non-EU National",
           "max_stay_months": 60,
           "processing_weeks": [8, 12],
           "sponsored_by_company": true,
@@ -176,7 +176,7 @@
           "notes": "Subject to an annual cantonal quota, which can extend the timeline unpredictably. Raise senior-band moves early."
         },
         "dependent_residence": {
-          "permit_name": "Family Reunification B Permit (synthetic)",
+          "permit_name": "Family Reunification B Permit",
           "max_stay_months": 60,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -186,7 +186,7 @@
           "notes": "Requires evidence of accommodation adequate for the household size, which creates a dependency on the lease being signed."
         },
         "renewal": {
-          "permit_name": "B Permit Renewal (synthetic)",
+          "permit_name": "B Permit Renewal",
           "max_stay_months": 12,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -202,7 +202,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visit Entry (synthetic)",
+          "permit_name": "Business Visit Entry",
           "max_stay_months": 2,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -212,7 +212,7 @@
           "notes": "Short window; not suitable for project assignments."
         },
         "work_permit": {
-          "permit_name": "Employment Residence Visa (synthetic)",
+          "permit_name": "Employment Residence Visa",
           "max_stay_months": 24,
           "processing_weeks": [6, 9],
           "sponsored_by_company": true,
@@ -222,7 +222,7 @@
           "notes": "Requires attestation of educational certificates, which has a long lead time. Begin collection at assignment approval."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Residence Visa (synthetic)",
+          "permit_name": "Dependant Residence Visa",
           "max_stay_months": 24,
           "processing_weeks": [3, 5],
           "sponsored_by_company": true,
@@ -232,7 +232,7 @@
           "notes": "Filed only after the employee residence visa issues."
         },
         "renewal": {
-          "permit_name": "Employment Residence Visa Renewal (synthetic)",
+          "permit_name": "Employment Residence Visa Renewal",
           "max_stay_months": 24,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -248,7 +248,7 @@
       "destination_tier": 1,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visitor Entry (synthetic)",
+          "permit_name": "Business Visitor Entry",
           "max_stay_months": 6,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -258,7 +258,7 @@
           "notes": "Permits a longer visit than most short-term routes but still bars local payroll."
         },
         "work_permit": {
-          "permit_name": "Intra-Company Transfer Permit (synthetic)",
+          "permit_name": "Intra-Company Transfer Permit",
           "max_stay_months": 36,
           "processing_weeks": [4, 7],
           "sponsored_by_company": true,
@@ -268,7 +268,7 @@
           "notes": "Requires a minimum period of prior service, which can exclude recent hires."
         },
         "dependent_residence": {
-          "permit_name": "Accompanying Family Permit (synthetic)",
+          "permit_name": "Accompanying Family Permit",
           "max_stay_months": 36,
           "processing_weeks": [3, 5],
           "sponsored_by_company": true,
@@ -278,7 +278,7 @@
           "notes": "May be filed concurrently. Spousal work rights in this destination are a separate application and are not sponsored."
         },
         "renewal": {
-          "permit_name": "Intra-Company Transfer Renewal (synthetic)",
+          "permit_name": "Intra-Company Transfer Renewal",
           "max_stay_months": 24,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -294,7 +294,7 @@
       "destination_tier": 1,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visitor Entry (synthetic)",
+          "permit_name": "Business Visitor Entry",
           "max_stay_months": 3,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -304,7 +304,7 @@
           "notes": "Straightforward route for short project work."
         },
         "work_permit": {
-          "permit_name": "Critical Skills Permit (synthetic)",
+          "permit_name": "Critical Skills Permit",
           "max_stay_months": 24,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -314,7 +314,7 @@
           "notes": "Filed directly by Meridian's in-house team."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Residence Permission (synthetic)",
+          "permit_name": "Dependant Residence Permission",
           "max_stay_months": 24,
           "processing_weeks": [3, 5],
           "sponsored_by_company": true,
@@ -324,7 +324,7 @@
           "notes": "Filed after the employee permit issues."
         },
         "renewal": {
-          "permit_name": "Critical Skills Renewal (synthetic)",
+          "permit_name": "Critical Skills Renewal",
           "max_stay_months": 24,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -340,7 +340,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Temporary Visitor Entry (synthetic)",
+          "permit_name": "Temporary Visitor Entry",
           "max_stay_months": 3,
           "processing_weeks": [1, 3],
           "sponsored_by_company": true,
@@ -350,7 +350,7 @@
           "notes": "Not convertible in country."
         },
         "work_permit": {
-          "permit_name": "Engineer / Specialist in Humanities Visa (synthetic)",
+          "permit_name": "Engineer / Specialist in Humanities Visa",
           "max_stay_months": 36,
           "processing_weeks": [6, 10],
           "sponsored_by_company": true,
@@ -360,7 +360,7 @@
           "notes": "The Certificate of Eligibility is obtained first and is the long pole in this route."
         },
         "dependent_residence": {
-          "permit_name": "Dependent Visa (synthetic)",
+          "permit_name": "Dependent Visa",
           "max_stay_months": 36,
           "processing_weeks": [3, 6],
           "sponsored_by_company": true,
@@ -370,7 +370,7 @@
           "notes": "Requires its own Certificate of Eligibility, filed after the employee's."
         },
         "renewal": {
-          "permit_name": "Period of Stay Extension (synthetic)",
+          "permit_name": "Period of Stay Extension",
           "max_stay_months": 36,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -386,7 +386,7 @@
       "destination_tier": 1,
       "routes": {
         "short_term_business": {
-          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "permit_name": "Schengen Business Short Stay",
           "max_stay_months": 3,
           "processing_weeks": [2, 4],
           "sponsored_by_company": true,
@@ -396,7 +396,7 @@
           "notes": "Not convertible."
         },
         "work_permit": {
-          "permit_name": "EU Blue Card (synthetic)",
+          "permit_name": "EU Blue Card",
           "max_stay_months": 48,
           "processing_weeks": [5, 8],
           "sponsored_by_company": true,
@@ -406,7 +406,7 @@
           "notes": "Degree recognition can add several weeks where the qualification is not on the pre-recognised list."
         },
         "dependent_residence": {
-          "permit_name": "Family Reunification Permit (synthetic)",
+          "permit_name": "Family Reunification Permit",
           "max_stay_months": 48,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -416,7 +416,7 @@
           "notes": "May require a basic language certificate for the accompanying spouse."
         },
         "renewal": {
-          "permit_name": "EU Blue Card Renewal (synthetic)",
+          "permit_name": "EU Blue Card Renewal",
           "max_stay_months": 48,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -432,7 +432,7 @@
       "destination_tier": 3,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visa (synthetic)",
+          "permit_name": "Business Visa",
           "max_stay_months": 3,
           "processing_weeks": [2, 4],
           "sponsored_by_company": true,
@@ -442,7 +442,7 @@
           "notes": "Not convertible in country."
         },
         "work_permit": {
-          "permit_name": "Employment Visa (synthetic)",
+          "permit_name": "Employment Visa",
           "max_stay_months": 12,
           "processing_weeks": [10, 16],
           "sponsored_by_company": true,
@@ -452,7 +452,7 @@
           "notes": "Tier 3 route. Requires legalisation rather than apostille, which is the longest lead time in the document set. Registration with local authorities is required within 14 days of arrival."
         },
         "dependent_residence": {
-          "permit_name": "Entry (X) Visa for Dependants (synthetic)",
+          "permit_name": "Entry (X) Visa for Dependants",
           "max_stay_months": 12,
           "processing_weeks": [6, 10],
           "sponsored_by_company": true,
@@ -462,7 +462,7 @@
           "notes": "Filed after the employee visa issues. Adds 6-10 weeks on top of the employee timeline."
         },
         "renewal": {
-          "permit_name": "Employment Visa Extension (synthetic)",
+          "permit_name": "Employment Visa Extension",
           "max_stay_months": 12,
           "processing_weeks": [8, 14],
           "sponsored_by_company": true,
@@ -478,7 +478,7 @@
       "destination_tier": 3,
       "routes": {
         "short_term_business": {
-          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "permit_name": "Schengen Business Short Stay",
           "max_stay_months": 3,
           "processing_weeks": [2, 3],
           "sponsored_by_company": true,
@@ -488,7 +488,7 @@
           "notes": "Not convertible."
         },
         "work_permit": {
-          "permit_name": "Type A Work Permit (synthetic)",
+          "permit_name": "Type A Work Permit",
           "max_stay_months": 36,
           "processing_weeks": [10, 14],
           "sponsored_by_company": true,
@@ -498,7 +498,7 @@
           "notes": "Filed through an employer-of-record partner. Employees should expect to correspond with the partner rather than Meridian directly."
         },
         "dependent_residence": {
-          "permit_name": "Family Residence Permit (synthetic)",
+          "permit_name": "Family Residence Permit",
           "max_stay_months": 36,
           "processing_weeks": [8, 12],
           "sponsored_by_company": true,
@@ -508,7 +508,7 @@
           "notes": "Filed after the employee permit issues."
         },
         "renewal": {
-          "permit_name": "Work Permit Renewal (synthetic)",
+          "permit_name": "Work Permit Renewal",
           "max_stay_months": 36,
           "processing_weeks": [8, 14],
           "sponsored_by_company": true,
@@ -524,7 +524,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Permitted Paid Engagement Entry (synthetic)",
+          "permit_name": "Permitted Paid Engagement Entry",
           "max_stay_months": 1,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -534,7 +534,7 @@
           "notes": "Very short window. Most project assignments will need the work permit route."
         },
         "work_permit": {
-          "permit_name": "Skilled Worker Visa (synthetic)",
+          "permit_name": "Skilled Worker Visa",
           "max_stay_months": 60,
           "processing_weeks": [6, 9],
           "sponsored_by_company": true,
@@ -544,7 +544,7 @@
           "notes": "Requires a Certificate of Sponsorship issued by Meridian before the employee can apply."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Partner / Child Visa (synthetic)",
+          "permit_name": "Dependant Partner / Child Visa",
           "max_stay_months": 60,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -554,7 +554,7 @@
           "notes": "May be filed concurrently with the employee application in this destination."
         },
         "renewal": {
-          "permit_name": "Skilled Worker Extension (synthetic)",
+          "permit_name": "Skilled Worker Extension",
           "max_stay_months": 60,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -570,7 +570,7 @@
       "destination_tier": 1,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visitor Entry (synthetic)",
+          "permit_name": "Business Visitor Entry",
           "max_stay_months": 3,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -580,7 +580,7 @@
           "notes": "Straightforward for short engagements."
         },
         "work_permit": {
-          "permit_name": "Temporary Skill Shortage Visa (synthetic)",
+          "permit_name": "Temporary Skill Shortage Visa",
           "max_stay_months": 48,
           "processing_weeks": [5, 8],
           "sponsored_by_company": true,
@@ -590,7 +590,7 @@
           "notes": "Nomination is filed by the local entity before the employee application."
         },
         "dependent_residence": {
-          "permit_name": "Secondary Applicant Visa (synthetic)",
+          "permit_name": "Secondary Applicant Visa",
           "max_stay_months": 48,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -600,7 +600,7 @@
           "notes": "Usually filed as part of the same application group."
         },
         "renewal": {
-          "permit_name": "Temporary Skill Shortage Renewal (synthetic)",
+          "permit_name": "Temporary Skill Shortage Renewal",
           "max_stay_months": 48,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -616,7 +616,7 @@
       "destination_tier": 3,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visitor Entry (synthetic)",
+          "permit_name": "Business Visitor Entry",
           "max_stay_months": 6,
           "processing_weeks": [2, 3],
           "sponsored_by_company": true,
@@ -626,7 +626,7 @@
           "notes": "Long visitor window but no local payroll and no conversion."
         },
         "work_permit": {
-          "permit_name": "Temporary Resident Visa with Work Permission (synthetic)",
+          "permit_name": "Temporary Resident Visa with Work Permission",
           "max_stay_months": 48,
           "processing_weeks": [10, 15],
           "sponsored_by_company": true,
@@ -636,7 +636,7 @@
           "notes": "Requires a consular interview in the home country before travel, then in-country exchange within 30 days of arrival."
         },
         "dependent_residence": {
-          "permit_name": "Family Unit Temporary Residence (synthetic)",
+          "permit_name": "Family Unit Temporary Residence",
           "max_stay_months": 48,
           "processing_weeks": [8, 12],
           "sponsored_by_company": true,
@@ -646,7 +646,7 @@
           "notes": "Each dependent requires their own consular interview."
         },
         "renewal": {
-          "permit_name": "Temporary Residence Renewal (synthetic)",
+          "permit_name": "Temporary Residence Renewal",
           "max_stay_months": 48,
           "processing_weeks": [8, 12],
           "sponsored_by_company": true,
@@ -662,7 +662,7 @@
       "destination_tier": 1,
       "routes": {
         "short_term_business": {
-          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "permit_name": "Schengen Business Short Stay",
           "max_stay_months": 3,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -672,7 +672,7 @@
           "notes": "Not convertible."
         },
         "work_permit": {
-          "permit_name": "Highly Skilled Migrant Permit (synthetic)",
+          "permit_name": "Highly Skilled Migrant Permit",
           "max_stay_months": 60,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -682,7 +682,7 @@
           "notes": "One of the fastest routes in the Meridian network."
         },
         "dependent_residence": {
-          "permit_name": "Family Reunification Permit (synthetic)",
+          "permit_name": "Family Reunification Permit",
           "max_stay_months": 60,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -692,7 +692,7 @@
           "notes": "May be filed concurrently."
         },
         "renewal": {
-          "permit_name": "Highly Skilled Migrant Renewal (synthetic)",
+          "permit_name": "Highly Skilled Migrant Renewal",
           "max_stay_months": 60,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -708,7 +708,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Short-Term Business Entry (synthetic)",
+          "permit_name": "Short-Term Business Entry",
           "max_stay_months": 3,
           "processing_weeks": [1, 2],
           "sponsored_by_company": true,
@@ -718,7 +718,7 @@
           "notes": "Not convertible in country."
         },
         "work_permit": {
-          "permit_name": "Employment Pass Class B (synthetic)",
+          "permit_name": "Employment Pass Class B",
           "max_stay_months": 24,
           "processing_weeks": [6, 10],
           "sponsored_by_company": true,
@@ -728,7 +728,7 @@
           "notes": "Educational certificate verification is the long pole for this origin."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Residence Pass (synthetic)",
+          "permit_name": "Dependant Residence Pass",
           "max_stay_months": 24,
           "processing_weeks": [3, 6],
           "sponsored_by_company": true,
@@ -738,7 +738,7 @@
           "notes": "Filed after the employee permit issues."
         },
         "renewal": {
-          "permit_name": "Employment Pass Renewal (synthetic)",
+          "permit_name": "Employment Pass Renewal",
           "max_stay_months": 24,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -754,7 +754,7 @@
       "destination_tier": 1,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visitor Entry (synthetic)",
+          "permit_name": "Business Visitor Entry",
           "max_stay_months": 3,
           "processing_weeks": [2, 4],
           "sponsored_by_company": true,
@@ -764,7 +764,7 @@
           "notes": "Not convertible."
         },
         "work_permit": {
-          "permit_name": "Critical Skills Permit (synthetic)",
+          "permit_name": "Critical Skills Permit",
           "max_stay_months": 24,
           "processing_weeks": [5, 8],
           "sponsored_by_company": true,
@@ -774,7 +774,7 @@
           "notes": "Filed by Meridian's in-house team."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Residence Permission (synthetic)",
+          "permit_name": "Dependant Residence Permission",
           "max_stay_months": 24,
           "processing_weeks": [4, 7],
           "sponsored_by_company": true,
@@ -784,7 +784,7 @@
           "notes": "Filed after the employee permit issues."
         },
         "renewal": {
-          "permit_name": "Critical Skills Renewal (synthetic)",
+          "permit_name": "Critical Skills Renewal",
           "max_stay_months": 24,
           "processing_weeks": [4, 6],
           "sponsored_by_company": true,
@@ -800,7 +800,7 @@
       "destination_tier": 2,
       "routes": {
         "short_term_business": {
-          "permit_name": "Business Visitor Entry (synthetic)",
+          "permit_name": "Business Visitor Entry",
           "max_stay_months": 3,
           "processing_weeks": [2, 4],
           "sponsored_by_company": true,
@@ -810,7 +810,7 @@
           "notes": "Not convertible in country."
         },
         "work_permit": {
-          "permit_name": "Intra-Company Transferee Visa (synthetic)",
+          "permit_name": "Intra-Company Transferee Visa",
           "max_stay_months": 36,
           "processing_weeks": [8, 14],
           "sponsored_by_company": true,
@@ -820,7 +820,7 @@
           "notes": "Requires a petition approval before the consular stage, and the two stages together dominate the timeline."
         },
         "dependent_residence": {
-          "permit_name": "Dependant Transferee Visa (synthetic)",
+          "permit_name": "Dependant Transferee Visa",
           "max_stay_months": 36,
           "processing_weeks": [4, 8],
           "sponsored_by_company": true,
@@ -830,7 +830,7 @@
           "notes": "Filed after the employee petition is approved."
         },
         "renewal": {
-          "permit_name": "Intra-Company Transferee Extension (synthetic)",
+          "permit_name": "Intra-Company Transferee Extension",
           "max_stay_months": 24,
           "processing_weeks": [8, 14],
           "sponsored_by_company": true,

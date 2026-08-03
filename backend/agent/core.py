@@ -21,11 +21,17 @@ from config import AGENT_VERSION, MAX_AGENT_TURNS
 
 @dataclass
 class TraceEntry:
-    """One executed tool call."""
+    """One executed tool call.
+
+    `result` is the full tool output, not a preview. Faithfulness scoring needs
+    the exact grounding the model was given; truncating here would make the
+    metric measure our truncation rather than the agent. The API layer
+    shortens it for display.
+    """
     turn: int
     name: str
     arguments: dict[str, Any]
-    result_preview: str
+    result: str
     meta: dict[str, Any] = field(default_factory=dict)
 
 
@@ -44,6 +50,10 @@ class AgentResult:
     def tool_names(self) -> list[str]:
         return [t.name for t in self.tool_calls]
 
+    def grounding_context(self) -> list[str]:
+        """Everything the tools returned — what the reply should be faithful to."""
+        return [t.result for t in self.tool_calls]
+
     def to_dict(self) -> dict[str, Any]:
         return {**asdict(self), "tool_names": self.tool_names()}
 
@@ -55,7 +65,7 @@ def run(
 ) -> AgentResult:
     """Answer one user message, using tools as needed."""
     version = version or AGENT_VERSION
-    schemas = tools.build_tool_schemas()
+    schemas = tools.build_tool_schemas(version)
 
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": prompts.system_prompt(version)},
@@ -99,7 +109,7 @@ def run(
                     turn=turn,
                     name=call.name,
                     arguments=call.arguments,
-                    result_preview=result.display[:400],
+                    result=result.display,
                     meta=result.meta,
                 )
             )

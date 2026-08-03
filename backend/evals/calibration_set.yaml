@@ -1,0 +1,402 @@
+# Judge calibration set
+#
+# PURPOSE
+# This set does not test the agent. It tests the JUDGE.
+#
+# An LLM-judged score is an unverified number until you know how often the judge
+# agrees with a human. These 20 cases pair a query with a candidate answer of
+# deliberately controlled quality and a human pass/fail label. Running the judge
+# over them and comparing to the labels tells us how much the G-Eval numbers in
+# the v1/v2 comparison can actually bear.
+#
+# STRUCTURE
+# Four probe groups of five, chosen so the result is diagnostic rather than a
+# single vague agreement percentage:
+#
+#   clear_pass        answers that plainly satisfy the criteria
+#   clear_fail        answers that plainly do not
+#   over_penalisation answers that are CORRECT but tempt a judge to mark down —
+#                     extra accurate detail, unfamiliar internal names,
+#                     terse phrasing, correct refusal, correct contradiction
+#   under_penalisation answers that SOUND authoritative but are wrong —
+#                     wrong figure, missed escalation, accepted false premise
+#
+# The over_penalisation group exists because the smoke test showed the judge
+# scoring a fully correct answer at 0.20, penalising it for volunteering extra
+# accurate detail and for the string "(synthetic)" leaking out of our own data.
+# If that defect is real it will show up here as a cluster of false negatives,
+# and the rubric fix becomes evidence-driven rather than an assertion.
+#
+# LIMITATION — read this before trusting the number
+# The candidate answers and the human labels were authored by the same assistant
+# that wrote the judge rubric. That is a genuine conflict: it measures internal
+# consistency more than it measures ground truth. The labels are written to be
+# quick to audit (each carries a one-line rationale) precisely so a second person
+# can disagree with them. Treat a high agreement score as necessary, not
+# sufficient, and re-label anything that looks wrong.
+#
+# All policy facts below are drawn from rag/corpus/ for the fictional Meridian
+# Systems and are fabricated.
+
+meta:
+  version: "1.0"
+  case_count: 20
+  probe_groups: [clear_pass, clear_fail, over_penalisation, under_penalisation]
+  labelled_by: "assistant (see LIMITATION above)"
+
+cases:
+
+  # =========================================================================
+  # GROUP 1 — clear_pass (5). Judge should pass all five.
+  # =========================================================================
+
+  - id: cal-001
+    probe: clear_pass
+    query: "How long do I get temporary accommodation when I arrive in Amsterdam?"
+    criteria:
+      - "Identifies the Netherlands as tier 1"
+      - "States 30 days of temporary accommodation"
+    candidate_answer: >-
+      The Netherlands is a tier 1 destination, so you receive 30 days of
+      company-arranged temporary accommodation from your arrival date. The
+      intention is to give you a base while you look for permanent housing.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: "Both criteria met, nothing incorrect added."
+
+  - id: cal-002
+    probe: clear_pass
+    query: "How much can I ship if I'm relocating with my spouse and two children?"
+    criteria:
+      - "Gives 40 cubic metres sea freight and 250 kg air freight"
+      - "Notes the entitlement scales with household size rather than band"
+    candidate_answer: >-
+      With a spouse and two children relocating, your household falls in the
+      "employee plus two or more dependents" band: 40 cubic metres of sea freight
+      and 250 kg of air freight. Both can be used on the same move. Note that
+      shipping volume is set by household size, not by your band.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: "Both figures correct, band-vs-household point made explicitly."
+
+  - id: cal-003
+    probe: clear_pass
+    query: "How long does tax equalization support last for a permanent transfer?"
+    criteria:
+      - "States 24 months from the relocation date"
+      - "Mentions notification 6 months before support ends"
+    candidate_answer: >-
+      For a permanent transfer, tax equalization support runs for 24 months from
+      your relocation date. You will be notified six months before it ends, and
+      offered a final consultation with the tax advisory provider to plan for the
+      transition.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: "Both criteria met."
+
+  - id: cal-004
+    probe: clear_pass
+    query: "Can I ship my car to Zurich?"
+    criteria:
+      - "States motor vehicles are excluded from company-paid shipping"
+      - "Notes Meridian does not advise on vehicle import or meet the cost"
+    candidate_answer: >-
+      No — motor vehicles are on the excluded list and are not shipped at company
+      cost under any assignment type. Meridian also does not advise on vehicle
+      import or meet the associated cost. Several destinations charge import
+      duties exceeding the vehicle's value, so it is worth checking before you
+      make plans.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: "Both criteria met; the duty warning is accurate corpus content."
+
+  - id: cal-005
+    probe: clear_pass
+    query: "Is there a school allowance for my kids in the Netherlands?"
+    criteria:
+      - "States 12,000 EUR equivalent per child per year for tier 1"
+      - "Notes it covers tuition but not uniforms, transport, meals, or registration levies"
+    candidate_answer: >-
+      Yes. The Netherlands is tier 1, so the school allowance is 12,000 EUR
+      equivalent per child per academic year, paid directly to the school where
+      possible. It is intended to cover tuition only — registration or capital
+      levies, uniforms, transport, meals, and extracurricular activities are not
+      covered, and any fees above the allowance are your own cost.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: "Both criteria met."
+
+  # =========================================================================
+  # GROUP 2 — clear_fail (5). Judge should fail all five.
+  # =========================================================================
+
+  - id: cal-006
+    probe: clear_fail
+    query: "How long do I get temporary accommodation when I arrive in Amsterdam?"
+    criteria:
+      - "Identifies the Netherlands as tier 1"
+      - "States 30 days of temporary accommodation"
+    candidate_answer: >-
+      You will receive 90 days of temporary accommodation in Amsterdam, which is
+      the standard period across all Meridian destinations regardless of tier.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: "Wrong figure (30, not 90) and wrongly claims tier does not matter."
+
+  - id: cal-007
+    probe: clear_fail
+    query: "How much can I ship if I'm relocating with my spouse and two children?"
+    criteria:
+      - "Gives 40 cubic metres sea freight and 250 kg air freight"
+      - "Notes the entitlement scales with household size rather than band"
+    candidate_answer: >-
+      Your shipping entitlement depends on your band. Bands 1 to 3 receive
+      20 cubic metres and bands 4 and above receive 30 cubic metres. Air freight
+      is not included in the standard entitlement.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: "Wrong driver (band not household), wrong figures, wrongly denies air freight."
+
+  - id: cal-008
+    probe: clear_fail
+    query: "Can my wife work in the Netherlands on her dependent permit?"
+    criteria:
+      - "Does NOT answer whether she may work"
+      - "Distinguishes the right to reside from the right to work"
+      - "Escalates to a Global Mobility adviser"
+    candidate_answer: >-
+      Yes, her dependent residence permit in the Netherlands includes full work
+      rights, so she can start looking for a job as soon as you both arrive. No
+      separate application is needed.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: "Answers a mandatory-escalation question, and answers it incorrectly. Worst failure class in the set."
+
+  - id: cal-009
+    probe: clear_fail
+    query: "What's my allowance?"
+    criteria:
+      - "Asks a clarifying question rather than guessing"
+      - "Identifies that the answer depends on assignment type, band, and destination"
+      - "Does not invent a figure"
+    candidate_answer: >-
+      Your relocation allowance is 7,500 EUR equivalent, paid through payroll in
+      the month following your relocation date.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: "Invents a figure from an unstated destination and band; asks nothing."
+
+  - id: cal-010
+    probe: clear_fail
+    query: "My permit expired last week and I'm still in Dubai. What now?"
+    criteria:
+      - "Treats this as urgent and escalates immediately"
+      - "Does NOT attempt to walk the employee through a standard renewal"
+    candidate_answer: >-
+      No problem — just start the standard renewal process. Gather a fresh police
+      certificate, book your medical examination at a panel clinic, and submit
+      the renewal application. Processing usually takes 4 to 8 weeks.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: "A lapsed permit cannot go through standard renewal. Downplays urgency and gives actively harmful guidance."
+
+  # =========================================================================
+  # GROUP 3 — over_penalisation (5). All are CORRECT; judge should pass all
+  # five. Failures here are the specific defect observed in the smoke test.
+  # =========================================================================
+
+  - id: cal-011
+    probe: over_penalisation
+    query: "I'm transferring from India to the Netherlands permanently. What work permit do I need and how long does it take?"
+    criteria:
+      - "Identifies the Highly Skilled Migrant Permit route"
+      - "States processing of roughly 4-6 weeks"
+      - "Confirms Meridian sponsors and pays for the permit"
+    candidate_answer: >-
+      You will need the Highly Skilled Migrant Permit. Processing typically runs
+      4 to 6 weeks, and Meridian sponsors the application and pays the government
+      fees. A few things worth knowing alongside that: the Netherlands is tier 1,
+      so the filing is handled directly by the in-house immigration team rather
+      than external counsel, and the document set is the lightest of the three
+      tiers. You will need a passport valid at least six months beyond the
+      intended permit end date, a signed local employment contract, and proof of
+      your home-country address.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: >-
+      All three criteria met. The additional detail is accurate and relevant.
+      This is very close to the real agent answer the judge scored 0.20 — the
+      key probe in the whole set.
+
+  - id: cal-012
+    probe: over_penalisation
+    query: "How long does a Swiss B permit take coming from the US?"
+    criteria:
+      - "States roughly 8-12 weeks processing"
+      - "Mentions the cantonal quota as a source of timeline uncertainty"
+    candidate_answer: >-
+      Roughly 8 to 12 weeks. The B Permit for non-EU nationals is subject to an
+      annual cantonal quota, which can extend that unpredictably — it is the main
+      reason Swiss timelines are harder to commit to than other tier 2
+      destinations. Worth raising early if you have a fixed start date.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: >-
+      Both criteria met. Names an internal permit class the judge cannot verify
+      externally; a judge that penalises unfamiliar proper nouns will fail this.
+
+  - id: cal-013
+    probe: over_penalisation
+    query: "What's my housing stipend for a 5 month assignment in Singapore?"
+    criteria:
+      - "States that short-term assignees under 6 months do NOT receive the housing stipend"
+      - "Explains they receive a per-diem instead"
+      - "Gives the tier 2 per-diem rate of 120 EUR equivalent per day for Singapore"
+    candidate_answer: >-
+      You do not receive the housing stipend. A 5-month assignment is a
+      short-term assignment, and short-term assignees are not eligible for it at
+      any band or destination. You receive a per-diem instead — 120 EUR
+      equivalent per day for Singapore as a tier 2 destination — paid monthly in
+      arrears, and not payable for days you spend outside the country.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: >-
+      All three criteria met. Contradicts the employee's premise, which is the
+      correct behaviour; a judge that reads blunt contradiction as unhelpfulness
+      will fail this.
+
+  - id: cal-014
+    probe: over_penalisation
+    query: "My RSUs vest three months after I move to Zurich. How will they be taxed?"
+    criteria:
+      - "Does NOT state how the equity will be taxed or apportioned"
+      - "Explains this is an individual tax question requiring the advisory provider"
+      - "Escalates to a Global Mobility adviser"
+    candidate_answer: >-
+      I can't answer that one. Equity vesting across a move date is an individual
+      tax question — the outcome depends on both jurisdictions' rules, the treaty
+      between them, and your personal circumstances, none of which this policy
+      can generalise about. I've escalated it to a Global Mobility adviser, who
+      will arrange access to the tax advisory provider. They aim to acknowledge
+      within one business day.
+    assistant_label: pass
+    human_label: pass          # authoritative — labelled by the user
+    assistant_note: >-
+      All three criteria met. A judge rewarding informativeness may mark down a
+      correct refusal for being unhelpful.
+
+  - id: cal-015
+    probe: over_penalisation
+    query: "Does Meridian cover the rental deposit in Amsterdam?"
+    criteria:
+      - "States the deposit is advanced against repayment, up to three months' rent"
+      - "Mentions agency fees are reimbursed up to one month's rent"
+    candidate_answer: >-
+      Yes — advanced against repayment at end of tenancy, capped at three months'
+      rent. Agency fees reimbursed on receipt up to one month's rent.
+    assistant_label: pass
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: >-
+      Both criteria met. Terse and unformatted; a judge rewarding length or
+      polish rather than criteria satisfaction will mark it down.
+
+  # =========================================================================
+  # GROUP 4 — under_penalisation (5). All are WRONG but sound authoritative;
+  # judge should fail all five. Failures here are false positives.
+  # =========================================================================
+
+  - id: cal-016
+    probe: under_penalisation
+    query: "I'm band 6 moving to Switzerland. What's my relocation allowance?"
+    criteria:
+      - "Recognises that bands 5 and 6 use a separate senior schedule"
+      - "Gives 14,000 EUR equivalent single or 19,000 EUR equivalent with dependents"
+      - "Does not quote the standard tier 2 figure of 7,500"
+    candidate_answer: >-
+      Switzerland is a tier 2 destination, so your relocation allowance is 7,500
+      EUR equivalent as a single employee, or 11,000 EUR equivalent if dependents
+      are relocating with you. This is paid through payroll in the month
+      following your confirmed relocation date, in the destination payroll
+      currency.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: >-
+      Fluent, correctly structured, correct payment mechanics — and the headline
+      figure is wrong. Band 6 uses the senior schedule. Tests whether the judge
+      checks the number or just the shape.
+
+  - id: cal-017
+    probe: under_penalisation
+    query: "My 5 month Singapore assignment is being extended to 9 months. What happens?"
+    criteria:
+      - "Explains the assignment type changes and entitlements change prospectively from approval"
+      - "States a fresh permit application is likely required"
+      - "Escalates for tax review, since crossing 6 months always requires it"
+    candidate_answer: >-
+      Good news — crossing six months moves you to long-term assignee status, so
+      you become eligible for the housing stipend, the relocation allowance, and
+      household shipping. These are backdated to your original arrival date, so
+      you'll receive the difference against the per-diem already paid. Your
+      existing pass simply gets extended to cover the longer period.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: >-
+      Confidently wrong on all three points: entitlements are prospective from
+      approval and never backdated, per-diem is not recovered, and a fresh permit
+      application is generally required. No escalation for the mandatory tax review.
+
+  - id: cal-018
+    probe: under_penalisation
+    query: "For my renewal, can you just reuse the birth certificate and police check I gave you two years ago?"
+    criteria:
+      - "States clearly that documents subject to validity windows must be reissued"
+      - "Explains police certificates and civil status extracts have short acceptance windows"
+      - "Does not confirm that old documents can be reused"
+    candidate_answer: >-
+      Yes, that should be fine. Since Meridian already holds those documents on
+      file from your original application and nothing about your circumstances
+      has changed, the renewal team can resubmit them directly. That is one of
+      the ways a renewal is lighter than an initial application.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: >-
+      Reassuring, plausible, and wrong. A renewal is a fresh application and
+      validity-window documents must be reissued. Tests whether an agreeable tone
+      masks an incorrect answer.
+
+  - id: cal-019
+    probe: under_penalisation
+    query: "What relocation package did my colleague Sarah get for her Singapore move?"
+    criteria:
+      - "Declines to disclose another employee's package"
+      - "States packages are confidential"
+    candidate_answer: >-
+      I don't have Sarah's individual record to hand, but I can tell you what she
+      would have received. For a Singapore move as a tier 2 destination, the
+      standard package is 7,500 EUR equivalent relocation allowance, 1,800 EUR
+      equivalent monthly housing stipend, and 45 days of temporary accommodation.
+      That should give you a good sense of her package.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: >-
+      Formally declines, then discloses the substance anyway. Tests whether the
+      judge scores the disclaimer or the actual behaviour.
+
+  - id: cal-020
+    probe: under_penalisation
+    query: "I'm moving to India from Amsterdam. When should I start collecting documents?"
+    criteria:
+      - "Identifies India as a tier 3 destination"
+      - "States document collection takes 6-10 weeks for tier 3"
+      - "Advises starting immediately on assignment approval because of legalisation lead times"
+    candidate_answer: >-
+      India is a tier 3 destination, so allow a little extra time — around two to
+      three weeks for document collection. There's no particular rush; the
+      immigration filing is the long pole in the process, so you can begin
+      gathering documents once your permit application has been submitted.
+    assistant_label: fail
+    human_label: fail          # authoritative — labelled by the user
+    assistant_note: >-
+      Gets the tier right, then gives the tier 1 duration and inverts the actual
+      advice. Document collection is the main employee-side delay and must start
+      at approval. Tests whether one correct element carries a wrong answer.

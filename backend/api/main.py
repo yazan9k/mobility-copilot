@@ -87,7 +87,7 @@ def chat(request: ChatRequest) -> ChatResponse:
                 turn=t.turn,
                 name=t.name,
                 arguments=t.arguments,
-                result_preview=t.result_preview,
+                result_preview=t.result[:400],
             )
             for t in result.tool_calls
         ],
