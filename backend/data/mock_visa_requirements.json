@@ -1,0 +1,844 @@
+{
+  "_notice": "SYNTHETIC DATA. Every record in this file is fabricated for the fictional Meridian Systems. Permit names, processing times, fees, and requirements do not describe the immigration system of any real country and must not be relied on for any purpose.",
+  "_schema": {
+    "visa_type": "one of: short_term_business | work_permit | dependent_residence | renewal",
+    "processing_weeks": "[min, max] as a range",
+    "sponsored_by_company": "whether Meridian files and pays for this route"
+  },
+  "visa_types": [
+    "short_term_business",
+    "work_permit",
+    "dependent_residence",
+    "renewal"
+  ],
+  "pairs": [
+    {
+      "from_country": "United Arab Emirates",
+      "to_country": "Singapore",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Short-Term Business Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter", "Return travel booking"],
+          "notes": "Cannot be converted to a work permit in place. A fresh application outside the country is required."
+        },
+        "work_permit": {
+          "permit_name": "Employment Pass Class B (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [6, 10],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Signed local employment contract", "Verified educational certificates", "Police certificate (issued within 3 months)"],
+          "notes": "External immigration counsel files on Meridian's behalf. Required for any assignment of 6 months or longer."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Residence Pass (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [3, 6],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate", "Police certificate for dependents 16+"],
+          "notes": "Cannot be filed until the employee Employment Pass has issued. Does not confer the right to work."
+        },
+        "renewal": {
+          "permit_name": "Employment Pass Renewal (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh police certificate", "Proof of continuous employment", "Current registered address", "Reissued civil status extracts"],
+          "notes": "Assessed as a fresh application. Documents subject to validity windows must be reissued."
+        }
+      }
+    },
+    {
+      "from_country": "India",
+      "to_country": "Netherlands",
+      "destination_tier": 1,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [2, 3],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter", "Proof of accommodation"],
+          "notes": "Not convertible. Employees expecting to stay beyond 3 months should apply for the work permit route from the outset."
+        },
+        "work_permit": {
+          "permit_name": "Highly Skilled Migrant Permit (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Signed local employment contract", "Proof of address in home country"],
+          "notes": "Filed directly by Meridian's in-house immigration team. Tier 1 destinations require the lightest document set."
+        },
+        "dependent_residence": {
+          "permit_name": "Family Reunification Permit (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": false,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Legalised marriage certificate", "Legalised birth certificate for each child"],
+          "notes": "May be filed concurrently with the employee permit in this destination. Work rights are a separate question and are not covered by this permit."
+        },
+        "renewal": {
+          "permit_name": "Highly Skilled Migrant Renewal (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Current registered address", "Evidence of continued salary threshold"],
+          "notes": "Lighter than the Tier 2 and Tier 3 renewal sets, but still assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "United Kingdom",
+      "to_country": "Singapore",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Short-Term Business Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter", "Return travel booking"],
+          "notes": "Suitable only for assignments under 3 months. A 5-month assignment does not fit this route."
+        },
+        "work_permit": {
+          "permit_name": "Employment Pass Class B (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [6, 10],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Signed local employment contract", "Verified educational certificates", "Police certificate (issued within 3 months)"],
+          "notes": "Required for assignments of 6 months or longer, and the practical route for assignments between 3 and 6 months."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Residence Pass (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [3, 6],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate"],
+          "notes": "Filed only after the employee permit issues."
+        },
+        "renewal": {
+          "permit_name": "Employment Pass Renewal (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh police certificate", "Proof of continuous employment"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "United States",
+      "to_country": "Switzerland",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visitor Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [2, 3],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Quota-free but strictly time-limited."
+        },
+        "work_permit": {
+          "permit_name": "B Permit — Non-EU National (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [8, 12],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Signed local employment contract", "Verified educational certificates", "Cantonal quota availability"],
+          "notes": "Subject to an annual cantonal quota, which can extend the timeline unpredictably. Raise senior-band moves early."
+        },
+        "dependent_residence": {
+          "permit_name": "Family Reunification B Permit (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Apostilled marriage certificate", "Proof of adequate accommodation"],
+          "notes": "Requires evidence of accommodation adequate for the household size, which creates a dependency on the lease being signed."
+        },
+        "renewal": {
+          "permit_name": "B Permit Renewal (synthetic)",
+          "max_stay_months": 12,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Current registered address", "Proof of tax compliance"],
+          "notes": "Renewed annually in this destination."
+        }
+      }
+    },
+    {
+      "from_country": "India",
+      "to_country": "United Arab Emirates",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visit Entry (synthetic)",
+          "max_stay_months": 2,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Short window; not suitable for project assignments."
+        },
+        "work_permit": {
+          "permit_name": "Employment Residence Visa (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [6, 9],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Attested educational certificates", "Medical examination at panel clinic", "Signed local employment contract"],
+          "notes": "Requires attestation of educational certificates, which has a long lead time. Begin collection at assignment approval."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Residence Visa (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [3, 5],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Attested marriage certificate", "Medical examination for dependents 18+"],
+          "notes": "Filed only after the employee residence visa issues."
+        },
+        "renewal": {
+          "permit_name": "Employment Residence Visa Renewal (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh medical examination", "Proof of continuous employment", "Current tenancy registration", "Reissued civil status extracts"],
+          "notes": "A fresh medical examination is required at every renewal. This is the most common cause of a missed renewal window in this destination."
+        }
+      }
+    },
+    {
+      "from_country": "Germany",
+      "to_country": "Canada",
+      "destination_tier": 1,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visitor Entry (synthetic)",
+          "max_stay_months": 6,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Permits a longer visit than most short-term routes but still bars local payroll."
+        },
+        "work_permit": {
+          "permit_name": "Intra-Company Transfer Permit (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [4, 7],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Proof of 12 months prior service with Meridian", "Signed local employment contract"],
+          "notes": "Requires a minimum period of prior service, which can exclude recent hires."
+        },
+        "dependent_residence": {
+          "permit_name": "Accompanying Family Permit (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [3, 5],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": false,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate"],
+          "notes": "May be filed concurrently. Spousal work rights in this destination are a separate application and are not sponsored."
+        },
+        "renewal": {
+          "permit_name": "Intra-Company Transfer Renewal (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Current registered address"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "United States",
+      "to_country": "Ireland",
+      "destination_tier": 1,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visitor Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Straightforward route for short project work."
+        },
+        "work_permit": {
+          "permit_name": "Critical Skills Permit (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Signed local employment contract", "Evidence of qualifying role and salary"],
+          "notes": "Filed directly by Meridian's in-house team."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Residence Permission (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [3, 5],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate"],
+          "notes": "Filed after the employee permit issues."
+        },
+        "renewal": {
+          "permit_name": "Critical Skills Renewal (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Current registered address"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "Singapore",
+      "to_country": "Japan",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Temporary Visitor Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [1, 3],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter", "Itinerary"],
+          "notes": "Not convertible in country."
+        },
+        "work_permit": {
+          "permit_name": "Engineer / Specialist in Humanities Visa (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [6, 10],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Certificate of Eligibility", "Verified educational certificates", "Signed local employment contract"],
+          "notes": "The Certificate of Eligibility is obtained first and is the long pole in this route."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependent Visa (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [3, 6],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate", "Certificate of Eligibility"],
+          "notes": "Requires its own Certificate of Eligibility, filed after the employee's."
+        },
+        "renewal": {
+          "permit_name": "Period of Stay Extension (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Tax and residence records", "Current registered address"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "Brazil",
+      "to_country": "Germany",
+      "destination_tier": 1,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [2, 4],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter", "Proof of accommodation"],
+          "notes": "Not convertible."
+        },
+        "work_permit": {
+          "permit_name": "EU Blue Card (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [5, 8],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Recognised degree certificate", "Signed local employment contract meeting salary threshold"],
+          "notes": "Degree recognition can add several weeks where the qualification is not on the pre-recognised list."
+        },
+        "dependent_residence": {
+          "permit_name": "Family Reunification Permit (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": false,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Legalised marriage certificate", "Basic language certificate for spouse in some cases"],
+          "notes": "May require a basic language certificate for the accompanying spouse."
+        },
+        "renewal": {
+          "permit_name": "EU Blue Card Renewal (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Evidence of continued salary threshold", "Current registered address"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "Netherlands",
+      "to_country": "India",
+      "destination_tier": 3,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visa (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [2, 4],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter", "Invitation from local entity"],
+          "notes": "Not convertible in country."
+        },
+        "work_permit": {
+          "permit_name": "Employment Visa (synthetic)",
+          "max_stay_months": 12,
+          "processing_weeks": [10, 16],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Legalised educational certificates", "Medical examination at panel clinic", "Birth certificate", "Police certificate", "Signed local employment contract meeting salary threshold"],
+          "notes": "Tier 3 route. Requires legalisation rather than apostille, which is the longest lead time in the document set. Registration with local authorities is required within 14 days of arrival."
+        },
+        "dependent_residence": {
+          "permit_name": "Entry (X) Visa for Dependants (synthetic)",
+          "max_stay_months": 12,
+          "processing_weeks": [6, 10],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Legalised marriage certificate", "Legalised birth certificate for each child", "Medical examination"],
+          "notes": "Filed after the employee visa issues. Adds 6-10 weeks on top of the employee timeline."
+        },
+        "renewal": {
+          "permit_name": "Employment Visa Extension (synthetic)",
+          "max_stay_months": 12,
+          "processing_weeks": [8, 14],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh police certificate", "Fresh medical examination", "Proof of tax compliance", "Proof of continuous employment", "Current registered address"],
+          "notes": "Tier 3 renewals are the longest and require the fullest document set. Ninety days is the minimum viable runway."
+        }
+      }
+    },
+    {
+      "from_country": "United Kingdom",
+      "to_country": "Poland",
+      "destination_tier": 3,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [2, 3],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Not convertible."
+        },
+        "work_permit": {
+          "permit_name": "Type A Work Permit (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [10, 14],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Legalised educational certificates", "Police certificate", "Birth certificate", "Signed local employment contract"],
+          "notes": "Filed through an employer-of-record partner. Employees should expect to correspond with the partner rather than Meridian directly."
+        },
+        "dependent_residence": {
+          "permit_name": "Family Residence Permit (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [8, 12],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Legalised marriage certificate", "Legalised birth certificate for each child", "Proof of adequate accommodation"],
+          "notes": "Filed after the employee permit issues."
+        },
+        "renewal": {
+          "permit_name": "Work Permit Renewal (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [8, 14],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh police certificate", "Proof of continuous employment", "Proof of tax and social security compliance"],
+          "notes": "Tier 3 renewal. Begin document collection as soon as the ninety-day window opens."
+        }
+      }
+    },
+    {
+      "from_country": "Australia",
+      "to_country": "United Kingdom",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Permitted Paid Engagement Entry (synthetic)",
+          "max_stay_months": 1,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Very short window. Most project assignments will need the work permit route."
+        },
+        "work_permit": {
+          "permit_name": "Skilled Worker Visa (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [6, 9],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Certificate of Sponsorship", "Signed local employment contract meeting salary threshold", "Police certificate"],
+          "notes": "Requires a Certificate of Sponsorship issued by Meridian before the employee can apply."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Partner / Child Visa (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": false,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate", "Evidence of relationship"],
+          "notes": "May be filed concurrently with the employee application in this destination."
+        },
+        "renewal": {
+          "permit_name": "Skilled Worker Extension (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["New Certificate of Sponsorship", "Proof of continuous employment", "Current registered address"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "Canada",
+      "to_country": "Australia",
+      "destination_tier": 1,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visitor Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Straightforward for short engagements."
+        },
+        "work_permit": {
+          "permit_name": "Temporary Skill Shortage Visa (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [5, 8],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Nomination by Meridian's local entity", "Skills assessment where the role requires it", "Health examination"],
+          "notes": "Nomination is filed by the local entity before the employee application."
+        },
+        "dependent_residence": {
+          "permit_name": "Secondary Applicant Visa (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": false,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate", "Health examination"],
+          "notes": "Usually filed as part of the same application group."
+        },
+        "renewal": {
+          "permit_name": "Temporary Skill Shortage Renewal (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh nomination", "Proof of continuous employment"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "Germany",
+      "to_country": "Mexico",
+      "destination_tier": 3,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visitor Entry (synthetic)",
+          "max_stay_months": 6,
+          "processing_weeks": [2, 3],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Long visitor window but no local payroll and no conversion."
+        },
+        "work_permit": {
+          "permit_name": "Temporary Resident Visa with Work Permission (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [10, 15],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Apostilled educational certificates", "Birth certificate", "Signed local employment contract", "Consular interview in home country"],
+          "notes": "Requires a consular interview in the home country before travel, then in-country exchange within 30 days of arrival."
+        },
+        "dependent_residence": {
+          "permit_name": "Family Unit Temporary Residence (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [8, 12],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Apostilled marriage certificate", "Apostilled birth certificate for each child", "Consular interview"],
+          "notes": "Each dependent requires their own consular interview."
+        },
+        "renewal": {
+          "permit_name": "Temporary Residence Renewal (synthetic)",
+          "max_stay_months": 48,
+          "processing_weeks": [8, 12],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Proof of tax compliance", "Current registered address"],
+          "notes": "Tier 3 renewal."
+        }
+      }
+    },
+    {
+      "from_country": "United States",
+      "to_country": "Netherlands",
+      "destination_tier": 1,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Schengen Business Short Stay (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Not convertible."
+        },
+        "work_permit": {
+          "permit_name": "Highly Skilled Migrant Permit (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Signed local employment contract meeting salary threshold"],
+          "notes": "One of the fastest routes in the Meridian network."
+        },
+        "dependent_residence": {
+          "permit_name": "Family Reunification Permit (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": false,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Apostilled marriage certificate"],
+          "notes": "May be filed concurrently."
+        },
+        "renewal": {
+          "permit_name": "Highly Skilled Migrant Renewal (synthetic)",
+          "max_stay_months": 60,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Evidence of continued salary threshold"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "India",
+      "to_country": "Singapore",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Short-Term Business Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [1, 2],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Not convertible in country."
+        },
+        "work_permit": {
+          "permit_name": "Employment Pass Class B (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [6, 10],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Verified educational certificates", "Police certificate (issued within 3 months)", "Signed local employment contract"],
+          "notes": "Educational certificate verification is the long pole for this origin."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Residence Pass (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [3, 6],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Legalised marriage certificate", "Legalised birth certificate for each child"],
+          "notes": "Filed after the employee permit issues."
+        },
+        "renewal": {
+          "permit_name": "Employment Pass Renewal (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh police certificate", "Proof of continuous employment"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "South Africa",
+      "to_country": "Ireland",
+      "destination_tier": 1,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visitor Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [2, 4],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter", "Proof of accommodation"],
+          "notes": "Not convertible."
+        },
+        "work_permit": {
+          "permit_name": "Critical Skills Permit (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [5, 8],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": true,
+          "key_requirements": ["Passport valid 6+ months", "Police certificate", "Verified educational certificates", "Signed local employment contract"],
+          "notes": "Filed by Meridian's in-house team."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Residence Permission (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 7],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Legalised marriage certificate", "Legalised birth certificate for each child"],
+          "notes": "Filed after the employee permit issues."
+        },
+        "renewal": {
+          "permit_name": "Critical Skills Renewal (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [4, 6],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Proof of continuous employment", "Current registered address"],
+          "notes": "Assessed as a fresh application."
+        }
+      }
+    },
+    {
+      "from_country": "Japan",
+      "to_country": "United States",
+      "destination_tier": 2,
+      "routes": {
+        "short_term_business": {
+          "permit_name": "Business Visitor Entry (synthetic)",
+          "max_stay_months": 3,
+          "processing_weeks": [2, 4],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": false,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Assignment letter"],
+          "notes": "Not convertible in country."
+        },
+        "work_permit": {
+          "permit_name": "Intra-Company Transferee Visa (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [8, 14],
+          "sponsored_by_company": true,
+          "payroll_transfer_permitted": true,
+          "convertible_in_country": false,
+          "key_requirements": ["Passport valid 6+ months", "Proof of 12 months prior service with Meridian", "Petition approval", "Consular interview"],
+          "notes": "Requires a petition approval before the consular stage, and the two stages together dominate the timeline."
+        },
+        "dependent_residence": {
+          "permit_name": "Dependant Transferee Visa (synthetic)",
+          "max_stay_months": 36,
+          "processing_weeks": [4, 8],
+          "sponsored_by_company": true,
+          "filed_after_employee_permit": true,
+          "carries_work_rights": false,
+          "key_requirements": ["Dependent passport valid 6+ months", "Marriage or birth certificate", "Consular interview"],
+          "notes": "Filed after the employee petition is approved."
+        },
+        "renewal": {
+          "permit_name": "Intra-Company Transferee Extension (synthetic)",
+          "max_stay_months": 24,
+          "processing_weeks": [8, 14],
+          "sponsored_by_company": true,
+          "initiate_days_before_expiry": 90,
+          "key_requirements": ["Fresh petition", "Proof of continuous employment"],
+          "notes": "Requires a fresh petition rather than an administrative extension."
+        }
+      }
+    }
+  ]
+}
