@@ -17,7 +17,13 @@ from typing import Any
 
 import ollama
 
-from config import AGENT_MODEL, AGENT_TEMPERATURE, OLLAMA_HOST
+from config import (
+    AGENT_MODEL,
+    AGENT_NUM_CTX,
+    AGENT_SEED,
+    AGENT_TEMPERATURE,
+    OLLAMA_HOST,
+)
 
 
 @dataclass
@@ -62,7 +68,15 @@ def chat(
         messages=messages,
         tools=tools or None,
         options={
-            "temperature": AGENT_TEMPERATURE if temperature is None else temperature
+            "temperature": AGENT_TEMPERATURE if temperature is None else temperature,
+            # Explicit: Ollama silently truncates past its 4096 default rather
+            # than erroring, which drops the system prompt and tool definitions
+            # on long requests. See AGENT_NUM_CTX in config.py.
+            "num_ctx": AGENT_NUM_CTX,
+            # Fixed seed: without it, two runs of the same version differed by
+            # up to 15pp on retrieval recall, which is larger than the effect
+            # we are trying to measure. See AGENT_SEED in config.py.
+            "seed": AGENT_SEED,
         },
     )
     latency_ms = int((time.perf_counter() - start) * 1000)

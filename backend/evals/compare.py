@@ -25,14 +25,68 @@ from config import RUN_HISTORY_DIR
 
 
 def load(version: str) -> dict[str, Any]:
+    """Load a run, preferring the judged file over the raw one.
+
+    Guarded, because the first version of this silently picked up a stale
+    4-case smoke test in place of the real 70-case run and would have reported
+    the comparison as valid. A partial or stale scored file must never shadow a
+    complete raw one.
+    """
     scored = RUN_HISTORY_DIR / f"{version}.json"
     raw = RUN_HISTORY_DIR / f"{version}_raw.json"
-    path = scored if scored.exists() else raw
-    if not path.exists():
+
+    if not scored.exists() and not raw.exists():
         raise SystemExit(f"No run found for {version!r} ({scored} / {raw})")
+
+    path = scored if scored.exists() else raw
     data = json.loads(path.read_text(encoding="utf-8"))
+
+    if scored.exists() and raw.exists():
+        n_scored = len(data.get("cases", []))
+        n_raw = len(json.loads(raw.read_text(encoding="utf-8")).get("cases", []))
+        if n_scored < n_raw:
+            raise SystemExit(
+                f"{scored.name} covers {n_scored} cases but {raw.name} has {n_raw}.\n"
+                f"That scored file is stale or partial and would understate the run.\n"
+                f"Re-run:  python -m evals.judge_scoring --version {version}"
+            )
+
     data["_source"] = path.name
     return data
+
+
+def check_comparable(base: dict, new: dict) -> list[str]:
+    """Warn about anything that makes the two runs unfair to compare.
+
+    The central claim of the project is a before/after delta, which is only
+    meaningful if both sides were measured with the same instrument. Judging v1
+    under one rubric and v2 under another would produce a number that describes
+    the rubric change, not the agent.
+    """
+    problems: list[str] = []
+
+    nb, nn = len(base.get("cases", [])), len(new.get("cases", []))
+    if nb != nn:
+        problems.append(f"case counts differ: {base['version']}={nb}, {new['version']}={nn}")
+
+    ib = {c["id"] for c in base.get("cases", [])}
+    inn = {c["id"] for c in new.get("cases", [])}
+    if ib != inn:
+        only_b, only_n = sorted(ib - inn)[:5], sorted(inn - ib)[:5]
+        problems.append(f"case ids differ (only in base: {only_b}, only in new: {only_n})")
+
+    jb, jn = base.get("judge"), new.get("judge")
+    if jb and jn:
+        for field in ("model", "threshold", "rubric_fingerprint"):
+            if jb.get(field) != jn.get(field):
+                problems.append(
+                    f"judge {field} differs: {jb.get(field)!r} vs {jn.get(field)!r} "
+                    f"— judged metrics are NOT comparable"
+                )
+    elif bool(jb) != bool(jn):
+        problems.append("only one run has judged metrics; judged rows will be blank")
+
+    return problems
 
 
 def pct(v: float | None) -> str:
@@ -206,15 +260,73 @@ def to_markdown(cmp: dict) -> str:
     return "\n".join(out) + "\n"
 
 
+def matrix(versions: list[str]) -> str:
+    """A metric-by-version table across three or more runs.
+
+    Pairwise diffs answer "did this change help?". A matrix answers "what did
+    this project actually do?", which is the question the case study has to
+    answer — and it makes a metric that improved then regressed visible, where
+    two separate pairwise tables would let it hide.
+    """
+    runs = [load(v) for v in versions]
+
+    lines = [f"| Metric | {' | '.join(versions)} |",
+             "|---" * (len(versions) + 1) + "|"]
+    for label, path, hib in DETERMINISTIC + JUDGED:
+        vals = [dig(r, path) for r in runs]
+        if all(v is None for v in vals):
+            continue
+        cells = [pct(v) if (v is None or v <= 1) else str(v) for v in vals]
+        lines.append(f"| {label} | {' | '.join(cells)} |")
+
+    lines += ["", "| Operational | " + " | ".join(versions) + " |",
+              "|---" * (len(versions) + 1) + "|"]
+    for label, key in (("Cases calling no tools", "no_tool_calls"),
+                       ("Turn-limit hits", "turn_limit_hits"),
+                       ("Median latency (ms)", "median_latency_ms"),
+                       ("Mean tokens/case", "mean_total_tokens")):
+        vals = [dig(r, ("deterministic_summary", "operational", key)) for r in runs]
+        lines.append(f"| {label} | {' | '.join(str(v) for v in vals)} |")
+
+    lines += ["", "| Run settings | " + " | ".join(versions) + " |",
+              "|---" * (len(versions) + 1) + "|"]
+    keys = sorted({k for r in runs for k in r.get("config", {})})
+    for k in keys:
+        vals = [str(r.get("config", {}).get(k, "—")) for r in runs]
+        if len(set(vals)) > 1 or k in ("temperature", "seed", "num_ctx"):
+            lines.append(f"| `{k}` | {' | '.join(vals)} |")
+    return "\n".join(lines)
+
+
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Compare two eval runs.")
+    ap = argparse.ArgumentParser(description="Compare eval runs.")
     ap.add_argument("--base", default="v1")
     ap.add_argument("--new", default="v2")
+    ap.add_argument("--versions", help="Comma-separated list for a matrix view, e.g. v1,v2,v3")
     ap.add_argument("--markdown", help="Also write a markdown table to this path")
     ap.add_argument("--json", dest="json_out", help="Write the comparison as JSON")
     args = ap.parse_args()
 
+    if args.versions:
+        vs = [v.strip() for v in args.versions.split(",") if v.strip()]
+        table = matrix(vs)
+        print(table)
+        if args.markdown:
+            from pathlib import Path
+            Path(args.markdown).write_text(
+                f"# Evaluation results — {' vs '.join(vs)}\n\n{table}\n", encoding="utf-8")
+            print(f"\nWrote {args.markdown}")
+        return 0
+
     base, new = load(args.base), load(args.new)
+
+    problems = check_comparable(base, new)
+    if problems:
+        print("\n!! COMPARABILITY WARNINGS")
+        for p_ in problems:
+            print(f"   - {p_}")
+        print("   Treat affected rows as not comparable.")
+
     cmp = build(base, new)
     report(cmp, base, new)
 

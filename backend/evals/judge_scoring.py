@@ -22,6 +22,7 @@ Run:  python -m evals.judge_scoring --version v1
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 import time
@@ -314,9 +315,18 @@ def main() -> int:
 
     elapsed = time.perf_counter() - started
     payload["judged_summary"] = summarise(rows)
+    # Fingerprint of the exact rubric text used. compare.py refuses to present
+    # judged metrics across two runs whose fingerprints differ — otherwise a
+    # v1/v2 delta could be reporting a rubric edit as an agent improvement.
+    rubric_fingerprint = hashlib.sha256(
+        ("\n".join(TASK_SUCCESS_STEPS) + "\n--\n" + "\n".join(CLARITY_STEPS))
+        .encode("utf-8")
+    ).hexdigest()[:12]
+
     payload["judge"] = {
         "model": judge.get_model_name(),
         "threshold": args.threshold,
+        "rubric_fingerprint": rubric_fingerprint,
         "scored_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
         "elapsed_seconds": round(elapsed, 1),
     }

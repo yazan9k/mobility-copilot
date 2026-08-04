@@ -25,6 +25,9 @@ import yaml
 from agent import core, llm
 from config import (
     AGENT_MODEL,
+    AGENT_NUM_CTX,
+    AGENT_SEED,
+    AGENT_TEMPERATURE,
     CHUNK_MAX_CHARS,
     CHUNK_OVERLAP_CHARS,
     EVALS_DIR,
@@ -149,6 +152,10 @@ def main() -> int:
         "version": args.version,
         "run_at": datetime.now(timezone.utc).isoformat(),
         "elapsed_seconds": round(elapsed, 1),
+        # Everything that can change a result, recorded with the result.
+        # temperature / seed / num_ctx were missing from the first version of
+        # this, which is how two runs of "the same" config differed by 15pp on
+        # retrieval recall without the files showing any reason why.
         "config": {
             "agent_model": AGENT_MODEL,
             "judge_model": JUDGE_MODEL,
@@ -156,6 +163,9 @@ def main() -> int:
             "chunk_overlap_chars": CHUNK_OVERLAP_CHARS,
             "retrieval_top_k": RETRIEVAL_TOP_K,
             "max_agent_turns": MAX_AGENT_TURNS,
+            "temperature": AGENT_TEMPERATURE,
+            "seed": AGENT_SEED,
+            "num_ctx": AGENT_NUM_CTX,
         },
         "deterministic_summary": summary,
         "cases": rows,
