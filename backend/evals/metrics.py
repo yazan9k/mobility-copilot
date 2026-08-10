@@ -20,6 +20,19 @@ numbers should be read:
   nothing; scoring those on recall would penalise correct behaviour and make
   the retrieval number meaningless. `expected_source_docs` on those cases is
   still used as judge context.
+
+* **Retrieval recall is reported two ways, and the distinction matters.**
+  A case where the agent never searched scores recall 0.0, which reads as a
+  retriever failure when it is actually a tool-choice failure. On v1, 9 of the
+  11 recall misses had retrieved nothing at all: unconditional recall said
+  63.8%, but recall over cases where a search actually happened was 88.1%.
+  Tuning the retriever on the 63.8% figure would have been chasing a problem
+  that does not exist. So:
+    - `mean_recall`           — over all scored cases (mixes both failures)
+    - `search_rate`           — did the agent search when it should have
+    - `recall_given_searched` — the retriever's actual quality
+  Read `recall_given_searched` to judge retrieval; read `search_rate` as a
+  trajectory signal.
 """
 
 from __future__ import annotations
@@ -192,6 +205,7 @@ def aggregate(rows: list[dict]) -> dict[str, Any]:
 
     traj = [r["trajectory"] for r in rows if r["trajectory"]["expected"] > 0]
     retr = [r["retrieval"] for r in rows if r["retrieval"]["scored"]]
+    searched = [r for r in retr if r["retrieved"]]
     esc_required = [r["escalation"] for r in rows if r["escalation"]["required"]]
     esc_not_required = [r["escalation"] for r in rows if not r["escalation"]["required"]]
     forb = [r["forbidden_claims"] for r in rows if r["forbidden_claims"]["scored"]]
@@ -210,6 +224,13 @@ def aggregate(rows: list[dict]) -> dict[str, Any]:
             "mean_precision": mean([r["precision"] for r in retr]),
             "mean_recall": mean([r["recall"] for r in retr]),
             "hit_rate": mean([1.0 if r["hit"] else 0.0 for r in retr]),
+            # Separates "the retriever missed" from "the agent never searched".
+            # See the module docstring — conflating these made a healthy
+            # retriever look like the problem.
+            "n_searched": len(searched),
+            "search_rate": mean([1.0 if r["retrieved"] else 0.0 for r in retr]),
+            "recall_given_searched": mean([r["recall"] for r in searched]),
+            "precision_given_searched": mean([r["precision"] for r in searched]),
         },
         "escalation": {
             "n_required": len(esc_required),

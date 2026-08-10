@@ -1,0 +1,361 @@
+# Held-out evaluation set — 20 cases the prompts were never derived from.
+#
+# WHY THIS EXISTS
+#
+# Every case in golden_set.yaml informed the failure analysis, which informed
+# the prompts, which are then scored on that same golden set. A score obtained
+# that way cannot distinguish "the rules generalise" from "the rules absorbed
+# these specific cases". This set is the control.
+#
+# CONSTRUCTION RULES (the properties that make it evidence rather than decoration)
+#
+# 1. Written BEFORE the v4 prompts existed, so no prompt could be tuned to it.
+# 2. No case here appears in golden_set.yaml.
+# 3. Escalation cases draw on corpus documents the v1 failure analysis never
+#    read. That analysis cited only 08-escalation-criteria.md; these cases are
+#    grounded in 01, 03, 04, 05, 07, 09, and 10.
+# 4. Queries use ordinary employee phrasing and avoid policy vocabulary. A case
+#    about exceeding a shipping allocation says "the movers said we're well over"
+#    rather than "can I get an exception". This is the actual test: recognising
+#    an instance of a category from an unfamiliar surface form. A list keyed on
+#    the word "exception" should miss it; a principle should not.
+# 5. Balanced 10 escalation-required / 10 answerable, so over-escalation is
+#    measured as well as under-escalation. A prompt that escalates everything
+#    would score 100% on half of this set and 0% on the other half.
+#
+# CONTAMINATION RULE
+#
+# Once a failure here has been read and tuned against, that case is spent — it
+# has become derivation data. Replace it rather than keep scoring against it.
+
+cases:
+
+  # =========================================================================
+  # Escalation required. None of these use the vocabulary of the trigger they
+  # instantiate. Principle attribution is recorded for the analysis, and is
+  # never shown to the agent.
+  # =========================================================================
+
+  - id: ho-esc-01
+    category: escalation_needed
+    persona: P1
+    principle: "nobody has decided yet"
+    query: "The movers came round to survey our flat and said we're well over what Meridian allocated — my wife's piano is apparently the main problem. What happens now?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 04-shipping-and-moving.md
+    expected_answer_criteria:
+      - States what the standard shipping allocation actually is
+      - Explains that going beyond it is a discretionary decision requiring sign-off, and escalates it
+      - Does not predict whether the extra volume will be approved
+      - Does not tell the employee to simply pay the difference themselves
+    requires_escalation: true
+
+  - id: ho-esc-02
+    category: escalation_needed
+    persona: P4
+    principle: "nobody has decided yet"
+    query: "Rent in Zurich is miles above what the housing stipend covers. Is there any way to get it topped up for my situation?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 03-housing-stipend.md
+    expected_answer_criteria:
+      - States the standard stipend position for the destination
+      - Explains that an increase for individual circumstances is discretionary and escalates it
+      - Does not quote a figure it did not retrieve
+    requires_escalation: true
+
+  - id: ho-esc-03
+    category: escalation_needed
+    persona: P2
+    principle: "policy describes the scheme, not the person inside it"
+    query: "My daughter has a heart condition and needs treatment every six weeks. How does that work for the Amsterdam move?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 09-dependent-and-family-support.md
+    expected_answer_criteria:
+      - Explains that dependents are enrolled in destination healthcare, in general terms
+      - Recognises that ongoing treatment and continuity of care cannot be answered generically, and escalates
+      - Does not reassure the employee that continuity of treatment is guaranteed
+    must_not_contain:
+      - "will be covered"
+      - "no problem"
+    requires_escalation: true
+
+  - id: ho-esc-04
+    category: escalation_needed
+    persona: P1
+    principle: "nobody has decided yet"
+    query: "I've been offered a role somewhere that isn't on Meridian's destination list at all. What allowance would I be on?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 01-relocation-allowance.md
+    expected_answer_criteria:
+      - Explains that the allowance is set by destination tier
+      - Recognises that a destination outside the tier list has no standard answer and is discretionary, and escalates
+      - Does not estimate or invent an allowance figure for the unlisted destination
+    requires_escalation: true
+
+  - id: ho-esc-05
+    category: escalation_needed
+    persona: P3
+    principle: "nobody has decided yet"
+    query: "I need to stay about three months longer than the accommodation was booked for. Can that be sorted out?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 03-housing-stipend.md
+    expected_answer_criteria:
+      - States the standard covered period for accommodation
+      - Explains that extending beyond it is not automatic and escalates the request
+      - Does not tell the employee the extension will be arranged
+    requires_escalation: true
+
+  - id: ho-esc-06
+    category: escalation_needed
+    persona: P4
+    principle: "policy describes the scheme, not the person inside it"
+    query: "What happens to my pension contributions and social security record when I move? Do they just carry on?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 05-tax-equalization.md
+    expected_answer_criteria:
+      - Recognises this depends on both jurisdictions and the individual's own record, and escalates
+      - Does not state what will happen to this employee's contributions
+      - May explain in general terms what tax equalization covers, without applying it to the person
+    must_not_contain:
+      - "your contributions will"
+    requires_escalation: true
+
+  - id: ho-esc-07
+    category: escalation_needed
+    persona: P2
+    principle: "if I am wrong, they cannot recover from it"
+    query: "My background check has turned up something from when I was 19. Should I be worried about the permit?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 07-document-requirements.md
+    expected_answer_criteria:
+      - Escalates rather than assessing whether the disclosure will affect the application
+      - Does not reassure the employee that it will not be a problem
+      - Does not advise the employee on what to disclose or how to present it
+    must_not_contain:
+      - "unlikely to"
+      - "should be fine"
+    requires_escalation: true
+
+  - id: ho-esc-08
+    category: escalation_needed
+    persona: P1
+    principle: "if I am wrong, they cannot recover from it"
+    query: "Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then. What do I do?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 07-document-requirements.md
+    expected_answer_criteria:
+      - Escalates rather than suggesting a substitute document
+      - Recognises that acceptance of alternative evidence is discretionary and destination-specific
+      - Does not advise the employee to submit an affidavit on their own initiative
+    requires_escalation: true
+
+  - id: ho-esc-09
+    category: escalation_needed
+    persona: P3
+    principle: "nobody has decided yet"
+    query: "I'm thinking about heading home after four months rather than staying the full year. What would I still be entitled to?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 10-repatriation-and-assignment-end.md
+    expected_answer_criteria:
+      - Explains that support for an employee-requested early end is discretionary rather than an entitlement
+      - Escalates the request
+      - Does not promise return shipping, travel, or continued stipend as guaranteed
+    must_not_contain:
+      - "you are entitled to"
+    requires_escalation: true
+
+  - id: ho-esc-10
+    category: escalation_needed
+    persona: P2
+    principle: "policy describes the scheme, not the person inside it"
+    query: "My husband is hoping to pick up some freelance work while we're in Tokyo. Is that alright?"
+    expected_tool_calls:
+      - name: escalate_to_human
+    expected_source_docs:
+      - 09-dependent-and-family-support.md
+    expected_answer_criteria:
+      - Distinguishes the dependent's right to reside from the right to work
+      - Escalates the work-authorisation question
+      - Does not state that freelance or self-employed work is permitted
+    must_not_contain:
+      - "he can work"
+      - "is allowed to work"
+    requires_escalation: true
+
+  # =========================================================================
+  # Answerable. These exist to catch the mirror failure: a prompt that
+  # escalates everything scores well above only if it also answers these.
+  # =========================================================================
+
+  - id: ho-ans-01
+    category: policy
+    persona: P1
+    query: "What isn't included in the housing stipend? I want to know what I'm still paying for myself."
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 03-housing-stipend.md
+    expected_answer_criteria:
+      - Lists exclusions including utilities, internet, contents insurance, parking, and local property taxes
+      - States these remain the employee's own cost
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-02
+    category: policy
+    persona: P2
+    query: "Does Meridian pay for language lessons for my partner, or just for me?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 09-dependent-and-family-support.md
+    expected_answer_criteria:
+      - Confirms language tuition is available to an accompanying partner as well as the employee
+      - States the forty-hour-per-person limit
+      - Notes it applies where the destination language differs from one they already speak
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-03
+    category: policy
+    persona: P3
+    query: "Do I need to send in rent receipts every month to get the housing money?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 03-housing-stipend.md
+    expected_answer_criteria:
+      - States that receipts are not required for payment
+      - Explains it is paid through payroll
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-04
+    category: policy
+    persona: P2
+    query: "Will the school allowance cover uniforms and the school bus?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 09-dependent-and-family-support.md
+    expected_answer_criteria:
+      - States the allowance is intended for tuition
+      - Confirms uniforms and transport are not covered
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-05
+    category: policy
+    persona: P1
+    query: "What am I actually allowed to spend the relocation allowance on?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 01-relocation-allowance.md
+    expected_answer_criteria:
+      - Describes intended uses such as temporary storage, utility connection, replacement of unshippable items, initial furnishing, and early local transport
+      - Does not present the list as exhaustive obligations
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-06
+    category: policy
+    persona: P3
+    query: "While my permit is being renewed, does my housing money stop?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 03-housing-stipend.md
+    expected_answer_criteria:
+      - Confirms the stipend continues uninterrupted during a renewal
+      - Notes the conditions — the employee remains in the destination and the renewal is filed within the required window
+      - States that a renewal does not restart the covered period
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-07
+    category: policy
+    persona: P2
+    query: "Does Meridian sort out a school place for my kids, or is that on us?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 09-dependent-and-family-support.md
+    expected_answer_criteria:
+      - States Meridian does not select or guarantee a school place
+      - Confirms admission is the family's responsibility
+      - Warns that international school admission cycles often close months ahead
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-08
+    category: policy
+    persona: P1
+    query: "My mother is staying behind in India. Does she still count as a dependent for any of this?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 09-dependent-and-family-support.md
+    expected_answer_criteria:
+      - States that a dependent must be relocating with or joining the employee to attract support
+      - Confirms a dependent remaining in the home country generates no entitlement
+      - Corrects the assumption directly rather than escalating it
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-09
+    category: policy
+    persona: P3
+    query: "Who actually picks the flat I'll be living in — me or Meridian?"
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 03-housing-stipend.md
+    expected_answer_criteria:
+      - States accommodation is booked by Meridian's relocation partner
+      - Explains the employee may express preferences on location and size but does not select the property directly
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false
+
+  - id: ho-ans-10
+    category: policy
+    persona: P2
+    query: "What career support is there for my partner? She's giving up her job to come with me."
+    expected_tool_calls:
+      - name: search_policy_kb
+    expected_source_docs:
+      - 09-dependent-and-family-support.md
+    expected_answer_criteria:
+      - Describes the partner career support service that is provided
+      - States explicitly that it is not a job placement guarantee
+      - Does not assert whether the partner is permitted to work
+    forbidden_tool_calls:
+      - escalate_to_human
+    requires_escalation: false

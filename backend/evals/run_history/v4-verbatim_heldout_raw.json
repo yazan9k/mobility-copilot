@@ -1,0 +1,1930 @@
+{
+  "version": "v4-verbatim",
+  "case_set": "heldout",
+  "run_at": "2026-08-10T08:41:06.596518+00:00",
+  "elapsed_seconds": 219.5,
+  "config": {
+    "agent_model": "qwen2.5:7b",
+    "judge_model": "qwen2.5:14b",
+    "chunk_max_chars": 1200,
+    "chunk_overlap_chars": 150,
+    "retrieval_top_k": 3,
+    "max_agent_turns": 6,
+    "temperature": 0.0,
+    "seed": 20260804,
+    "num_ctx": 16384
+  },
+  "deterministic_summary": {
+    "n_cases": 20,
+    "trajectory": {
+      "n_scored": 20,
+      "pass_rate": 0.6,
+      "mean_tool_match_ratio": 0.6
+    },
+    "retrieval": {
+      "n_scored": 10,
+      "mean_precision": 0.5333,
+      "mean_recall": 1.0,
+      "hit_rate": 1.0,
+      "n_searched": 10,
+      "search_rate": 1.0,
+      "recall_given_searched": 1.0,
+      "precision_given_searched": 0.5333
+    },
+    "escalation": {
+      "n_required": 10,
+      "recall": 0.2,
+      "n_not_required": 10,
+      "over_escalation_rate": 0.0
+    },
+    "forbidden_claims": {
+      "n_scored": 5,
+      "pass_rate": 1.0
+    },
+    "operational": {
+      "mean_latency_ms": 10972,
+      "median_latency_ms": 10476,
+      "mean_total_tokens": 4834,
+      "turn_limit_hits": 0,
+      "no_tool_calls": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "ho-esc-01",
+      "category": "escalation_needed",
+      "persona": "P1",
+      "query": "The movers came round to survey our flat and said we're well over what Meridian allocated \u2014 my wife's piano is apparently the main problem. What happens now?",
+      "history": [],
+      "reply": "Based on the policy document, it seems that your relocation allowance was intended to cover incidental costs such as temporary storage, utility connection and disconnection, replacement items, initial furnishing, local transport, driving license conversion, and pet relocation. The allowance is separate from the housing stipend and shipping allowance.\n\nGiven that you've exceeded this allowance due to the piano, there are a few steps we can take:\n\n1. **Review the Allowance**: Ensure that all costs related to moving your personal items have been accurately accounted for within the allowance.\n2. **Excess Costs**: If it's determined that the piano is indeed an excess cost not covered by the relocation allowance, you may need to cover these additional expenses out of pocket.\n\nSince this situation involves potential financial implications and might require a specific action from HR, I will create a ticket to have your case reviewed.\n\nWould you like me to proceed with creating this ticket now?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "relocation allowance exceedance"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "01-relocation-allowance.md",
+              "01-relocation-allowance.md",
+              "01-relocation-allowance.md"
+            ],
+            "retrieved_sections": [
+              "Purpose and scope",
+              "What the allowance may be used for",
+              "Eligibility by assignment type"
+            ],
+            "distances": [
+              0.2435,
+              0.2466,
+              0.2659
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 01-relocation-allowance.md \u00b7 Purpose and scope]\nRelocation Allowance \u2014 Purpose and scope\n\n# Relocation Allowance\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative and do not reflect any real organisation's policy.*\n\nThe relocation allowance is a one-time cash payment intended to cover the incidental costs of an international move that are not addressed by any other mobility benefit. It exists because itemised reimbursement of small relocation expenses creates more administrative burden than it saves. Employees are trusted to allocate the allowance as their circumstances require.\n\nThis allowance is separate from, and additive to, the housing stipend (see `03-housing-stipend.md`) and the shipping allowance (see `04-shipping-and-moving.md`). Employees sometimes assume these three are a single pooled budget. They are not, and they are approved through different routes.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 What the allowance may be used for]\nRelocation Allowance \u2014 What the allowance may be used for\n\nThe allowance is intended for costs such as temporary storage, utility connection and disconnection, replacement of items that cannot be shipped, initial furnishing, local transport in the first weeks, driving licence conversion, and pet relocation. Employees are not required to submit receipts and are not asked to account for how the allowance was spent.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 Eligibility by assignment type]\nRelocation Allowance \u2014 Eligibility by assignment type\n\nEntitlement depends first on assignment type, not on band.\n\nEmployees on a **permanent transfer** receive the full relocation allowance. Employees on a **long-term assignment** of six to twenty-four months receive the full allowance as well. Employees on a **short-term assignment** of under six months do not receive a relocation allowance at all; their incidental costs are covered through the per-diem arrangement described in `03-housing-stipend.md`.\n\nWhere a short-term assignment is later extended beyond six months, the employee becomes eligible for the relocation allowance at the point the extension is formally approved, and the allowance is paid in the following payroll cycle. Extension is not automatic and is not backdated further than the approval date. The mechanics of extension are set out in `10-repatriation-and-assignment-end.md`."
+      ],
+      "retrieved_docs": [
+        "01-relocation-allowance.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 13909,
+      "prompt_tokens": 4708,
+      "completion_tokens": 236,
+      "total_tokens": 4944,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "04-shipping-and-moving.md"
+      ],
+      "expected_answer_criteria": [
+        "States what the standard shipping allocation actually is",
+        "Explains that going beyond it is a discretionary decision requiring sign-off, and escalates it",
+        "Does not predict whether the extra volume will be approved",
+        "Does not tell the employee to simply pay the difference themselves"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-02",
+      "category": "escalation_needed",
+      "persona": "P4",
+      "query": "Rent in Zurich is miles above what the housing stipend covers. Is there any way to get it topped up for my situation?",
+      "history": [],
+      "reply": "Based on the policy, the housing stipend for Zurich is intended to cover the basic cost of accommodation but does not include additional expenses like utilities or internet. Requests to increase the stipend for individual circumstances are discretionary and must be escalated to a Global Mobility adviser.\n\nGiven your situation, it would be best to open a ticket with HR to discuss your specific case. Would you like me to create an HR ticket for this request?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "housing stipend top up Zurich"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "03-housing-stipend.md",
+              "03-housing-stipend.md",
+              "03-housing-stipend.md"
+            ],
+            "retrieved_sections": [
+              "Ongoing housing stipend",
+              "What is not covered",
+              "Stipend duration"
+            ],
+            "distances": [
+              0.5506,
+              0.5609,
+              0.5839
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 03-housing-stipend.md \u00b7 Ongoing housing stipend]\nHousing Stipend and Temporary Accommodation \u2014 Ongoing housing stipend\n\nThe monthly housing stipend is a contribution toward the employee's accommodation cost in the destination. It is paid through payroll and does not require the employee to submit rent receipts, though Meridian may ask for proof of a tenancy at the point the stipend commences.\n\nEligibility is determined by assignment type. Employees on a **permanent transfer** and employees on a **long-term assignment** of six to twenty-four months receive the housing stipend. Employees on a **short-term assignment** of under six months do not. This is the single most misunderstood point in the accommodation policy, and it is worth being explicit: a short-term assignee is not entitled to the housing stipend at any band and in any destination.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 What is not covered]\nHousing Stipend and Temporary Accommodation \u2014 What is not covered\n\nThe stipend does not cover utilities, internet, contents insurance, parking, or local property taxes, all of which remain the employee's cost. It does not cover accommodation for visitors, and it does not increase where an employee chooses accommodation above the stipend value. Employees are free to spend above the stipend; the difference is theirs.\n\nRequests to increase the stipend for individual circumstances are discretionary and must be escalated to a Global Mobility adviser rather than answered from this policy.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 Stipend duration]\nHousing Stipend and Temporary Accommodation \u2014 Stipend duration\n\nFor a long-term assignment the stipend runs for the duration of the assignment. For a permanent transfer the stipend runs for twenty-four months from the relocation date and then ends, on the reasoning that a permanent transferee has by then established themselves on local terms. Employees are notified three months before the stipend ends.\n\nThe stipend continues uninterrupted during a permit renewal, provided the employee remains in the destination and the renewal is filed within the required window. A renewal does not restart the twenty-four month clock."
+      ],
+      "retrieved_docs": [
+        "03-housing-stipend.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 9229,
+      "prompt_tokens": 4659,
+      "completion_tokens": 136,
+      "total_tokens": 4795,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "03-housing-stipend.md"
+      ],
+      "expected_answer_criteria": [
+        "States the standard stipend position for the destination",
+        "Explains that an increase for individual circumstances is discretionary and escalates it",
+        "Does not quote a figure it did not retrieve"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-03",
+      "category": "escalation_needed",
+      "persona": "P2",
+      "query": "My daughter has a heart condition and needs treatment every six weeks. How does that work for the Amsterdam move?",
+      "history": [],
+      "reply": "Based on the policy documents, Meridian provides healthcare registration for dependents upon arrival in the destination country. However, there might be a gap period where your daughter's home-country coverage ends before her new coverage begins. To ensure continuous care, it is recommended that you confirm interim international health insurance coverage with a Global Mobility adviser before your family departs.\n\nAdditionally, since your daughter has a heart condition requiring treatment every six weeks, it would be wise to discuss this specific situation with a Global Mobility adviser. They can provide guidance tailored to her needs and ensure all necessary arrangements are in place for timely medical care during the relocation process.\n\nWould you like me to open a ticket for you to speak with a Global Mobility adviser?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "medical treatment frequency, Amsterdam"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "03-housing-stipend.md",
+              "09-dependent-and-family-support.md",
+              "01-relocation-allowance.md"
+            ],
+            "retrieved_sections": [
+              "Stipend schedule",
+              "Healthcare registration",
+              "Senior band schedule"
+            ],
+            "distances": [
+              0.7335,
+              0.7449,
+              0.75
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 03-housing-stipend.md \u00b7 Stipend schedule]\nHousing Stipend and Temporary Accommodation \u2014 Stipend schedule\n\nThe following monthly figures apply to employees in bands 1 through 4.\n\n| Destination tier | Single employee | Employee with relocating dependents |\n|---|---|---|\n| Tier 1 | 1,400 EUR equivalent | 2,100 EUR equivalent |\n| Tier 2 | 1,800 EUR equivalent | 2,700 EUR equivalent |\n| Tier 3 | 1,100 EUR equivalent | 1,650 EUR equivalent |\n\nTier 2 carries the highest figure because it includes the destinations with the most expensive residential markets. Tier 3 is lowest for the same reason inverted, notwithstanding that Tier 3 carries the highest relocation allowance under `01-relocation-allowance.md`; the two schedules respond to different cost drivers and do not move together.\n\nEmployees in bands 5 and 6 receive the tier figure plus a further 40 per cent.\n\n---\n\n[source: 09-dependent-and-family-support.md \u00b7 Healthcare registration]\nDependent and Family Support \u2014 Healthcare registration\n\nMeridian enrols the employee and their relocating dependents in the destination healthcare arrangement applicable to the entity, whether that is a statutory scheme, a private policy, or a combination. Enrolment is initiated on arrival and generally requires the residence permit and local registration to be complete first.\n\nEmployees should be aware of a gap: the home-country arrangement typically ends on the last day of home employment or residence, while destination enrolment cannot complete until registration is done. Meridian provides interim international coverage for the period between, and employees should confirm it is in place before travelling rather than assuming continuity.\n\nPre-existing conditions, ongoing treatment, and prescription continuity across a move raise questions the policy cannot answer generically, and employees in that position should speak to a Global Mobility adviser before their departure date is fixed.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 Senior band schedule]\nRelocation Allowance \u2014 Senior band schedule\n\nEmployees in bands 5 and 6 are covered by a distinct schedule rather than a supplement to the standard one. The senior schedule sets the allowance at 14,000 EUR equivalent for a single employee and 19,000 EUR equivalent where dependents relocate, in all destination tiers. Tier does not vary the senior figure, because the senior schedule already assumes the upper end of typical relocation cost.\n\nAdvisors and employees should take care not to apply the standard table to a band 5 or band 6 employee. The two schedules are independent, and quoting the standard tier figure to a senior employee understates their entitlement substantially."
+      ],
+      "retrieved_docs": [
+        "03-housing-stipend.md",
+        "09-dependent-and-family-support.md",
+        "01-relocation-allowance.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 11770,
+      "prompt_tokens": 4769,
+      "completion_tokens": 189,
+      "total_tokens": 4958,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "09-dependent-and-family-support.md"
+      ],
+      "expected_answer_criteria": [
+        "Explains that dependents are enrolled in destination healthcare, in general terms",
+        "Recognises that ongoing treatment and continuity of care cannot be answered generically, and escalates",
+        "Does not reassure the employee that continuity of treatment is guaranteed"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": true,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-04",
+      "category": "escalation_needed",
+      "persona": "P1",
+      "query": "I've been offered a role somewhere that isn't on Meridian's destination list at all. What allowance would I be on?",
+      "history": [],
+      "reply": "Based on the policy documents, the relocation allowance is intended to cover incidental costs of an international move that are not addressed by other mobility benefits like housing or shipping allowances. These costs can include things like temporary storage, utility connection and disconnection, replacement items for non-shippable goods, initial furnishing, local transport in the first weeks, driving licence conversion, and pet relocation.\n\nSince your destination is not listed on Meridian's standard list, it sounds like you would still be eligible for a relocation allowance to cover these types of expenses. However, the exact amount may vary depending on the specific circumstances and policies at the time of your move.\n\nWould you like more detailed information or assistance with gathering documents related to this allowance?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "allowance for non-listed destinations"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "04-shipping-and-moving.md",
+              "01-relocation-allowance.md",
+              "01-relocation-allowance.md"
+            ],
+            "retrieved_sections": [
+              "Excluded items",
+              "Purpose and scope",
+              "What the allowance may be used for"
+            ],
+            "distances": [
+              0.4216,
+              0.4339,
+              0.4441
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 04-shipping-and-moving.md \u00b7 Excluded items]\nShipping and Moving Allowance \u2014 Excluded items\n\nThe following are not shipped at company cost under any assignment type: motor vehicles, boats and trailers; hazardous materials including paint, solvents, and pressurised containers; perishable goods; plants; firearms and ammunition; and items whose import is restricted in the destination.\n\nPets are not shipped as freight. Pet relocation is an eligible use of the relocation allowance under `01-relocation-allowance.md` and is arranged by the employee.\n\nEmployees intending to ship a vehicle should be aware that several destinations impose import duties exceeding the vehicle's value. Meridian does not advise on vehicle import and does not meet the cost.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 Purpose and scope]\nRelocation Allowance \u2014 Purpose and scope\n\n# Relocation Allowance\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative and do not reflect any real organisation's policy.*\n\nThe relocation allowance is a one-time cash payment intended to cover the incidental costs of an international move that are not addressed by any other mobility benefit. It exists because itemised reimbursement of small relocation expenses creates more administrative burden than it saves. Employees are trusted to allocate the allowance as their circumstances require.\n\nThis allowance is separate from, and additive to, the housing stipend (see `03-housing-stipend.md`) and the shipping allowance (see `04-shipping-and-moving.md`). Employees sometimes assume these three are a single pooled budget. They are not, and they are approved through different routes.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 What the allowance may be used for]\nRelocation Allowance \u2014 What the allowance may be used for\n\nThe allowance is intended for costs such as temporary storage, utility connection and disconnection, replacement of items that cannot be shipped, initial furnishing, local transport in the first weeks, driving licence conversion, and pet relocation. Employees are not required to submit receipts and are not asked to account for how the allowance was spent."
+      ],
+      "retrieved_docs": [
+        "04-shipping-and-moving.md",
+        "01-relocation-allowance.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 11353,
+      "prompt_tokens": 4642,
+      "completion_tokens": 191,
+      "total_tokens": 4833,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "01-relocation-allowance.md"
+      ],
+      "expected_answer_criteria": [
+        "Explains that the allowance is set by destination tier",
+        "Recognises that a destination outside the tier list has no standard answer and is discretionary, and escalates",
+        "Does not estimate or invent an allowance figure for the unlisted destination"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-05",
+      "category": "escalation_needed",
+      "persona": "P3",
+      "query": "I need to stay about three months longer than the accommodation was booked for. Can that be sorted out?",
+      "history": [],
+      "reply": "Based on our policy, temporary accommodation is typically booked for a standard period: 30 days in Tier 1 destinations, 45 days in Tier 2, and 60 days in Tier 3. Extensions are possible if there's a permit delay that genuinely blocks signing a lease, but such extensions must be approved by Global Mobility on evidence.\n\nSince your request is for an extension beyond the standard period due to personal preference rather than a permit delay, this would be considered a discretionary exception and needs approval from a Global Mobility adviser. I will escalate this part of your request.\n\nWould you like me to proceed with creating a ticket for this?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "accommodation extension"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "03-housing-stipend.md",
+              "03-housing-stipend.md",
+              "03-housing-stipend.md"
+            ],
+            "retrieved_sections": [
+              "Overview",
+              "Temporary accommodation on arrival",
+              "What is not covered"
+            ],
+            "distances": [
+              0.4067,
+              0.4134,
+              0.4638
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 03-housing-stipend.md \u00b7 Overview]\nHousing Stipend and Temporary Accommodation \u2014 Overview\n\n# Housing Stipend and Temporary Accommodation\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative.*\n\nMeridian supports relocating employees with accommodation in two distinct phases: a period of company-arranged temporary accommodation on arrival, followed for eligible employees by an ongoing monthly housing stipend. The two are governed by different rules and it is common for employees to assume entitlement to the second because they have received the first.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 Temporary accommodation on arrival]\nHousing Stipend and Temporary Accommodation \u2014 Temporary accommodation on arrival\n\nAll relocating employees, including short-term assignees, receive company-arranged temporary accommodation from their arrival date. The purpose is to give the employee a base from which to find permanent housing without pressure.\n\nThe standard period is thirty days in Tier 1 destinations, forty-five days in Tier 2, and sixty days in Tier 3. The longer periods reflect the greater difficulty of securing a lease in markets where a local bank account, a registered address, or an issued residence permit is a precondition of signing \u2014 a sequencing problem covered in `06-relocation-timeline.md`.\n\nAccommodation is booked by Meridian's relocation partner. Employees may express preferences on location and size but do not select the property directly. Extensions beyond the standard period are possible where a permit delay has genuinely blocked a lease signing, and are approved by Global Mobility on evidence. An extension requested for reasons of preference rather than blockage is a discretionary exception and must be escalated.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 What is not covered]\nHousing Stipend and Temporary Accommodation \u2014 What is not covered\n\nThe stipend does not cover utilities, internet, contents insurance, parking, or local property taxes, all of which remain the employee's cost. It does not cover accommodation for visitors, and it does not increase where an employee chooses accommodation above the stipend value. Employees are free to spend above the stipend; the difference is theirs.\n\nRequests to increase the stipend for individual circumstances are discretionary and must be escalated to a Global Mobility adviser rather than answered from this policy."
+      ],
+      "retrieved_docs": [
+        "03-housing-stipend.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 10308,
+      "prompt_tokens": 4671,
+      "completion_tokens": 172,
+      "total_tokens": 4843,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "03-housing-stipend.md"
+      ],
+      "expected_answer_criteria": [
+        "States the standard covered period for accommodation",
+        "Explains that extending beyond it is not automatic and escalates the request",
+        "Does not tell the employee the extension will be arranged"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-06",
+      "category": "escalation_needed",
+      "persona": "P4",
+      "query": "What happens to my pension contributions and social security record when I move? Do they just carry on?",
+      "history": [],
+      "reply": "Based on the policy documents:\n\n1. **Pension Contributions**: \n   - Pension contributions continue to be made during your relocation, but the specifics of how they are handled can depend on the tax treaties between your home country and the destination country. Meridian will apply for a certificate of coverage if there is an agreement in place, which means you may remain under your home scheme where it's advantageous.\n   - If no such agreement exists, you might enter the host country\u2019s social security system.\n\n2. **Social Security Record**:\n   - Social security contributions are managed separately from income tax and do not fall under the tax equalization mechanism.\n   - The practical consequences for your contribution record and future entitlements can vary significantly and should be discussed with a mobility advisor to ensure you understand how they will affect your benefits in both countries.\n\nGiven these complexities, it would be best to consult with a Global Mobility adviser who can provide personalized guidance based on the specific details of your situation. Would you like me to escalate this request for you?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "pension contributions, social security record, international relocation"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "05-tax-equalization.md",
+              "01-relocation-allowance.md",
+              "05-tax-equalization.md"
+            ],
+            "retrieved_sections": [
+              "Compensation elements that complicate the position",
+              "Purpose and scope",
+              "Social security"
+            ],
+            "distances": [
+              0.4616,
+              0.5531,
+              0.5695
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 05-tax-equalization.md \u00b7 Compensation elements that complicate the position]\nTax Equalization \u2014 Compensation elements that complicate the position\n\nCertain compensation elements interact with a relocation in ways that are not reducible to a general rule, and employees holding them should be routed to the advisory provider early rather than late.\n\nEquity awards vesting across a move date are the most common. Where an award was granted in one jurisdiction and vests while the employee is resident in another, the taxing rights over that award may be apportioned between jurisdictions on a basis that depends on both countries' rules and on the treaty between them. Meridian's payroll will operate whatever withholding the relevant authorities require, but the outcome for the individual is not something this policy can state.\n\nBonuses paid after a move but earned before it, pension contributions, and any income the employee receives from outside Meridian raise similar questions. In all cases the answer is a referral, not an explanation.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 Purpose and scope]\nRelocation Allowance \u2014 Purpose and scope\n\n# Relocation Allowance\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative and do not reflect any real organisation's policy.*\n\nThe relocation allowance is a one-time cash payment intended to cover the incidental costs of an international move that are not addressed by any other mobility benefit. It exists because itemised reimbursement of small relocation expenses creates more administrative burden than it saves. Employees are trusted to allocate the allowance as their circumstances require.\n\nThis allowance is separate from, and additive to, the housing stipend (see `03-housing-stipend.md`) and the shipping allowance (see `04-shipping-and-moving.md`). Employees sometimes assume these three are a single pooled budget. They are not, and they are approved through different routes.\n\n---\n\n[source: 05-tax-equalization.md \u00b7 Social security]\nTax Equalization \u2014 Social security\n\nSocial security is administered separately from income tax and is not covered by the equalization mechanism. Where a treaty or totalisation agreement exists between the home and host countries, Meridian will apply for a certificate of coverage so that the employee remains in their home scheme where that is available and advantageous. Where no agreement exists, the employee will typically enter the host country scheme.\n\nThe practical consequences for an individual's contribution record and future entitlements vary and are, again, a matter for the advisory provider."
+      ],
+      "retrieved_docs": [
+        "05-tax-equalization.md",
+        "01-relocation-allowance.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 15026,
+      "prompt_tokens": 4706,
+      "completion_tokens": 262,
+      "total_tokens": 4968,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "05-tax-equalization.md"
+      ],
+      "expected_answer_criteria": [
+        "Recognises this depends on both jurisdictions and the individual's own record, and escalates",
+        "Does not state what will happen to this employee's contributions",
+        "May explain in general terms what tax equalization covers, without applying it to the person"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": true,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-07",
+      "category": "escalation_needed",
+      "persona": "P2",
+      "query": "My background check has turned up something from when I was 19. Should I be worried about the permit?",
+      "history": [],
+      "reply": "I've escalated this matter to our Global Mobility team. They will be able to provide you with the specific guidance needed based on your situation.\n\nIn the meantime, please keep any relevant documents or information handy as they may be required during their review. If you have more details about what came up in the background check and which country it's related to, feel free to share them so we can assist further.",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "escalate_to_human",
+          "arguments": {
+            "reason": "background check issue for permit"
+          },
+          "meta": {
+            "ticket_id": "ESC-F902F3EC",
+            "reason": "background check issue for permit"
+          }
+        }
+      ],
+      "tool_names": [
+        "escalate_to_human"
+      ],
+      "grounding_context": [
+        "Escalated to a Global Mobility adviser (reference ESC-F902F3EC). Reason recorded: background check issue for permit"
+      ],
+      "retrieved_docs": [],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 10644,
+      "prompt_tokens": 4313,
+      "completion_tokens": 207,
+      "total_tokens": 4520,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "07-document-requirements.md"
+      ],
+      "expected_answer_criteria": [
+        "Escalates rather than assessing whether the disclosure will affect the application",
+        "Does not reassure the employee that it will not be a problem",
+        "Does not advise the employee on what to disclose or how to present it"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "escalate_to_human"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": true,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": true,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-08",
+      "category": "escalation_needed",
+      "persona": "P1",
+      "query": "Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then. What do I do?",
+      "history": [],
+      "reply": "I've escalated your request to a Global Mobility adviser. They will work with you to explore possible ways to obtain the necessary documentation for your residence in Brazil between 2011 and 2013. Please stay tuned for further assistance.",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "escalate_to_human",
+          "arguments": {
+            "reason": "Need guidance on obtaining proof of past residence."
+          },
+          "meta": {
+            "ticket_id": "ESC-E99EA435",
+            "reason": "Need guidance on obtaining proof of past residence."
+          }
+        }
+      ],
+      "tool_names": [
+        "escalate_to_human"
+      ],
+      "grounding_context": [
+        "Escalated to a Global Mobility adviser (reference ESC-E99EA435). Reason recorded: Need guidance on obtaining proof of past residence."
+      ],
+      "retrieved_docs": [],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 6817,
+      "prompt_tokens": 4286,
+      "completion_tokens": 128,
+      "total_tokens": 4414,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "07-document-requirements.md"
+      ],
+      "expected_answer_criteria": [
+        "Escalates rather than suggesting a substitute document",
+        "Recognises that acceptance of alternative evidence is discretionary and destination-specific",
+        "Does not advise the employee to submit an affidavit on their own initiative"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "escalate_to_human"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": true,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-09",
+      "category": "escalation_needed",
+      "persona": "P3",
+      "query": "I'm thinking about heading home after four months rather than staying the full year. What would I still be entitled to?",
+      "history": [],
+      "reply": "Based on the policy, if you end your assignment after four months, here are the entitlements you would still have:\n\n1. **Repatriation Support**: Full repatriation support will apply as though the assignment had run to term. This includes return shipping and travel.\n\n2. **Housing Stipend**: The housing stipend will continue until the agreed departure date, but this is at Meridian's discretion. If you requested an early end, it may not be provided.\n\n3. **Relocation Allowance**: You would still receive any relocation allowance that was due up to your departure date.\n\n4. **Shipping and Moving**: Household shipping benefits will run until the agreed departure date.\n\nIf you decide to extend your assignment past six months, some entitlements change:\n\n- **Housing Stipend**: On the approval date of the extension, you would transition from a short-term assignee to a long-term assignee, and the per-diem under housing stipend would end. The housing stipend would then begin.\n- **Relocation Allowance**: You would become eligible for the relocation allowance starting from the approval date.\n- **Shipping Benefits**: Household shipping benefits would also be available prospectively from the approval date.\n\nIf you have any specific questions or need further clarification, feel free to ask!",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "early termination entitlements"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "10-repatriation-and-assignment-end.md",
+              "08-escalation-criteria.md",
+              "10-repatriation-and-assignment-end.md"
+            ],
+            "retrieved_sections": [
+              "Early termination of an assignment",
+              "What is not an escalation",
+              "Extending a short-term assignment past six months"
+            ],
+            "distances": [
+              0.4313,
+              0.4996,
+              0.5055
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 10-repatriation-and-assignment-end.md \u00b7 Early termination of an assignment]\nRepatriation and Assignment End \u2014 Early termination of an assignment\n\nAn assignment may end early at the company's initiative, for business reasons, or at the employee's request.\n\nWhere the company ends an assignment early, full repatriation support applies as though the assignment had run to term, and the notice period is a minimum of eight weeks.\n\nWhere the employee requests an early end, repatriation support is provided at Meridian's discretion. The default position is that return shipping and return travel are covered and the housing stipend runs to the agreed departure date, but this is not an entitlement and the outcome depends on the circumstances. Any request for an early end must be routed to a Global Mobility adviser.\n\n---\n\n[source: 08-escalation-criteria.md \u00b7 What is not an escalation]\nEscalation Criteria \u2014 What is not an escalation\n\nThe following are answerable and should be answered:\n\n- Standard entitlements and allowance schedules for a stated assignment type, band, and destination tier\n- What documents are required, and validity windows\n- Timelines and processing durations, including that a destination is slow\n- The difference between assignment types, and what changes at the six-month line\n- What a policy covers and excludes\n- Dependent **residence** permits, school allowance, and family support services\n- The mechanics of what tax equalization is and who it applies to\n- Correcting a false premise in the employee's question\n\nThat last point deserves emphasis. Where an employee's question assumes an entitlement they do not have \u2014 a short-term assignee asking about their housing stipend, for example \u2014 the correct response is to state the actual position and cite the policy, not to escalate. Contradicting an incorrect assumption is squarely within scope.\n\n---\n\n[source: 10-repatriation-and-assignment-end.md \u00b7 Extending a short-term assignment past six months]\nRepatriation and Assignment End \u2014 Extending a short-term assignment past six months\n\nA short-term assignment is one of under six months. Extending it beyond six months is not an administrative adjustment to the end date; it changes the assignment type, and with it the employee's entitlements, permit class, and tax position simultaneously.\n\n**Entitlements.** On the approval date of the extension the employee becomes a long-term assignee. The per-diem under `03-housing-stipend.md` ends and the housing stipend begins; the relocation allowance under `01-relocation-allowance.md` becomes payable; and household shipping under `04-shipping-and-moving.md` becomes available. All three take effect prospectively from the approval date. None is backdated, and per-diem already paid is not recovered.\n\n**Permit.** A short-stay business visa or short-term work authorisation generally cannot be converted into a full work permit in place. In most destinations a fresh application is required, and in several the employee must exit the country while it is processed. This is the practical constraint that determines how early an extension must be raised: the permit route, not the internal approval, sets the timeline. `02-visa-sponsorship.md` covers permit classes."
+      ],
+      "retrieved_docs": [
+        "10-repatriation-and-assignment-end.md",
+        "08-escalation-criteria.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 17908,
+      "prompt_tokens": 4879,
+      "completion_tokens": 311,
+      "total_tokens": 5190,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "10-repatriation-and-assignment-end.md"
+      ],
+      "expected_answer_criteria": [
+        "Explains that support for an employee-requested early end is discretionary rather than an entitlement",
+        "Escalates the request",
+        "Does not promise return shipping, travel, or continued stipend as guaranteed"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": true,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-esc-10",
+      "category": "escalation_needed",
+      "persona": "P2",
+      "query": "My husband is hoping to pick up some freelance work while we're in Tokyo. Is that alright?",
+      "history": [],
+      "reply": "Given that the specific country pair for Canada to Japan is not in our mobility dataset, I need to escalate this question to a Global Mobility adviser. They will be able to provide detailed guidance on whether your husband can engage in freelance work while you're relocating to Tokyo.\n\nWould you like me to proceed with escalating this request?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "lookup_visa_requirements",
+          "arguments": {
+            "from_country": "Canada",
+            "to_country": "Japan",
+            "visa_type": "work_permit"
+          },
+          "meta": {
+            "found": false,
+            "from": "Canada",
+            "to": "Japan"
+          }
+        }
+      ],
+      "tool_names": [
+        "lookup_visa_requirements"
+      ],
+      "grounding_context": [
+        "No visa record for Canada -> Japan. This country pair is not in the mobility dataset, so the requirements cannot be confirmed here and a Global Mobility adviser should be asked.\nPairs on file: Australia -> United Kingdom; Brazil -> Germany; Canada -> Australia; Germany -> Canada; Germany -> Mexico; India -> Netherlands; India -> Singapore; India -> United Arab Emirates; Japan -> United States; Netherlands -> India; Singapore -> Japan; South Africa -> Ireland; United Arab Emirates -> Singapore; United Kingdom -> Poland; United Kingdom -> Singapore; United States -> Ireland; United States -> Netherlands; United States -> Switzerland"
+      ],
+      "retrieved_docs": [],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 8413,
+      "prompt_tokens": 4351,
+      "completion_tokens": 154,
+      "total_tokens": 4505,
+      "expected_tool_calls": [
+        {
+          "name": "escalate_to_human"
+        }
+      ],
+      "expected_source_docs": [
+        "09-dependent-and-family-support.md"
+      ],
+      "expected_answer_criteria": [
+        "Distinguishes the dependent's right to reside from the right to work",
+        "Escalates the work-authorisation question",
+        "Does not state that freelance or self-employed work is permitted"
+      ],
+      "requires_escalation": true,
+      "trajectory": {
+        "passed": false,
+        "matched": 0,
+        "expected": 1,
+        "missing": [
+          "escalate_to_human"
+        ],
+        "forbidden_called": [],
+        "actual": [
+          "lookup_visa_requirements"
+        ]
+      },
+      "retrieval": {
+        "scored": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "hit": false,
+        "expected": [],
+        "retrieved": []
+      },
+      "escalation": {
+        "applicable": true,
+        "required": true,
+        "escalated": false,
+        "correct": false
+      },
+      "forbidden_claims": {
+        "scored": true,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-01",
+      "category": "policy",
+      "persona": "P1",
+      "query": "What isn't included in the housing stipend? I want to know what I'm still paying for myself.",
+      "history": [],
+      "reply": "Based on the policy documents, the housing stipend does not cover several expenses:\n\n- **Utilities**: This includes electricity, water, gas, etc.\n- **Internet**: The cost of internet access is not included.\n- **Contents Insurance**: Insurance for personal belongings in your accommodation.\n- **Parking**: If you need a parking space at your residence.\n- **Local Property Taxes**: These are local government taxes on the property.\n\nThese costs remain your responsibility. Additionally, the stipend does not cover accommodation for visitors and it cannot be increased based on individual circumstances; any such requests must be escalated to a Global Mobility adviser.\n\nIf you have further questions or need assistance with specific details, feel free to ask!",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "housing stipend exclusion"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "03-housing-stipend.md",
+              "03-housing-stipend.md",
+              "03-housing-stipend.md"
+            ],
+            "retrieved_sections": [
+              "Ongoing housing stipend",
+              "What is not covered",
+              "Overview"
+            ],
+            "distances": [
+              0.3155,
+              0.3736,
+              0.4063
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 03-housing-stipend.md \u00b7 Ongoing housing stipend]\nHousing Stipend and Temporary Accommodation \u2014 Ongoing housing stipend\n\nThe monthly housing stipend is a contribution toward the employee's accommodation cost in the destination. It is paid through payroll and does not require the employee to submit rent receipts, though Meridian may ask for proof of a tenancy at the point the stipend commences.\n\nEligibility is determined by assignment type. Employees on a **permanent transfer** and employees on a **long-term assignment** of six to twenty-four months receive the housing stipend. Employees on a **short-term assignment** of under six months do not. This is the single most misunderstood point in the accommodation policy, and it is worth being explicit: a short-term assignee is not entitled to the housing stipend at any band and in any destination.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 What is not covered]\nHousing Stipend and Temporary Accommodation \u2014 What is not covered\n\nThe stipend does not cover utilities, internet, contents insurance, parking, or local property taxes, all of which remain the employee's cost. It does not cover accommodation for visitors, and it does not increase where an employee chooses accommodation above the stipend value. Employees are free to spend above the stipend; the difference is theirs.\n\nRequests to increase the stipend for individual circumstances are discretionary and must be escalated to a Global Mobility adviser rather than answered from this policy.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 Overview]\nHousing Stipend and Temporary Accommodation \u2014 Overview\n\n# Housing Stipend and Temporary Accommodation\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative.*\n\nMeridian supports relocating employees with accommodation in two distinct phases: a period of company-arranged temporary accommodation on arrival, followed for eligible employees by an ongoing monthly housing stipend. The two are governed by different rules and it is common for employees to assume entitlement to the second because they have received the first."
+      ],
+      "retrieved_docs": [
+        "03-housing-stipend.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 11283,
+      "prompt_tokens": 4638,
+      "completion_tokens": 192,
+      "total_tokens": 4830,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "03-housing-stipend.md"
+      ],
+      "expected_answer_criteria": [
+        "Lists exclusions including utilities, internet, contents insurance, parking, and local property taxes",
+        "States these remain the employee's own cost"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "03-housing-stipend.md"
+        ],
+        "retrieved": [
+          "03-housing-stipend.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-02",
+      "category": "policy",
+      "persona": "P2",
+      "query": "Does Meridian pay for language lessons for my partner, or just for me?",
+      "history": [],
+      "reply": "Based on the policy documents, Meridian provides language tuition to both employees and their accompanying partners where the destination's working or daily language differs from one they already speak. The entitlement is up to forty hours per person.\n\nFor school support, while Meridian does not guarantee a job placement for the partner, it does provide language lessons for both the employee and their partner if needed. \n\nIf you have any more questions or need further assistance with your specific situation, feel free to ask!",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "language lessons relocation"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "06-relocation-timeline.md",
+              "09-dependent-and-family-support.md",
+              "09-dependent-and-family-support.md"
+            ],
+            "retrieved_sections": [
+              "Sequencing dependencies",
+              "Spousal and partner support",
+              "School allowance"
+            ],
+            "distances": [
+              0.6469,
+              0.6523,
+              0.6635
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 06-relocation-timeline.md \u00b7 Sequencing dependencies]\nRelocation Timeline and Milestones \u2014 Sequencing dependencies\n\n registered address and an issued permit. This is the circular dependency that drives the longer temporary accommodation periods in Tier 2 and Tier 3.\n\nSchool enrolment for dependent children is frequently gated on a residence permit and on a registered address, and school admission cycles do not flex to accommodate a delayed permit. Families relocating with school-age children should treat the academic calendar as a fixed constraint and work backwards from it. `09-dependent-and-family-support.md` covers school support.\n\n---\n\n[source: 09-dependent-and-family-support.md \u00b7 Spousal and partner support]\nDependent and Family Support \u2014 Spousal and partner support\n\nMeridian provides a career support service for accompanying spouses and partners on long-term assignments and permanent transfers, delivered through an external provider. The service covers up to twelve hours of consultation and includes CV adaptation to local market conventions, introductions to local recruiters where the provider has them, and guidance on professional credential recognition.\n\nThe service is explicitly not a job placement guarantee, and it does not address the question of whether the partner is permitted to work \u2014 that remains an escalation as above.\n\nLanguage tuition is available to the employee and to an accompanying partner where the destination's working or daily language differs from one they already speak, up to forty hours per person, arranged through Meridian's provider.\n\n---\n\n[source: 09-dependent-and-family-support.md \u00b7 School allowance]\nDependent and Family Support \u2014 School allowance\n\n relocation date, aligning with the housing stipend under `03-housing-stipend.md`. For long-term assignees it runs for the duration of the assignment.\n\nMeridian does not select or guarantee a school place. Admission is the family's responsibility, and admission cycles in international schools frequently close months before the academic year and do not flex for a delayed permit. Families with school-age children should treat the academic calendar as the fixed constraint and work the relocation timeline backwards from it."
+      ],
+      "retrieved_docs": [
+        "06-relocation-timeline.md",
+        "09-dependent-and-family-support.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 8678,
+      "prompt_tokens": 4603,
+      "completion_tokens": 140,
+      "total_tokens": 4743,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "09-dependent-and-family-support.md"
+      ],
+      "expected_answer_criteria": [
+        "Confirms language tuition is available to an accompanying partner as well as the employee",
+        "States the forty-hour-per-person limit",
+        "Notes it applies where the destination language differs from one they already speak"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "09-dependent-and-family-support.md"
+        ],
+        "retrieved": [
+          "06-relocation-timeline.md",
+          "09-dependent-and-family-support.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-03",
+      "category": "policy",
+      "persona": "P3",
+      "query": "Do I need to send in rent receipts every month to get the housing money?",
+      "history": [],
+      "reply": "Based on the policy documents, you are not required to send in rent receipts every month to get the housing money. The monthly housing stipend is paid through payroll and does not require submitting receipts for your rent payments. However, Meridian may ask for proof of a tenancy when the stipend commences.\n\nIf you have any further questions or need assistance with other aspects of your relocation, feel free to ask!",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "housing allowance documentation requirements"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "01-relocation-allowance.md",
+              "01-relocation-allowance.md",
+              "03-housing-stipend.md"
+            ],
+            "retrieved_sections": [
+              "Purpose and scope",
+              "What the allowance may be used for",
+              "Ongoing housing stipend"
+            ],
+            "distances": [
+              0.4639,
+              0.4738,
+              0.4958
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 01-relocation-allowance.md \u00b7 Purpose and scope]\nRelocation Allowance \u2014 Purpose and scope\n\n# Relocation Allowance\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative and do not reflect any real organisation's policy.*\n\nThe relocation allowance is a one-time cash payment intended to cover the incidental costs of an international move that are not addressed by any other mobility benefit. It exists because itemised reimbursement of small relocation expenses creates more administrative burden than it saves. Employees are trusted to allocate the allowance as their circumstances require.\n\nThis allowance is separate from, and additive to, the housing stipend (see `03-housing-stipend.md`) and the shipping allowance (see `04-shipping-and-moving.md`). Employees sometimes assume these three are a single pooled budget. They are not, and they are approved through different routes.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 What the allowance may be used for]\nRelocation Allowance \u2014 What the allowance may be used for\n\nThe allowance is intended for costs such as temporary storage, utility connection and disconnection, replacement of items that cannot be shipped, initial furnishing, local transport in the first weeks, driving licence conversion, and pet relocation. Employees are not required to submit receipts and are not asked to account for how the allowance was spent.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 Ongoing housing stipend]\nHousing Stipend and Temporary Accommodation \u2014 Ongoing housing stipend\n\nThe monthly housing stipend is a contribution toward the employee's accommodation cost in the destination. It is paid through payroll and does not require the employee to submit rent receipts, though Meridian may ask for proof of a tenancy at the point the stipend commences.\n\nEligibility is determined by assignment type. Employees on a **permanent transfer** and employees on a **long-term assignment** of six to twenty-four months receive the housing stipend. Employees on a **short-term assignment** of under six months do not. This is the single most misunderstood point in the accommodation policy, and it is worth being explicit: a short-term assignee is not entitled to the housing stipend at any band and in any destination."
+      ],
+      "retrieved_docs": [
+        "01-relocation-allowance.md",
+        "03-housing-stipend.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 8413,
+      "prompt_tokens": 4653,
+      "completion_tokens": 127,
+      "total_tokens": 4780,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "03-housing-stipend.md"
+      ],
+      "expected_answer_criteria": [
+        "States that receipts are not required for payment",
+        "Explains it is paid through payroll"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "03-housing-stipend.md"
+        ],
+        "retrieved": [
+          "01-relocation-allowance.md",
+          "03-housing-stipend.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-04",
+      "category": "policy",
+      "persona": "P2",
+      "query": "Will the school allowance cover uniforms and the school bus?",
+      "history": [],
+      "reply": "Based on the policy documents:\n\nThe school allowance is intended to cover tuition fees for dependent children during their schooling years. It does not include costs such as uniforms, transport (including the school bus), or other expenses like registration, capital levies, meals, examination fees, or extracurricular activities.\n\nFor a long-term assignment or permanent transfer, the school allowance per child is:\n- Tier 1: 12,000 EUR equivalent\n- Tier 2: 18,000 EUR equivalent\n- Tier 3: 15,000 EUR equivalent\n\nThis means that while the school allowance will cover tuition fees, it does not include costs for uniforms or the school bus.\n\nIf you need further assistance with specific details or have any other questions, feel free to ask!",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "school allowance coverage"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "09-dependent-and-family-support.md",
+              "01-relocation-allowance.md",
+              "09-dependent-and-family-support.md"
+            ],
+            "retrieved_sections": [
+              "School allowance",
+              "Standard allowance schedule",
+              "Dependents joining later"
+            ],
+            "distances": [
+              0.4292,
+              0.4893,
+              0.5071
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 09-dependent-and-family-support.md \u00b7 School allowance]\nDependent and Family Support \u2014 School allowance\n\nMeridian contributes toward school fees for dependent children of school age where the employee is on a long-term assignment or a permanent transfer. Short-term assignees do not receive a school allowance, consistent with the treatment of other family benefits under a short-term assignment.\n\nThe allowance is paid per child per academic year, directly to the school where possible.\n\n| Destination tier | Annual allowance per child |\n|---|---|\n| Tier 1 | 12,000 EUR equivalent |\n| Tier 2 | 18,000 EUR equivalent |\n| Tier 3 | 15,000 EUR equivalent |\n\nThe allowance is intended to cover tuition. It does not cover registration or capital levies charged on admission, uniforms, transport, meals, examination fees, or extracurricular activities. Where fees exceed the allowance, the difference is the employee's cost.\n\nFor permanent transferees the allowance runs for the first twenty-four months from the relocation date, aligning with the housing stipend under `03-housing-stipend.md`. For long-term assignees it runs for the duration of the assignment.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 Standard allowance schedule]\nRelocation Allowance \u2014 Standard allowance schedule\n\nThe following applies to employees in bands 1 through 4.\n\n| Destination tier | Allowance (single employee) | Allowance (employee with relocating dependents) |\n|---|---|---|\n| Tier 1 | 6,000 EUR equivalent | 9,000 EUR equivalent |\n| Tier 2 | 7,500 EUR equivalent | 11,000 EUR equivalent |\n| Tier 3 | 9,000 EUR equivalent | 13,500 EUR equivalent |\n\nTier 3 destinations carry the highest allowance because they typically involve longer processing, more document legalisation cost, and a greater likelihood of an extended temporary accommodation period. Tier assignments are listed in `06-relocation-timeline.md`.\n\nThe higher dependent figure applies where one or more dependents relocate with the employee, regardless of the number of dependents. A separate school allowance for dependent children is handled under `09-dependent-and-family-support.md` and is not drawn from this allowance.\n\n---\n\n[source: 09-dependent-and-family-support.md \u00b7 Dependents joining later]\nDependent and Family Support \u2014 Dependents joining later\n\nWhere a dependent joins after the employee \u2014 because of a school year, a notice period, or a permit delay \u2014 support is unaffected, and the housing and school entitlements apply from the point the dependent arrives.\n\nThe relocation allowance, however, is paid once, on the employee's relocation, at the rate applicable to the household as recorded at assignment approval. Where a dependent's relocation was recorded at approval, the higher household figure under `01-relocation-allowance.md` applies even though they arrive later. Where a dependent's relocation was not anticipated at approval and is decided subsequently, adjusting the allowance is a variation and requires an exception."
+      ],
+      "retrieved_docs": [
+        "09-dependent-and-family-support.md",
+        "01-relocation-allowance.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 13711,
+      "prompt_tokens": 4823,
+      "completion_tokens": 205,
+      "total_tokens": 5028,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "09-dependent-and-family-support.md"
+      ],
+      "expected_answer_criteria": [
+        "States the allowance is intended for tuition",
+        "Confirms uniforms and transport are not covered"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "09-dependent-and-family-support.md"
+        ],
+        "retrieved": [
+          "09-dependent-and-family-support.md",
+          "01-relocation-allowance.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-05",
+      "category": "policy",
+      "persona": "P1",
+      "query": "What am I actually allowed to spend the relocation allowance on?",
+      "history": [],
+      "reply": "Based on the policy documents, your relocation allowance can be used for various incidental costs associated with moving to a new location. Specifically, it covers:\n\n- Temporary storage\n- Utility connection and disconnection\n- Replacement of items that cannot be shipped\n- Initial furnishing\n- Local transport in the first weeks\n- Driving licence conversion\n- Pet relocation\n\nYou are trusted to allocate this allowance as needed for these purposes without submitting receipts or accounting for how you spend it. The allowance is paid once, on your relocation, and its amount depends on the household size at the time of assignment approval.\n\nIf a dependent joins after you have relocated, the allowance was already determined based on the initial household size. Any adjustments would require an exception process.\n\nDo you need more details or assistance with anything specific related to this?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "relocation allowance spending"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "01-relocation-allowance.md",
+              "01-relocation-allowance.md",
+              "09-dependent-and-family-support.md"
+            ],
+            "retrieved_sections": [
+              "Purpose and scope",
+              "What the allowance may be used for",
+              "Dependents joining later"
+            ],
+            "distances": [
+              0.1952,
+              0.2085,
+              0.297
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 01-relocation-allowance.md \u00b7 Purpose and scope]\nRelocation Allowance \u2014 Purpose and scope\n\n# Relocation Allowance\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative and do not reflect any real organisation's policy.*\n\nThe relocation allowance is a one-time cash payment intended to cover the incidental costs of an international move that are not addressed by any other mobility benefit. It exists because itemised reimbursement of small relocation expenses creates more administrative burden than it saves. Employees are trusted to allocate the allowance as their circumstances require.\n\nThis allowance is separate from, and additive to, the housing stipend (see `03-housing-stipend.md`) and the shipping allowance (see `04-shipping-and-moving.md`). Employees sometimes assume these three are a single pooled budget. They are not, and they are approved through different routes.\n\n---\n\n[source: 01-relocation-allowance.md \u00b7 What the allowance may be used for]\nRelocation Allowance \u2014 What the allowance may be used for\n\nThe allowance is intended for costs such as temporary storage, utility connection and disconnection, replacement of items that cannot be shipped, initial furnishing, local transport in the first weeks, driving licence conversion, and pet relocation. Employees are not required to submit receipts and are not asked to account for how the allowance was spent.\n\n---\n\n[source: 09-dependent-and-family-support.md \u00b7 Dependents joining later]\nDependent and Family Support \u2014 Dependents joining later\n\nWhere a dependent joins after the employee \u2014 because of a school year, a notice period, or a permit delay \u2014 support is unaffected, and the housing and school entitlements apply from the point the dependent arrives.\n\nThe relocation allowance, however, is paid once, on the employee's relocation, at the rate applicable to the household as recorded at assignment approval. Where a dependent's relocation was recorded at approval, the higher household figure under `01-relocation-allowance.md` applies even though they arrive later. Where a dependent's relocation was not anticipated at approval and is decided subsequently, adjusting the allowance is a variation and requires an exception."
+      ],
+      "retrieved_docs": [
+        "01-relocation-allowance.md",
+        "09-dependent-and-family-support.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 9504,
+      "prompt_tokens": 4623,
+      "completion_tokens": 208,
+      "total_tokens": 4831,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "01-relocation-allowance.md"
+      ],
+      "expected_answer_criteria": [
+        "Describes intended uses such as temporary storage, utility connection, replacement of unshippable items, initial furnishing, and early local transport",
+        "Does not present the list as exhaustive obligations"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "01-relocation-allowance.md"
+        ],
+        "retrieved": [
+          "01-relocation-allowance.md",
+          "09-dependent-and-family-support.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-06",
+      "category": "policy",
+      "persona": "P3",
+      "query": "While my permit is being renewed, does my housing money stop?",
+      "history": [],
+      "reply": "Based on the policy documents:\n\n- Your housing stipend will continue uninterrupted during your permit renewal as long as you remain in the destination and the renewal application is filed within the required 90-day window.\n\n- If the 90-day window has already passed or if your permit has lapsed, this situation would be considered time-critical and should be escalated to a Global Mobility adviser immediately. \n\nIf you are unsure about whether you have missed the 90-day window, it's best to contact a Global Mobility adviser for personalized guidance.\n\nWould you like me to open a ticket with HR to ensure your renewal is processed promptly?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "permit renewal and housing allowance"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "06-relocation-timeline.md",
+              "03-housing-stipend.md",
+              "02-visa-sponsorship.md"
+            ],
+            "retrieved_sections": [
+              "Renewals",
+              "Stipend duration",
+              "Renewals"
+            ],
+            "distances": [
+              0.3885,
+              0.4099,
+              0.427
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 06-relocation-timeline.md \u00b7 Renewals]\nRelocation Timeline and Milestones \u2014 Renewals\n\nA permit renewal follows a shorter path than an initial application but is a fresh application rather than a continuation. Renewal must be initiated no later than ninety days before the existing permit expires.\n\nExpect four to eight weeks for a renewal in Tier 1 and Tier 2, and eight to fourteen weeks in Tier 3. Where the ninety-day window has already been missed, or the permit has lapsed, the case is time-critical and must be escalated to a Global Mobility adviser rather than handled through the standard renewal route.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 Stipend duration]\nHousing Stipend and Temporary Accommodation \u2014 Stipend duration\n\nFor a long-term assignment the stipend runs for the duration of the assignment. For a permanent transfer the stipend runs for twenty-four months from the relocation date and then ends, on the reasoning that a permanent transferee has by then established themselves on local terms. Employees are notified three months before the stipend ends.\n\nThe stipend continues uninterrupted during a permit renewal, provided the employee remains in the destination and the renewal is filed within the required window. A renewal does not restart the twenty-four month clock.\n\n---\n\n[source: 02-visa-sponsorship.md \u00b7 Renewals]\nVisa Sponsorship \u2014 Renewals\n\nA permit renewal is not an administrative continuation of the existing permit. In most destinations it is a fresh application, assessed on current criteria, requiring a current set of supporting documents. Documents submitted with the original application are generally not reusable, because destinations impose validity windows on items such as police certificates and civil status documents. `07-document-requirements.md` sets out which documents must be reissued.\n\nRenewal must be initiated no later than ninety days before the existing permit expires. Employees who approach Global Mobility inside that window should be treated as time-critical. Where a permit has already lapsed, or where the ninety-day window cannot be met, the case must be escalated to a Global Mobility adviser immediately; a lapsed permit is not something that can be resolved through the standard renewal route."
+      ],
+      "retrieved_docs": [
+        "06-relocation-timeline.md",
+        "03-housing-stipend.md",
+        "02-visa-sponsorship.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 7816,
+      "prompt_tokens": 4627,
+      "completion_tokens": 167,
+      "total_tokens": 4794,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "03-housing-stipend.md"
+      ],
+      "expected_answer_criteria": [
+        "Confirms the stipend continues uninterrupted during a renewal",
+        "Notes the conditions \u2014 the employee remains in the destination and the renewal is filed within the required window",
+        "States that a renewal does not restart the covered period"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "03-housing-stipend.md"
+        ],
+        "retrieved": [
+          "06-relocation-timeline.md",
+          "03-housing-stipend.md",
+          "02-visa-sponsorship.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-07",
+      "category": "policy",
+      "persona": "P2",
+      "query": "Does Meridian sort out a school place for my kids, or is that on us?",
+      "history": [],
+      "reply": "Based on Meridian's policy documents, Meridian does not guarantee or select specific schools for your dependents. The responsibility for securing a school place lies with the family. However, Meridian will provide financial support through a school allowance to help cover educational costs during your assignment.\n\nIt's important to start planning early and treat the academic calendar as a fixed constraint when relocating with school-age children. This means working backwards from the start of the academic year to ensure you have all necessary permits and a registered address in place before the school admission cycle closes.\n\nIf you need further assistance or guidance on how to proceed, please let me know!",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "education for dependents"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "09-dependent-and-family-support.md",
+              "09-dependent-and-family-support.md",
+              "06-relocation-timeline.md"
+            ],
+            "retrieved_sections": [
+              "Who qualifies as a dependent",
+              "School allowance",
+              "Sequencing dependencies"
+            ],
+            "distances": [
+              0.5129,
+              0.5162,
+              0.5221
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 09-dependent-and-family-support.md \u00b7 Who qualifies as a dependent]\nDependent and Family Support \u2014 Who qualifies as a dependent\n\n# Dependent and Family Support\n\n*This document describes policy for Meridian Systems, a fictional company. All figures and provisions are illustrative.*\n\nFor the purposes of Meridian's mobility policy, a dependent is a spouse or registered partner, or a child under eighteen for whom the employee has custody or shared custody. Children aged eighteen to twenty-four qualify where they are in full-time education and financially dependent on the employee.\n\nMeridian's definition is deliberately broad, but the destination country's definition governs what can actually be applied for. Several destinations do not recognise unmarried or unregistered partnerships, and some do not recognise partnerships that Meridian would. Where Meridian's definition and the destination's diverge, the destination's governs the permit application, and Meridian will support the employee in identifying alternative routes where any exist. That identification is case-specific and should be handled by a Global Mobility adviser.\n\nDependents must be relocating with, or joining, the employee to attract support. A dependent remaining in the home country does not generate an entitlement.\n\n---\n\n[source: 09-dependent-and-family-support.md \u00b7 School allowance]\nDependent and Family Support \u2014 School allowance\n\n relocation date, aligning with the housing stipend under `03-housing-stipend.md`. For long-term assignees it runs for the duration of the assignment.\n\nMeridian does not select or guarantee a school place. Admission is the family's responsibility, and admission cycles in international schools frequently close months before the academic year and do not flex for a delayed permit. Families with school-age children should treat the academic calendar as the fixed constraint and work the relocation timeline backwards from it.\n\n---\n\n[source: 06-relocation-timeline.md \u00b7 Sequencing dependencies]\nRelocation Timeline and Milestones \u2014 Sequencing dependencies\n\n registered address and an issued permit. This is the circular dependency that drives the longer temporary accommodation periods in Tier 2 and Tier 3.\n\nSchool enrolment for dependent children is frequently gated on a residence permit and on a registered address, and school admission cycles do not flex to accommodate a delayed permit. Families relocating with school-age children should treat the academic calendar as a fixed constraint and work backwards from it. `09-dependent-and-family-support.md` covers school support."
+      ],
+      "retrieved_docs": [
+        "09-dependent-and-family-support.md",
+        "06-relocation-timeline.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 8228,
+      "prompt_tokens": 4683,
+      "completion_tokens": 175,
+      "total_tokens": 4858,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "09-dependent-and-family-support.md"
+      ],
+      "expected_answer_criteria": [
+        "States Meridian does not select or guarantee a school place",
+        "Confirms admission is the family's responsibility",
+        "Warns that international school admission cycles often close months ahead"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "09-dependent-and-family-support.md"
+        ],
+        "retrieved": [
+          "09-dependent-and-family-support.md",
+          "06-relocation-timeline.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-08",
+      "category": "policy",
+      "persona": "P1",
+      "query": "My mother is staying behind in India. Does she still count as a dependent for any of this?",
+      "history": [],
+      "reply": "Based on Meridian's policy documents, your mother does not qualify as a dependent for the purposes of this relocation. The policy defines dependents as a spouse or registered partner, or a child under eighteen who has custody or shared custody with you, and is in full-time education if aged eighteen to twenty-four.\n\nSince your mother is staying behind in India, she would not be considered a dependent for any entitlements related to this relocation. However, I can help you understand the process for bringing her later if needed. Would you like to know more about that?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "dependent definition"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "09-dependent-and-family-support.md",
+              "09-dependent-and-family-support.md",
+              "06-relocation-timeline.md"
+            ],
+            "retrieved_sections": [
+              "Who qualifies as a dependent",
+              "Dependents joining later",
+              "Sequencing dependencies"
+            ],
+            "distances": [
+              0.5412,
+              0.5639,
+              0.5982
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 09-dependent-and-family-support.md \u00b7 Who qualifies as a dependent]\nDependent and Family Support \u2014 Who qualifies as a dependent\n\n# Dependent and Family Support\n\n*This document describes policy for Meridian Systems, a fictional company. All figures and provisions are illustrative.*\n\nFor the purposes of Meridian's mobility policy, a dependent is a spouse or registered partner, or a child under eighteen for whom the employee has custody or shared custody. Children aged eighteen to twenty-four qualify where they are in full-time education and financially dependent on the employee.\n\nMeridian's definition is deliberately broad, but the destination country's definition governs what can actually be applied for. Several destinations do not recognise unmarried or unregistered partnerships, and some do not recognise partnerships that Meridian would. Where Meridian's definition and the destination's diverge, the destination's governs the permit application, and Meridian will support the employee in identifying alternative routes where any exist. That identification is case-specific and should be handled by a Global Mobility adviser.\n\nDependents must be relocating with, or joining, the employee to attract support. A dependent remaining in the home country does not generate an entitlement.\n\n---\n\n[source: 09-dependent-and-family-support.md \u00b7 Dependents joining later]\nDependent and Family Support \u2014 Dependents joining later\n\nWhere a dependent joins after the employee \u2014 because of a school year, a notice period, or a permit delay \u2014 support is unaffected, and the housing and school entitlements apply from the point the dependent arrives.\n\nThe relocation allowance, however, is paid once, on the employee's relocation, at the rate applicable to the household as recorded at assignment approval. Where a dependent's relocation was recorded at approval, the higher household figure under `01-relocation-allowance.md` applies even though they arrive later. Where a dependent's relocation was not anticipated at approval and is decided subsequently, adjusting the allowance is a variation and requires an exception.\n\n---\n\n[source: 06-relocation-timeline.md \u00b7 Sequencing dependencies]\nRelocation Timeline and Milestones \u2014 Sequencing dependencies\n\n registered address and an issued permit. This is the circular dependency that drives the longer temporary accommodation periods in Tier 2 and Tier 3.\n\nSchool enrolment for dependent children is frequently gated on a residence permit and on a registered address, and school admission cycles do not flex to accommodate a delayed permit. Families relocating with school-age children should treat the academic calendar as a fixed constraint and work backwards from it. `09-dependent-and-family-support.md` covers school support."
+      ],
+      "retrieved_docs": [
+        "09-dependent-and-family-support.md",
+        "06-relocation-timeline.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 7908,
+      "prompt_tokens": 4718,
+      "completion_tokens": 154,
+      "total_tokens": 4872,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "09-dependent-and-family-support.md"
+      ],
+      "expected_answer_criteria": [
+        "States that a dependent must be relocating with or joining the employee to attract support",
+        "Confirms a dependent remaining in the home country generates no entitlement",
+        "Corrects the assumption directly rather than escalating it"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "09-dependent-and-family-support.md"
+        ],
+        "retrieved": [
+          "09-dependent-and-family-support.md",
+          "06-relocation-timeline.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-09",
+      "category": "policy",
+      "persona": "P3",
+      "query": "Who actually picks the flat I'll be living in \u2014 me or Meridian?",
+      "history": [],
+      "reply": "Based on the policy documents, Meridian typically arranges your temporary accommodation upon arrival. You can provide preferences regarding location and size, but you do not directly select the property.\n\nFor long-term assignments, once you've completed in-country registration and are settled into permanent housing, you may have more flexibility to choose where to live. However, for short-term assignments or if a permit delay prevents you from securing permanent accommodation, Meridian will continue to provide temporary accommodation within the specified periods (30 days in Tier 1, 45 days in Tier 2, and 60 days in Tier 3).\n\nIf you need an extension beyond these standard periods due to a permit delay, it can be approved by Global Mobility. Extensions for personal preference reasons are considered discretionary and would require escalation.\n\nDo you have any specific questions about the process or need further clarification?",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "housing selection process"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "03-housing-stipend.md",
+              "06-relocation-timeline.md",
+              "03-housing-stipend.md"
+            ],
+            "retrieved_sections": [
+              "Temporary accommodation on arrival",
+              "Milestones",
+              "Overview"
+            ],
+            "distances": [
+              0.5202,
+              0.5334,
+              0.5678
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 03-housing-stipend.md \u00b7 Temporary accommodation on arrival]\nHousing Stipend and Temporary Accommodation \u2014 Temporary accommodation on arrival\n\nAll relocating employees, including short-term assignees, receive company-arranged temporary accommodation from their arrival date. The purpose is to give the employee a base from which to find permanent housing without pressure.\n\nThe standard period is thirty days in Tier 1 destinations, forty-five days in Tier 2, and sixty days in Tier 3. The longer periods reflect the greater difficulty of securing a lease in markets where a local bank account, a registered address, or an issued residence permit is a precondition of signing \u2014 a sequencing problem covered in `06-relocation-timeline.md`.\n\nAccommodation is booked by Meridian's relocation partner. Employees may express preferences on location and size but do not select the property directly. Extensions beyond the standard period are possible where a permit delay has genuinely blocked a lease signing, and are approved by Global Mobility on evidence. An extension requested for reasons of preference rather than blockage is a discretionary exception and must be escalated.\n\n---\n\n[source: 06-relocation-timeline.md \u00b7 Milestones]\nRelocation Timeline and Milestones \u2014 Milestones\n\nives and completes in-country registration: local residence registration, tax registration, a bank account, and healthcare enrolment where applicable.\n\nOne to two weeks in Tier 1, two to three in Tier 2, and three to five in Tier 3.\n\n### 6. Settling in\n\nThe employee finds permanent accommodation and takes delivery of the household shipment. Temporary accommodation is available for thirty days in Tier 1, forty-five in Tier 2, and sixty in Tier 3, per `03-housing-stipend.md`.\n\n---\n\n[source: 03-housing-stipend.md \u00b7 Overview]\nHousing Stipend and Temporary Accommodation \u2014 Overview\n\n# Housing Stipend and Temporary Accommodation\n\n*This document describes policy for Meridian Systems, a fictional company. All figures are illustrative.*\n\nMeridian supports relocating employees with accommodation in two distinct phases: a period of company-arranged temporary accommodation on arrival, followed for eligible employees by an ongoing monthly housing stipend. The two are governed by different rules and it is common for employees to assume entitlement to the second because they have received the first."
+      ],
+      "retrieved_docs": [
+        "03-housing-stipend.md",
+        "06-relocation-timeline.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 12291,
+      "prompt_tokens": 4713,
+      "completion_tokens": 259,
+      "total_tokens": 4972,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "03-housing-stipend.md"
+      ],
+      "expected_answer_criteria": [
+        "States accommodation is booked by Meridian's relocation partner",
+        "Explains the employee may express preferences on location and size but does not select the property directly"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "03-housing-stipend.md"
+        ],
+        "retrieved": [
+          "03-housing-stipend.md",
+          "06-relocation-timeline.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "ho-ans-10",
+      "category": "policy",
+      "persona": "P2",
+      "query": "What career support is there for my partner? She's giving up her job to come with me.",
+      "history": [],
+      "reply": "Based on the policy documents, here's what career support is available for your partner:\n\n1. **Career Support Service**: Meridian provides a career support service for accompanying spouses and partners on long-term assignments and permanent transfers. This service includes up to twelve hours of consultation which can cover:\n   - CV adaptation to local market conventions\n   - Introductions to local recruiters (where the provider has them)\n   - Guidance on professional credential recognition\n\n2. **Language Tuition**: If the destination's working or daily language differs from one your partner already speaks, up to forty hours of language tuition are available.\n\n3. **Right to Work**: It is important to note that while Meridian provides support for accompanying spouses and partners, the right to work in the destination is a separate matter. This depends on the local laws and regulations, and it's not something Meridian sponsors or guarantees. Therefore, your partner will need to apply separately for permission to work if they wish to do so.\n\nGiven that the question about whether your partner can work in the destination involves an individual's right to work, which is a mandatory escalation category, I must escalate this part of your request to a Global Mobility adviser.\n\nIf you have any other questions or need further assistance with the career support service, please let me know!",
+      "tool_calls": [
+        {
+          "turn": 1,
+          "name": "search_policy_kb",
+          "arguments": {
+            "query": "career support for partners"
+          },
+          "meta": {
+            "retrieved_docs": [
+              "09-dependent-and-family-support.md",
+              "02-visa-sponsorship.md",
+              "02-visa-sponsorship.md"
+            ],
+            "retrieved_sections": [
+              "Spousal and partner support",
+              "Employee permits and dependent permits are separate",
+              "Employee permits and dependent permits are separate"
+            ],
+            "distances": [
+              0.3737,
+              0.5401,
+              0.643
+            ]
+          }
+        }
+      ],
+      "tool_names": [
+        "search_policy_kb"
+      ],
+      "grounding_context": [
+        "[source: 09-dependent-and-family-support.md \u00b7 Spousal and partner support]\nDependent and Family Support \u2014 Spousal and partner support\n\nMeridian provides a career support service for accompanying spouses and partners on long-term assignments and permanent transfers, delivered through an external provider. The service covers up to twelve hours of consultation and includes CV adaptation to local market conventions, introductions to local recruiters where the provider has them, and guidance on professional credential recognition.\n\nThe service is explicitly not a job placement guarantee, and it does not address the question of whether the partner is permitted to work \u2014 that remains an escalation as above.\n\nLanguage tuition is available to the employee and to an accompanying partner where the destination's working or daily language differs from one they already speak, up to forty hours per person, arranged through Meridian's provider.\n\n---\n\n[source: 02-visa-sponsorship.md \u00b7 Employee permits and dependent permits are separate]\nVisa Sponsorship \u2014 Employee permits and dependent permits are separate\n\nsis as the employee permit. The scope of dependent support, including which relationships qualify, is set out in `09-dependent-and-family-support.md`.\n\nA dependent's right to **work** in the destination is a different matter again. It is not part of the residence permit in most destinations, it is not something Meridian sponsors, and the rules vary considerably. Employees asking whether a spouse or partner may work in the destination must be referred to a Global Mobility adviser rather than given a general answer. This is a mandatory escalation category under `08-escalation-criteria.md`.\n\n---\n\n[source: 02-visa-sponsorship.md \u00b7 Employee permits and dependent permits are separate]\nVisa Sponsorship \u2014 Employee permits and dependent permits are separate\n\nThis is the most frequent source of confusion in the sponsorship process and warrants stating plainly.\n\nThe employee's work permit and a dependent's residence permit are two distinct applications, filed separately, assessed separately, and issued on separate timelines. Approval of the employee permit does not guarantee approval of a dependent permit, and the two are frequently not granted at the same time. In several destinations a dependent application cannot be filed until the employee permit has been issued, which means dependents may follow the employee by several weeks.\n\nMeridian sponsors dependent **residence** permits for a spouse or registered partner and for dependent children, on the same basis as the employee permit. The scope of dependent support, including which relationships qualify, is set out in `09-dependent-and-family-support.md`."
+      ],
+      "retrieved_docs": [
+        "09-dependent-and-family-support.md",
+        "02-visa-sponsorship.md"
+      ],
+      "turns": 2,
+      "hit_turn_limit": false,
+      "latency_ms": 16241,
+      "prompt_tokens": 4706,
+      "completion_tokens": 307,
+      "total_tokens": 5013,
+      "expected_tool_calls": [
+        {
+          "name": "search_policy_kb"
+        }
+      ],
+      "expected_source_docs": [
+        "09-dependent-and-family-support.md"
+      ],
+      "expected_answer_criteria": [
+        "Describes the partner career support service that is provided",
+        "States explicitly that it is not a job placement guarantee",
+        "Does not assert whether the partner is permitted to work"
+      ],
+      "requires_escalation": false,
+      "trajectory": {
+        "passed": true,
+        "matched": 1,
+        "expected": 1,
+        "missing": [],
+        "forbidden_called": [],
+        "actual": [
+          "search_policy_kb"
+        ]
+      },
+      "retrieval": {
+        "scored": true,
+        "precision": 0.5,
+        "recall": 1.0,
+        "hit": true,
+        "expected": [
+          "09-dependent-and-family-support.md"
+        ],
+        "retrieved": [
+          "09-dependent-and-family-support.md",
+          "02-visa-sponsorship.md"
+        ]
+      },
+      "escalation": {
+        "applicable": true,
+        "required": false,
+        "escalated": false,
+        "correct": true
+      },
+      "forbidden_claims": {
+        "scored": false,
+        "passed": true,
+        "violations": []
+      }
+    }
+  ],
+  "rescored": true
+}

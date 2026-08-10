@@ -311,7 +311,7 @@ def main() -> int:
         cl_str = "err" if cl.get("score") is None else f"{cl['score']:.2f}"
         mark = "" if ts.get("passed") else "  <-- FAIL"
         print(f"[{i:>2}/{len(rows)}] {row['id']:<10} task={ts_str} "
-              f"clarity={cl_str} faith={fa_str}{mark}")
+              f"clarity={cl_str} faith={fa_str}{mark}", flush=True)
 
     elapsed = time.perf_counter() - started
     payload["judged_summary"] = summarise(rows)

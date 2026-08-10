@@ -107,11 +107,94 @@ TOOL_DESCRIPTIONS: dict[str, dict[str, str]] = {
         "escalate_to_human":
             "Escalate the question to a human HR contact.",
     },
+
+    # v2: each description now says WHEN to call and when not to. Finding F7
+    # showed v1 descriptions stated capability without scope, and the model
+    # reached for whichever tool produced an artefact — escalate_to_human was
+    # called 4 times against 20 expected, while generate_document_checklist
+    # fired 3.7x more often than warranted. Change C2.
+    "v2": {
+        "search_policy_kb":
+            "Search Meridian's relocation policy documents. Use this for any question "
+            "about what a policy says or what an employee is entitled to: allowances, "
+            "housing, shipping, tax equalization, family support, escalation rules, or "
+            "what happens at the end of an assignment. Prefer this over answering from "
+            "memory — entitlements vary by assignment type, band, and destination tier, "
+            "and guessing produces confidently wrong figures. Use it alongside other "
+            "tools when a question has both a policy and a data component.",
+
+        "lookup_visa_requirements":
+            "Look up permit details for one origin/destination country pair from "
+            "Meridian's visa dataset: permit name, processing time, maximum stay, "
+            "whether local payroll is permitted, and required documents. Use this only "
+            "when the employee names both countries and you need permit specifics. It "
+            "does NOT cover what the company pays for, employee entitlements, or "
+            "whether a dependent may work — those are policy questions. If the country "
+            "pair is not in the dataset, say so rather than inferring from a similar one.",
+
+        "generate_document_checklist":
+            "Produce a checklist of documents required for a relocation, given a "
+            "destination and assignment type. Call this only when the employee is "
+            "actually asking what documents they need to gather. Do NOT call it for "
+            "questions about timelines, allowances, permits, eligibility, or renewals — "
+            "a checklist is not a general-purpose answer. For a renewal rather than a "
+            "first application, search the policy documents instead, because renewals "
+            "require reissued documents that this checklist does not reflect.",
+
+        "get_relocation_timeline":
+            "Return the milestone plan and expected durations for relocating to a given "
+            "destination, by tier. Use this when the employee asks how long something "
+            "will take, when to start, or what happens in what order. Not needed for "
+            "questions about entitlements or documents.",
+
+        "create_hr_ticket":
+            "Open a ticket asking the HR team to action something specific for the "
+            "employee. Use this only when there is a concrete request to be carried out. "
+            "This is NOT the way to route a question you are not permitted to answer — "
+            "for anything in the five mandatory escalation categories, call "
+            "escalate_to_human instead.",
+
+        "escalate_to_human":
+            "Hand the question to a Global Mobility adviser. CALL THIS TOOL — do not "
+            "simply advise the employee to contact an adviser, and do not ask their "
+            "permission first. You must call it whenever the question involves: (1) an "
+            "individual's tax position or a tax decision; (2) a visa refusal, appeal, or "
+            "a permit that has expired or is inside the 90-day renewal window; (3) "
+            "whether a spouse or dependent may WORK in the destination (their right to "
+            "RESIDE is answerable normally); (4) a request for an exception, variation, "
+            "or discretionary approval; (5) another employee's package or personal "
+            "circumstances. Where a message mixes a restricted question with an "
+            "answerable one, answer the answerable part and escalate the rest.",
+    },
 }
 
+# v3 reuses v2's tool descriptions verbatim. They are not implicated in the v2
+# regression — escalation recall tripled under them — so holding them fixed keeps
+# the v2 -> v3 comparison attributable to the system prompt alone.
+TOOL_DESCRIPTIONS["v3"] = TOOL_DESCRIPTIONS["v2"]
 
-def _descriptions() -> dict[str, str]:
-    return TOOL_DESCRIPTIONS[AGENT_VERSION]
+# The three v4 arms differ only in their system prompt's escalation block. Holding
+# tool descriptions identical across all of them is what makes that comparison
+# clean — otherwise a score difference could be coming from either lever.
+for _arm in ("v4-principled", "v4-enumerated", "v4-verbatim"):
+    TOOL_DESCRIPTIONS[_arm] = TOOL_DESCRIPTIONS["v2"]
+
+
+def _descriptions(version: str | None = None) -> dict[str, str]:
+    """Descriptions for a given agent version.
+
+    Takes an explicit version rather than reading config at import time: the eval
+    runner drives versions per-run, and binding this to the module-level constant
+    meant `--version v2` swapped the prompt while silently keeping v1's tool
+    descriptions — which would have voided change C2 without any visible error.
+    """
+    v = version or AGENT_VERSION
+    try:
+        return TOOL_DESCRIPTIONS[v]
+    except KeyError:
+        raise ValueError(
+            f"No tool descriptions for version {v!r}. Known: {sorted(TOOL_DESCRIPTIONS)}"
+        ) from None
 
 
 # ---------------------------------------------------------------------------
@@ -443,9 +526,9 @@ IMPLEMENTATIONS: dict[str, Callable[..., ToolResult]] = {
 TOOL_NAMES = tuple(IMPLEMENTATIONS)
 
 
-def build_tool_schemas() -> list[dict[str, Any]]:
-    """Tool definitions in the function-calling format, for the current version."""
-    descriptions = _descriptions()
+def build_tool_schemas(version: str | None = None) -> list[dict[str, Any]]:
+    """Tool definitions in the function-calling format, for the given version."""
+    descriptions = _descriptions(version)
     return [
         {
             "type": "function",
