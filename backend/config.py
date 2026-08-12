@@ -6,6 +6,7 @@ records these values alongside the scores, which is what makes a v1 vs v2
 comparison attributable to a specific change.
 """
 
+import os
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).parent
@@ -22,7 +23,12 @@ COLLECTION_NAME = "mobility_policies"
 # --- Models -----------------------------------------------------------------
 # Local via Ollama. Provider is abstracted in agent/llm.py; swapping to a
 # hosted API is a change here plus one client call, not a rewrite.
-AGENT_MODEL = "qwen2.5:7b"
+# AGENT_MODEL is overridable by environment variable so a capacity diagnostic
+# (does escalation fail because the instruction is unclear, or because a 7B
+# model cannot make the inference?) can be run without editing this file and
+# risking the change being left in place. The runner records the model that
+# actually ran, and the checkpoint refuses to resume across a model change.
+AGENT_MODEL = os.environ.get("AGENT_MODEL", "qwen2.5:7b")
 JUDGE_MODEL = "qwen2.5:14b"  # larger than the agent, deliberately
 OLLAMA_HOST = "http://localhost:11434"
 

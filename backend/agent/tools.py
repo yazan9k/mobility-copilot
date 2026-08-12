@@ -179,6 +179,40 @@ TOOL_DESCRIPTIONS["v3"] = TOOL_DESCRIPTIONS["v2"]
 for _arm in ("v4-principled", "v4-enumerated", "v4-verbatim"):
     TOOL_DESCRIPTIONS[_arm] = TOOL_DESCRIPTIONS["v2"]
 
+# ---------------------------------------------------------------------------
+# v5 — the escalation description rewritten, and NOTHING else.
+#
+# Measured cause: across all six runs, 64-85% of "missed" escalations are cases
+# where the model states in its reply that the question must go to an adviser
+# and then does not call the tool. esc-004 even asks "Would you like to proceed
+# with escalating this request?" — permission-seeking that every prompt since v2
+# explicitly forbids. The model's judgement is right; the call never happens.
+#
+# So four prompt versions tuned the escalation CRITERIA, which were never the
+# problem. This arm leaves the v4-enumerated system prompt byte-identical and
+# changes only what the model reads at the moment it decides whether to call:
+# the tool description.
+#
+# The rewrite drops the criteria list entirely (it is already in the system
+# prompt, and repeating it is what made this description long enough to read as
+# reference material) and says one thing instead: calling this is the act.
+# Writing about it does nothing.
+# ---------------------------------------------------------------------------
+TOOL_DESCRIPTIONS["v5-tooldesc"] = {
+    **TOOL_DESCRIPTIONS["v2"],
+    "escalate_to_human":
+        "Send this question to a Global Mobility adviser. Calling this tool IS "
+        "the escalation — it is the only thing that reaches a human. Writing "
+        "that the employee should speak to an adviser does nothing: no message "
+        "is sent, no one is notified, and the employee is left with a "
+        "suggestion instead of a referral. If you have concluded that a "
+        "question needs a human, you have not acted on that conclusion until "
+        "you call this tool. Never ask the employee whether they would like you "
+        "to escalate; escalating is your decision, not theirs. You can call "
+        "this in the same turn as answering — answer whatever part of the "
+        "message you are allowed to answer, and call this for the rest.",
+}
+
 
 def _descriptions(version: str | None = None) -> dict[str, str]:
     """Descriptions for a given agent version.

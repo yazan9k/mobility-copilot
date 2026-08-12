@@ -363,6 +363,12 @@ SYSTEM_PROMPTS["v4-principled"] = _V4_PREAMBLE + _V4_ESC_PRINCIPLED + _V4_TAIL
 SYSTEM_PROMPTS["v4-enumerated"] = _V4_PREAMBLE + _V4_ESC_ENUMERATED + _V4_TAIL
 SYSTEM_PROMPTS["v4-verbatim"] = _V4_PREAMBLE + _V4_ESC_VERBATIM + _V4_TAIL
 
+# v5 reuses the v4-enumerated system prompt BYTE-IDENTICALLY. The only change in
+# this arm is the escalate_to_human tool description (see tools.py), so any score
+# movement is attributable to that description and nothing else. v4-enumerated is
+# the base because it was the best generaliser: 60.0% held-out, -3.9 gap.
+SYSTEM_PROMPTS["v5-tooldesc"] = SYSTEM_PROMPTS["v4-enumerated"]
+
 
 def system_prompt(version: str) -> str:
     try:

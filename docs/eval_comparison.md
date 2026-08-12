@@ -102,6 +102,43 @@ until there is enough evidence to know what the categories actually are.
 independent metrics (trajectory and escalation) and the 32-point gap is large
 relative to that granularity, but this is a small sample and should be read as such.
 
+### 3. "The tool description is the lever, since that is what it reads when deciding to call"
+
+Diagnosis first: across all six runs, **64–85% of missed escalations are cases where
+the model states in its own reply that the question must go to an adviser, and then
+does not call the tool.**
+
+> *"I need to escalate this question to a Global Mobility adviser"* — esc-001
+> *"...are discretionary and must be escalated to a Global Mobility adviser"* — esc-004
+> *"Would you like to proceed with escalating this request?"* — esc-004
+
+The judgement is correct. The call never happens. Escalation's real ceiling is ~85%,
+not 35% — the gap is entirely narration-instead-of-action, including permission-seeking
+that every prompt since v2 explicitly forbids.
+
+`v5-tooldesc` tests the obvious fix: system prompt byte-identical to v4-enumerated,
+only the `escalate_to_human` description rewritten to say that calling the tool *is*
+the escalation and that writing about it notifies no one.
+
+| | Trajectory G | Trajectory H | Escalation G | Escalation H | Said-but-didn't-call |
+|---|---:|---:|---:|---:|---:|
+| v4-enumerated | 63.9% | 60.0% | 35.0% | 30.0% | 10 + 5 |
+| v5-tooldesc | 63.9% | 55.0% | 25.0% | 20.0% | 11 + 6 |
+
+**It got worse on both sets, and the targeted pathology got more common.** A two-case
+move on the golden set, so the magnitude is not load-bearing, but the direction is
+consistent across both sets and both metrics.
+
+Three prompt surfaces have now been tried — escalation criteria, prompt structure and
+length, and tool descriptions. All land in the same 20–40% band. The lever is not in
+prompt-space.
+
+The remaining candidate is architectural: a schema-constrained decision gate that asks
+"does this need a human?" as a separate constrained call and invokes escalation in
+code, rather than relying on the model to remember to call a tool inside free-form
+generation. This is the same technique that made the judge reliable at 0.900 kappa.
+Not built.
+
 ## What is fixed, and what is not
 
 **Retrieval is solved.** 88–100% recall whenever a search happens, including 100% on
