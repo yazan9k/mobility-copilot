@@ -5,6 +5,31 @@
 
 Every finding below is numbered. **Every change made in Phase 3 must cite one of these numbers.** Findings with no corresponding fix are listed in §7 as deliberately deferred.
 
+> ## Read this first: C1 did not work
+>
+> This document was written before v2 was run, and throughout it attributes fixes to
+> **C1** — the v2 system prompt. **C1 was a serious regression.** v2 dropped trajectory
+> from 50.8% to 31.1% and caused 37 of 70 cases to call no tools at all, because the
+> prompt's length and its emphasis on writing style crowded out tool use.
+>
+> The diagnoses below still hold. The prescriptions attributed to C1 do not, and the
+> confident "→ addressed by C1" annotations should be read as *what was attempted*,
+> not what succeeded.
+>
+> Two later corrections matter for anyone reading this as a record of reasoning:
+>
+> 1. **§5's claim that the retriever is not the bottleneck was right, but for the wrong
+>    stated reason.** The metric itself was conflating "the retriever missed" with "the
+>    agent never searched" — 9 of 11 recall misses had retrieved nothing at all. Once
+>    split, recall given a search was 88.1%, not 63.8%.
+> 2. **F1/F2's diagnosis of escalation was incomplete.** The finding says the agent is
+>    not told when to escalate. True, but insufficient: later measurement showed that in
+>    64–85% of missed escalations the model *states in its reply* that the question needs
+>    a human and simply does not call the tool. No amount of clarifying the criteria
+>    fixes that, which is why C1 and its three successors all failed to move the metric.
+>
+> Full record in [eval_comparison.md](eval_comparison.md).
+
 ---
 
 ## 1. Headline numbers

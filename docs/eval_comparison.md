@@ -18,6 +18,7 @@ Everything except the system prompt is held constant across every row.
 | v4-enumerated | 2,540 | 63.9% | **60.0%** | 75.9% | 88.6% | 35.0% | 30.0% | 2.0% | 12 |
 | v4-principled | 2,779 | **72.1%** | 40.0% | **93.1%** | 100.0% | 35.0% | 10.0% | 6.0% | 10 |
 | v4-verbatim | 5,522 | 65.6% | 60.0% | **93.1%** | 96.3% | 20.0% | 20.0% | 4.0% | 11 |
+| v5-tooldesc | 2,540 | 63.9% | 55.0% | 82.8% | 93.8% | 25.0% | 20.0% | 2.0% | 10 |
 
 **Golden set:** 70 cases, the set every prompt was derived from.
 **Held-out set:** 20 cases written before the v4 prompts existed, drawn from corpus
@@ -161,6 +162,61 @@ substantially different formulations — naive, exhaustive, principled, enumerat
 moved the metric between 20% and 40%. The next test is capacity: running the same
 prompt on `qwen2.5:14b` to separate what the instruction cannot express from what
 the model cannot infer.
+
+## Answer quality: the process metrics improved and the answers did not
+
+Judged by `qwen2.5:14b` (κ 0.900 against human labels) on a stratified sample of 24
+cases — four per category, the same cases for both versions so the comparison is paired.
+
+| Metric | v1 | v4-enumerated | Change |
+|---|---:|---:|---:|
+| Task success (mean) | 0.404 | 0.375 | −0.029 |
+| Task success (pass rate) | 29.2% | 33.3% | +1 case |
+| **Clarity (mean)** | 0.421 | **0.558** | **+0.137** |
+| **Clarity (pass rate)** | 25.0% | **41.7%** | **+4 cases** |
+| Faithfulness (mean) | 0.913 | 0.937 | +0.024 |
+
+**Task success did not measurably improve.** The mean fell slightly while the pass rate
+rose by a single case. At n=24 one case is 4.2pp, so this is noise. Meanwhile the
+deterministic metrics moved a long way: trajectory 50.8% → 63.9%, escalation 0% → 35%,
+search rate 72.4% → 93.1%.
+
+Better tool use did not produce better answers. Tracking trajectory alone would have
+reported a 13-point improvement and called the project a success.
+
+**Clarity is the one genuine gain** — 25.0% → 41.7%, four cases, and attributable: v2
+through v4 all carry explicit writing guidance, and this metric exists to measure
+exactly that. It was added after a human labeller failed an answer the judge passed on
+criteria that said nothing about being understandable.
+
+### The aggregate was hiding a redistribution
+
+| Category (n=4 each) | v1 | v4-enumerated | Δ |
+|---|---:|---:|---:|
+| ambiguous / out-of-scope | 0.07 | 0.33 | **+0.26** |
+| visa | 0.38 | 0.47 | +0.09 |
+| document_request | 0.62 | 0.62 | 0.00 |
+| escalation_needed | 0.25 | 0.15 | −0.10 |
+| policy | 0.62 | 0.45 | **−0.17** |
+| multi_turn | 0.47 | 0.23 | **−0.24** |
+
+v4 improved most on the category it was written for and regressed on two it was not.
+Policy questions — the most common real use — got *worse* despite the agent searching
+more often. Escalation quality fell even though escalation recall rose, which fits the
+narration-vs-action diagnosis: calling the tool more often does not help if the
+surrounding answer is weaker.
+
+Each case is 0.25 of a category mean here, so these are one- and two-case movements and
+should be read as directional. The pattern is still worth recording: a flat headline
+concealed offsetting movements in both directions, and the fixes went where the process
+metrics pointed rather than where answer quality was actually lost.
+
+### Coverage limit
+
+Only **two of seven** versions are judged — v1 and v4-enumerated. Judging a version
+costs ~35 minutes of sustained load on a local 14b model. v2, v3, v4-principled,
+v4-verbatim and v5-tooldesc have deterministic scores only. In particular there is no
+answer-quality reading on v4-principled, which would sharpen the overfitting finding.
 
 ## Open items
 

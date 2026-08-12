@@ -269,11 +269,57 @@ def summarise(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def stratified_sample(rows: list[dict], n: int) -> list[dict]:
+    """N cases spread evenly across categories, deterministically.
+
+    Judging every case on a local 14b model costs hours, so a subset is the
+    practical option. It has to be stratified: the golden set is ordered by
+    category, so taking the first N would score only visa and policy questions
+    while the summary line still says "task success = X" as though it covered
+    escalation and out-of-scope cases too.
+
+    Selection is by position within each category rather than random, so the
+    same cases are scored for every version and the comparison stays paired.
+    """
+    from collections import defaultdict
+
+    by_category: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        by_category[row["category"]].append(row)
+
+    per_category = max(1, n // len(by_category))
+    picked = [r for cases in by_category.values() for r in cases[:per_category]]
+
+    # Distribute any remainder over the largest categories so the total lands
+    # on n rather than a rounded-down approximation of it.
+    if len(picked) < n:
+        chosen = {r["id"] for r in picked}
+        for cases in sorted(by_category.values(), key=len, reverse=True):
+            for row in cases:
+                if len(picked) >= n:
+                    break
+                if row["id"] not in chosen:
+                    picked.append(row)
+                    chosen.add(row["id"])
+            if len(picked) >= n:
+                break
+
+    order = {r["id"]: i for i, r in enumerate(rows)}
+    return sorted(picked, key=lambda r: order[r["id"]])
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Add judged metrics to a run.")
     parser.add_argument("--version", default="v1")
     parser.add_argument("--threshold", type=float, default=0.7)
     parser.add_argument("--limit", type=int, help="Score only the first N cases")
+    parser.add_argument(
+        "--sample", type=int,
+        help="Score a stratified sample of N cases, spread evenly across "
+             "categories. Prefer this to --limit: the golden set is ordered by "
+             "category, so --limit 25 scores only visa and policy questions and "
+             "reports the result as if it covered the set.",
+    )
     args = parser.parse_args()
 
     ok, detail = health_check()
@@ -291,6 +337,9 @@ def main() -> int:
     rows = payload["cases"]
     if args.limit:
         rows = rows[: args.limit]
+    if args.sample:
+        rows = stratified_sample(rows, args.sample)
+        print(f"Stratified sample: {len(rows)} of {len(payload['cases'])} cases")
 
     judge = OllamaJudge()
     task_success, faithfulness, clarity = build_metrics(judge, args.threshold)

@@ -83,7 +83,18 @@ RETRIEVAL_TOP_K = 3
 MAX_AGENT_TURNS = 6  # tool-call rounds before we stop and answer with what we have
 
 # --- Agent version ----------------------------------------------------------
-# Selects both the system prompt and the tool-description set, which are the
-# two things Phase 3 changes together. Switched per eval run; "v1" is the
-# deliberately naive baseline we are trying to beat.
-AGENT_VERSION = "v1"
+# Selects both the system prompt and the tool-description set. The eval runner
+# passes a version explicitly per run; this constant is what the API serves.
+#
+# Defaults to the best measured version rather than the baseline. It sat at "v1"
+# through development, which meant anyone starting the server to try the product
+# was talking to the deliberately naive prompt — 50.8% trajectory, escalates
+# nothing — and would reasonably conclude the whole thing was broken.
+#
+# Override to compare versions live without editing this file:
+#     AGENT_VERSION=v1 uvicorn api.main:app --port 8010
+#
+# Known versions: v1 (naive baseline), v2 (regression — see eval_comparison.md),
+# v3, v4-enumerated (best generaliser), v4-principled (best on golden set, worst
+# on held-out), v4-verbatim, v5-tooldesc.
+AGENT_VERSION = os.environ.get("AGENT_VERSION", "v4-enumerated")
