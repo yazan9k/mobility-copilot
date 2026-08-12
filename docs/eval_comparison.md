@@ -163,6 +163,53 @@ moved the metric between 20% and 40%. The next test is capacity: running the sam
 prompt on `qwen2.5:14b` to separate what the instruction cannot express from what
 the model cannot infer.
 
+## The improvement is roughly a third of what the golden set reports
+
+The v1 held-out baseline was missing for most of this project, which meant the held-out
+column had no comparison and "60.0% on unseen questions" could not be called an
+improvement over anything. Running it changed the headline.
+
+| | v1 golden | v1 held-out | v4-enum golden | v4-enum held-out |
+|---|---:|---:|---:|---:|
+| Trajectory | 50.8% | 55.0% | 63.9% | 60.0% |
+| Escalation | 0.0% | 20.0% | 35.0% | 30.0% |
+| Search rate | 72.4% | 90.0% | 75.9% | 80.0% |
+
+| Improvement v1 → v4-enumerated | Golden | Held-out |
+|---|---:|---:|
+| Trajectory | **+13.1pp** | **+5.0pp** |
+| Escalation | +35.0pp | **+10.0pp** |
+
+Escalation reads as a 35-point gain on the set the prompts were derived from and a
+10-point gain on questions they have never seen. Trajectory reads as +13.1 and is +5.0.
+
+Note also that v1 scores *higher* on held-out than on golden (55.0% vs 50.8%), which
+suggests the held-out cases are somewhat easier rather than harder. That cuts against
+the v4 result too: 60.0% on an easier set is a weaker showing than it first appears.
+
+The honest summary is that most of the measured improvement is concentrated on the
+cases that shaped the prompts. Some of it generalises. Considerably less than the
+headline suggests.
+
+## Reproducibility, verified twice
+
+`v1_raw.json` and `v2_raw.json` originally carried no temperature, seed, or `num_ctx`
+— they predate the commit that began recording configuration alongside results. That is
+the exact defect config recording exists to prevent, sitting on the baseline every claim
+is measured against.
+
+Both were re-run under the recorded configuration:
+
+| | Old | Re-run | Cases with a different tool path |
+|---|---:|---:|---:|
+| v1 | 50.8% | 50.8% | **0 / 70** |
+| v2 | 31.1% | 31.1% | **0 / 70** |
+
+Identical, eight days apart, across every metric. The baselines were deterministic all
+along and simply could not prove it. The superseded files are kept as
+`v1_unrecorded-config_raw.json` and `v2_unrecorded-config_raw.json` so the difference
+between an unverifiable and a verified run remains inspectable.
+
 ## Answer quality: the process metrics improved and the answers did not
 
 Judged by `qwen2.5:14b` (κ 0.900 against human labels) on a stratified sample of 24

@@ -129,9 +129,21 @@ The brief defines the deliverable as a documented iteration loop rather than a p
 scorecard, and that is what exists — but the targets are unmet, and prompt changes are
 not going to close the gap.
 
-**v1 was never run on the held-out set.** The held-out column therefore has no baseline.
-v4-enumerated's 60.0% cannot be described as generalising *better than v1*; it is simply
-the only measurement of its kind. Establishing that baseline is one run and was not done.
+**Most of the improvement does not generalise.** The v1 held-out baseline was run last,
+and it reframes the headline:
+
+| v1 → v4-enumerated | Golden | Held-out |
+|---|---:|---:|
+| Trajectory | +13.1pp | **+5.0pp** |
+| Escalation | +35.0pp | **+10.0pp** |
+
+Escalation reads as a 35-point gain on the cases the prompts were derived from and a
+10-point gain on cases they have never seen. v1 also scores higher on held-out than on
+golden (55.0% vs 50.8%), which suggests those cases are somewhat easier — making
+v4's 60.0% weaker rather than stronger.
+
+The held-out set was built to catch a prompt that had memorised its evaluation. It
+caught the project's own headline instead.
 
 **v3's golden figure is the higher of two conflicting runs** of identical configuration —
 62.3% and 63.9%. Every table here uses 63.9%. The discrepancy is unexplained and is

@@ -43,7 +43,7 @@ It earned its place immediately: **v4-principled scored best on the golden set (
 
 | Version | Traj (golden) | Traj (held-out) | Gap | Escalation | Search rate | Recall \| searched |
 |---|---:|---:|---:|---:|---:|---:|
-| v1 (naive baseline) | 50.8% | — | — | 0.0% | 72.4% | 88.1% |
+| v1 (naive baseline) | 50.8% | 55.0% | +4.2 | 0.0% | 72.4% | 88.1% |
 | v2 | 31.1% | — | — | 40.0% | 20.7% | 100% |
 | v3 | 63.9% | 55.0% | −8.9 | 30.0% | 82.8% | 91.7% |
 | **v4-enumerated** | **63.9%** | **60.0%** | **−3.9** | 35.0% | 75.9% | 88.6% |
@@ -59,10 +59,18 @@ It earned its place immediately: **v4-principled scored best on the golden set (
 
 **Every PRD success target was missed.** M2 trajectory 63.9% against >85%, M3 retrieval recall 67.2% against >90%, M5 escalation 35% against 100%. The project's stated deliverable was a documented, evidence-driven iteration loop rather than a passing scorecard, and that is what it produced — but the targets in [docs/prd.md](docs/prd.md) are not met and are not on track to be met by prompt changes.
 
-Two caveats on the table above, both disclosed rather than buried:
+**On unseen questions, the improvement is about a third of what the golden set reports.**
 
-- **v1 was never run on the held-out set**, so there is no baseline for the held-out column. "60.0% on unseen questions" is not demonstrably better than v1 — it is simply the only measurement of its kind.
-- **v3's golden figure is the higher of two conflicting runs** of identical configuration (62.3% and 63.9%). The discrepancy is unexplained; see Known open problems.
+| v1 → v4-enumerated | Golden | Held-out |
+|---|---:|---:|
+| Trajectory | +13.1pp | **+5.0pp** |
+| Escalation | +35.0pp | **+10.0pp** |
+
+Most of the measured gain sits on the cases that shaped the prompts. v1 also scores *higher* on held-out than golden (55.0% vs 50.8%), suggesting those cases are somewhat easier — which makes v4's 60.0% weaker still. This is exactly what the held-out set was built to catch, and it caught the project's own headline.
+
+One caveat remains: **v3's golden figure is the higher of two conflicting runs** of identical configuration (62.3% and 63.9%). Unexplained; see Known open problems.
+
+**Reproducibility is verified, not assumed.** v1 and v2 were re-run under fully recorded configuration and came back identical — same metrics, **0 of 70 cases** taking a different tool path, eight days apart.
 
 Three of the maintainer's own hypotheses were falsified by measurement — prompt length as the cause of the v2 collapse, principles generalising better than an enumerated list, and the tool description being the lever for escalation. Full write-ups in [docs/eval_comparison.md](docs/eval_comparison.md) and [docs/case_study.md](docs/case_study.md).
 
