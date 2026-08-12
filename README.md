@@ -53,7 +53,7 @@ It earned its place immediately: **v4-principled scored best on the golden set (
 
 **What works:** retrieval (88–100% recall whenever a search happens, including 100% on unseen questions), and tool selection — excluding escalation cases, **v4-principled reaches 90.2%** trajectory and v4-enumerated 78.0%.
 
-**What doesn't:** escalation, 20–40% across every version. It accounts for 76% of all remaining trajectory failures.
+**What doesn't:** escalation, 20–40% across every version. It accounts for **59%** of v4-enumerated's remaining trajectory failures (13 of 22) and **76%** of v4-principled's (13 of 17).
 
 **Answer quality barely moved.** Judged on 24 paired cases: task success 29.2% → 33.3% (one case, i.e. noise), clarity 25.0% → **41.7%**, faithfulness 91.3% → 95.0%. The deterministic metrics improved substantially and the answers did not follow. Tracking trajectory alone would have reported a 13-point win and called it a success — the three-level design is the only reason that claim wasn't made.
 

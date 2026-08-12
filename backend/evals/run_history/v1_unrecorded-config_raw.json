@@ -1,18 +1,14 @@
 {
   "version": "v1",
-  "case_set": "golden",
-  "run_at": "2026-08-12T11:03:58.501732+00:00",
-  "elapsed_seconds": 858.1,
+  "run_at": "2026-08-04T16:04:37.596561+00:00",
+  "elapsed_seconds": 834.7,
   "config": {
     "agent_model": "qwen2.5:7b",
     "judge_model": "qwen2.5:14b",
     "chunk_max_chars": 1200,
     "chunk_overlap_chars": 150,
     "retrieval_top_k": 3,
-    "max_agent_turns": 6,
-    "temperature": 0.0,
-    "seed": 20260804,
-    "num_ctx": 16384
+    "max_agent_turns": 6
   },
   "deterministic_summary": {
     "n_cases": 70,
@@ -42,9 +38,9 @@
       "pass_rate": 1.0
     },
     "operational": {
-      "mean_latency_ms": 12252,
-      "median_latency_ms": 10597,
-      "mean_total_tokens": 1931,
+      "mean_latency_ms": 11923,
+      "median_latency_ms": 10562,
+      "mean_total_tokens": 1932,
       "turn_limit_hits": 0,
       "no_tool_calls": 3
     }
@@ -62,9 +58,9 @@
           "turn": 1,
           "name": "lookup_visa_requirements",
           "arguments": {
-            "from_country": "India",
             "to_country": "Netherlands",
-            "visa_type": "work_permit"
+            "visa_type": "work_permit",
+            "from_country": "India"
           },
           "meta": {
             "found": true,
@@ -83,7 +79,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 11087,
+      "latency_ms": 9532,
       "prompt_tokens": 1434,
       "completion_tokens": 207,
       "total_tokens": 1641,
@@ -169,7 +165,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 5265,
+      "latency_ms": 5679,
       "prompt_tokens": 1432,
       "completion_tokens": 131,
       "total_tokens": 1563,
@@ -252,7 +248,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 5890,
+      "latency_ms": 6444,
       "prompt_tokens": 1416,
       "completion_tokens": 149,
       "total_tokens": 1565,
@@ -335,7 +331,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 4716,
+      "latency_ms": 5146,
       "prompt_tokens": 1427,
       "completion_tokens": 115,
       "total_tokens": 1542,
@@ -432,7 +428,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 9557,
+      "latency_ms": 9787,
       "prompt_tokens": 1791,
       "completion_tokens": 210,
       "total_tokens": 2001,
@@ -518,7 +514,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 7142,
+      "latency_ms": 7681,
       "prompt_tokens": 1418,
       "completion_tokens": 184,
       "total_tokens": 1602,
@@ -580,9 +576,9 @@
           "turn": 1,
           "name": "lookup_visa_requirements",
           "arguments": {
-            "from_country": "US",
             "to_country": "Netherlands",
-            "visa_type": "dependent_residence"
+            "visa_type": "dependent_residence",
+            "from_country": "US"
           },
           "meta": {
             "found": true,
@@ -601,7 +597,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 6349,
+      "latency_ms": 6958,
       "prompt_tokens": 1404,
       "completion_tokens": 162,
       "total_tokens": 1566,
@@ -684,7 +680,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 11354,
+      "latency_ms": 12465,
       "prompt_tokens": 1524,
       "completion_tokens": 297,
       "total_tokens": 1821,
@@ -755,7 +751,7 @@
             "urgency": "high"
           },
           "meta": {
-            "ticket_id": "GM-1EC340E6",
+            "ticket_id": "GM-03052595",
             "category": "visa",
             "urgency": "high"
           }
@@ -765,15 +761,15 @@
         "create_hr_ticket"
       ],
       "grounding_context": [
-        "Ticket GM-1EC340E6 created (visa, urgency high). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
+        "Ticket GM-03052595 created (visa, urgency high). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
       ],
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10718,
-      "prompt_tokens": 1395,
+      "latency_ms": 11899,
+      "prompt_tokens": 1396,
       "completion_tokens": 292,
-      "total_tokens": 1687,
+      "total_tokens": 1688,
       "expected_tool_calls": [
         {
           "name": "escalate_to_human"
@@ -865,7 +861,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 17977,
+      "latency_ms": 19460,
       "prompt_tokens": 2085,
       "completion_tokens": 434,
       "total_tokens": 2519,
@@ -965,7 +961,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10267,
+      "latency_ms": 11267,
       "prompt_tokens": 1832,
       "completion_tokens": 240,
       "total_tokens": 2072,
@@ -1049,7 +1045,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 4463,
+      "latency_ms": 4934,
       "prompt_tokens": 1417,
       "completion_tokens": 106,
       "total_tokens": 1523,
@@ -1140,7 +1136,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 12434,
+      "latency_ms": 13560,
       "prompt_tokens": 1787,
       "completion_tokens": 302,
       "total_tokens": 2089,
@@ -1237,7 +1233,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 8017,
+      "latency_ms": 8655,
       "prompt_tokens": 1930,
       "completion_tokens": 166,
       "total_tokens": 2096,
@@ -1320,7 +1316,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 8182,
+      "latency_ms": 9098,
       "prompt_tokens": 1413,
       "completion_tokens": 211,
       "total_tokens": 1624,
@@ -1414,7 +1410,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 7316,
+      "latency_ms": 8410,
       "prompt_tokens": 1726,
       "completion_tokens": 166,
       "total_tokens": 1892,
@@ -1510,7 +1506,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 9043,
+      "latency_ms": 9566,
       "prompt_tokens": 1902,
       "completion_tokens": 195,
       "total_tokens": 2097,
@@ -1606,7 +1602,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 8716,
+      "latency_ms": 9442,
       "prompt_tokens": 1873,
       "completion_tokens": 191,
       "total_tokens": 2064,
@@ -1702,7 +1698,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10385,
+      "latency_ms": 11289,
       "prompt_tokens": 1884,
       "completion_tokens": 236,
       "total_tokens": 2120,
@@ -1797,7 +1793,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 14282,
+      "latency_ms": 15969,
       "prompt_tokens": 1869,
       "completion_tokens": 352,
       "total_tokens": 2221,
@@ -1893,7 +1889,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 9551,
+      "latency_ms": 10619,
       "prompt_tokens": 1818,
       "completion_tokens": 213,
       "total_tokens": 2031,
@@ -1990,7 +1986,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 7546,
+      "latency_ms": 8285,
       "prompt_tokens": 1767,
       "completion_tokens": 167,
       "total_tokens": 1934,
@@ -2086,7 +2082,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10302,
+      "latency_ms": 11283,
       "prompt_tokens": 1894,
       "completion_tokens": 233,
       "total_tokens": 2127,
@@ -2170,7 +2166,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 12433,
+      "latency_ms": 13826,
       "prompt_tokens": 1493,
       "completion_tokens": 321,
       "total_tokens": 1814,
@@ -2266,7 +2262,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 8600,
+      "latency_ms": 9562,
       "prompt_tokens": 1712,
       "completion_tokens": 195,
       "total_tokens": 1907,
@@ -2365,7 +2361,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 7260,
+      "latency_ms": 8503,
       "prompt_tokens": 1730,
       "completion_tokens": 159,
       "total_tokens": 1889,
@@ -2462,7 +2458,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 7632,
+      "latency_ms": 9320,
       "prompt_tokens": 1699,
       "completion_tokens": 155,
       "total_tokens": 1854,
@@ -2558,7 +2554,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 9312,
+      "latency_ms": 10043,
       "prompt_tokens": 1835,
       "completion_tokens": 155,
       "total_tokens": 1990,
@@ -2654,7 +2650,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 8107,
+      "latency_ms": 8789,
       "prompt_tokens": 1769,
       "completion_tokens": 161,
       "total_tokens": 1930,
@@ -2751,7 +2747,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 9358,
+      "latency_ms": 9860,
       "prompt_tokens": 1836,
       "completion_tokens": 193,
       "total_tokens": 2029,
@@ -2835,7 +2831,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 8345,
+      "latency_ms": 8674,
       "prompt_tokens": 1425,
       "completion_tokens": 189,
       "total_tokens": 1614,
@@ -2919,7 +2915,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 11922,
+      "latency_ms": 11927,
       "prompt_tokens": 1516,
       "completion_tokens": 258,
       "total_tokens": 1774,
@@ -3002,7 +2998,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10754,
+      "latency_ms": 11170,
       "prompt_tokens": 1486,
       "completion_tokens": 245,
       "total_tokens": 1731,
@@ -3084,7 +3080,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 5162,
+      "latency_ms": 5427,
       "prompt_tokens": 1413,
       "completion_tokens": 109,
       "total_tokens": 1522,
@@ -3168,7 +3164,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 7886,
+      "latency_ms": 8584,
       "prompt_tokens": 1415,
       "completion_tokens": 177,
       "total_tokens": 1592,
@@ -3266,7 +3262,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 9780,
+      "latency_ms": 10181,
       "prompt_tokens": 1851,
       "completion_tokens": 192,
       "total_tokens": 2043,
@@ -3350,7 +3346,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 18920,
+      "latency_ms": 19720,
       "prompt_tokens": 1620,
       "completion_tokens": 438,
       "total_tokens": 2058,
@@ -3408,7 +3404,7 @@
       "persona": "P5",
       "query": "I can't get a police certificate from a country I lived in \u2014 they won't issue to non-residents. What do I do?",
       "history": [],
-      "reply": "Your HR ticket has been created with the reference number GM-38EC7C21. The Global Mobility team will acknowledge your request within one business day.\n\nIn the meantime, you can start preparing other necessary documents and keep an eye on any updates from the HR team. If you need any further assistance or have additional questions, feel free to reach out.\n\nThank you for bringing this to our attention!",
+      "reply": "Your ticket has been created and acknowledged by the Global Mobility team. They will review your situation and provide more detailed guidance as soon as possible.\n\nIn the meantime, here are a few steps you can take:\n\n1. **Contact Local Authorities**: Reach out to local authorities or embassies in your home country to see if they have any specific procedures for non-residents seeking police certificates.\n2. **Alternative Documentation**: Prepare alternative documentation that might be accepted by the destination authority, such as sworn affidavits or other forms of evidence.\n3. **Stay Informed**: Keep an eye on communications from the Global Mobility team and follow their advice closely.\n\nIf you need any immediate assistance or have further questions, feel free to reach out.",
       "tool_calls": [
         {
           "turn": 1,
@@ -3443,7 +3439,7 @@
             "urgency": "normal"
           },
           "meta": {
-            "ticket_id": "GM-8D175D3F",
+            "ticket_id": "GM-0C4FBED6",
             "category": "other",
             "urgency": "normal"
           }
@@ -3453,11 +3449,11 @@
           "name": "create_hr_ticket",
           "arguments": {
             "category": "other",
-            "summary": "Employee facing issues obtaining a police certificate as a non-resident and requires assistance from Global Mobility.",
+            "summary": "Employee unable to obtain police certificate from a non-resident perspective. Escalating to Global Mobility adviser.",
             "urgency": "normal"
           },
           "meta": {
-            "ticket_id": "GM-38EC7C21",
+            "ticket_id": "GM-0F03BF6E",
             "category": "other",
             "urgency": "normal"
           }
@@ -3470,18 +3466,18 @@
       ],
       "grounding_context": [
         "[source: 07-document-requirements.md \u00b7 Validity windows]\nDocument Requirements \u2014 Validity windows\n\nSeveral documents are only accepted if recently issued, and this is what makes document collection a live task rather than a filing exercise.\n\nPolice certificates are generally accepted only if issued within the preceding three months at the point of filing, or six months in some Tier 1 destinations. Medical examinations are typically valid for three months. Civil status extracts \u2014 birth and marriage certificates \u2014 are frequently required to be recent extracts rather than the original historical document, with acceptance windows of three to six months depending on destination.\n\nThe practical consequence is that these documents cannot be obtained far in advance and held. Obtaining a police certificate the moment an assignment is approved, when the filing is fourteen weeks away in a Tier 3 destination, will produce a document that has expired by the time it is needed.\n\n---\n\n[source: 07-document-requirements.md \u00b7 Where a document cannot be obtained]\nDocument Requirements \u2014 Where a document cannot be obtained\n\nEmployees occasionally cannot obtain a required document \u2014 a police certificate from a country that will not issue to non-residents, a birth certificate that was never registered, or a document lost with no reissuing authority available. Destinations sometimes accept a sworn affidavit or alternative evidence in these situations, but acceptance is discretionary and case-specific.\n\nAn employee reporting that they cannot obtain a required document should be escalated to a Global Mobility adviser rather than advised on a substitute. The same applies where a document reveals something the employee is concerned about, such as a criminal record disclosure; that is a matter for an adviser and, where appropriate, counsel.\n\n---\n\n[source: 07-document-requirements.md \u00b7 Renewals]\nDocument Requirements \u2014 Renewals\n\nA renewal is not a continuation of the existing application and does not reuse the documents filed with it.\n\nEmployees frequently assume that because Meridian and the destination authority already hold their birth certificate, marriage certificate, and police certificate, a renewal is a matter of confirming that nothing has changed. It is not. A renewal is assessed as a fresh application, and every document subject to a validity window must be reissued. In practice this means a new police certificate, a new medical examination where the destination requires one, and fresh civil status extracts.\n\nDocuments not subject to a validity window \u2014 educational certificates, for instance \u2014 can usually be reused, and Global Mobility will confirm which items carry over.\n\nWhat a renewal adds beyond the initial set is evidence of the period already spent in the destination: proof of continuous employment, evidence of the registered address, and in some destinations proof of tax compliance or social security contributions for the period held.",
-        "Ticket GM-8D175D3F created (other, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases.",
-        "Ticket GM-38EC7C21 created (other, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
+        "Ticket GM-0C4FBED6 created (other, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases.",
+        "Ticket GM-0F03BF6E created (other, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
       ],
       "retrieved_docs": [
         "07-document-requirements.md"
       ],
       "turns": 4,
       "hit_turn_limit": false,
-      "latency_ms": 24910,
-      "prompt_tokens": 4929,
-      "completion_tokens": 519,
-      "total_tokens": 5448,
+      "latency_ms": 29351,
+      "prompt_tokens": 4927,
+      "completion_tokens": 573,
+      "total_tokens": 5500,
       "expected_tool_calls": [
         {
           "name": "escalate_to_human"
@@ -3574,7 +3570,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 9717,
+      "latency_ms": 10053,
       "prompt_tokens": 1838,
       "completion_tokens": 178,
       "total_tokens": 2016,
@@ -3674,7 +3670,7 @@
       "retrieved_docs": [],
       "turns": 3,
       "hit_turn_limit": false,
-      "latency_ms": 24082,
+      "latency_ms": 24386,
       "prompt_tokens": 2636,
       "completion_tokens": 508,
       "total_tokens": 3144,
@@ -3770,7 +3766,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 12279,
+      "latency_ms": 12430,
       "prompt_tokens": 1764,
       "completion_tokens": 223,
       "total_tokens": 1987,
@@ -3865,7 +3861,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 13242,
+      "latency_ms": 13851,
       "prompt_tokens": 1794,
       "completion_tokens": 258,
       "total_tokens": 2052,
@@ -3960,7 +3956,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 15327,
+      "latency_ms": 14432,
       "prompt_tokens": 1735,
       "completion_tokens": 274,
       "total_tokens": 2009,
@@ -4053,7 +4049,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10772,
+      "latency_ms": 10360,
       "prompt_tokens": 1804,
       "completion_tokens": 186,
       "total_tokens": 1990,
@@ -4136,7 +4132,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 6827,
+      "latency_ms": 7020,
       "prompt_tokens": 1411,
       "completion_tokens": 132,
       "total_tokens": 1543,
@@ -4199,9 +4195,9 @@
           "turn": 1,
           "name": "lookup_visa_requirements",
           "arguments": {
-            "visa_type": "work_permit",
             "from_country": "Singapore",
-            "to_country": "Singapore"
+            "to_country": "Singapore",
+            "visa_type": "work_permit"
           },
           "meta": {
             "found": false,
@@ -4219,7 +4215,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 12805,
+      "latency_ms": 12967,
       "prompt_tokens": 1464,
       "completion_tokens": 258,
       "total_tokens": 1722,
@@ -4276,18 +4272,18 @@
       "persona": "P4",
       "query": "I'm being audited by the tax authority over my assignment income. Can Meridian help?",
       "history": [],
-      "reply": "Thank you for providing that information. A ticket has been created for your tax-related issue: GM-E1914F26. The Global Mobility team will acknowledge it within one business day.\n\nIn the meantime, if there are any specific documents or communications related to this audit, please share them so we can provide more tailored assistance. We'll keep you updated on the progress of your case.",
+      "reply": "Thank you for providing that information. A ticket has been created for your tax-related issue: GM-4CCB55DC. The Global Mobility team will acknowledge it within one business day.\n\nIn the meantime, if there are any specific documents or communications related to this audit, please share them so we can provide more tailored assistance. We'll keep you updated on the progress of your case.",
       "tool_calls": [
         {
           "turn": 1,
           "name": "create_hr_ticket",
           "arguments": {
-            "category": "tax",
             "summary": "Tax authority audit on assignment income",
-            "urgency": "normal"
+            "urgency": "normal",
+            "category": "tax"
           },
           "meta": {
-            "ticket_id": "GM-E1914F26",
+            "ticket_id": "GM-4CCB55DC",
             "category": "tax",
             "urgency": "normal"
           }
@@ -4297,15 +4293,15 @@
         "create_hr_ticket"
       ],
       "grounding_context": [
-        "Ticket GM-E1914F26 created (tax, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
+        "Ticket GM-4CCB55DC created (tax, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
       ],
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10062,
-      "prompt_tokens": 1375,
-      "completion_tokens": 189,
-      "total_tokens": 1564,
+      "latency_ms": 9317,
+      "prompt_tokens": 1374,
+      "completion_tokens": 188,
+      "total_tokens": 1562,
       "expected_tool_calls": [
         {
           "name": "escalate_to_human"
@@ -4396,7 +4392,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 15929,
+      "latency_ms": 14739,
       "prompt_tokens": 1814,
       "completion_tokens": 274,
       "total_tokens": 2088,
@@ -4490,7 +4486,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10477,
+      "latency_ms": 10505,
       "prompt_tokens": 1952,
       "completion_tokens": 171,
       "total_tokens": 2123,
@@ -4586,7 +4582,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 20580,
+      "latency_ms": 18941,
       "prompt_tokens": 1845,
       "completion_tokens": 358,
       "total_tokens": 2203,
@@ -4648,9 +4644,9 @@
           "turn": 1,
           "name": "lookup_visa_requirements",
           "arguments": {
-            "from_country": "US",
             "to_country": "Australia",
-            "visa_type": "work_permit"
+            "visa_type": "work_permit",
+            "from_country": "US"
           },
           "meta": {
             "found": false,
@@ -4668,7 +4664,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 10254,
+      "latency_ms": 9263,
       "prompt_tokens": 1457,
       "completion_tokens": 177,
       "total_tokens": 1634,
@@ -4765,7 +4761,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 23215,
+      "latency_ms": 22087,
       "prompt_tokens": 1730,
       "completion_tokens": 422,
       "total_tokens": 2152,
@@ -4858,7 +4854,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 19641,
+      "latency_ms": 17293,
       "prompt_tokens": 1814,
       "completion_tokens": 314,
       "total_tokens": 2128,
@@ -4917,7 +4913,7 @@
             "urgency": "normal"
           },
           "meta": {
-            "ticket_id": "GM-B28B9D34",
+            "ticket_id": "GM-1F4CA823",
             "category": "other",
             "urgency": "normal"
           }
@@ -4927,12 +4923,12 @@
         "create_hr_ticket"
       ],
       "grounding_context": [
-        "Ticket GM-B28B9D34 created (other, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
+        "Ticket GM-1F4CA823 created (other, urgency normal). The Global Mobility team acknowledges within one business day, or the same business day for time-critical cases."
       ],
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 13923,
+      "latency_ms": 10457,
       "prompt_tokens": 1393,
       "completion_tokens": 203,
       "total_tokens": 1596,
@@ -5018,7 +5014,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 20056,
+      "latency_ms": 16746,
       "prompt_tokens": 1723,
       "completion_tokens": 308,
       "total_tokens": 2031,
@@ -5073,7 +5069,7 @@
       "retrieved_docs": [],
       "turns": 1,
       "hit_turn_limit": false,
-      "latency_ms": 5068,
+      "latency_ms": 4917,
       "prompt_tokens": 621,
       "completion_tokens": 96,
       "total_tokens": 717,
@@ -5126,7 +5122,7 @@
       "retrieved_docs": [],
       "turns": 1,
       "hit_turn_limit": false,
-      "latency_ms": 7247,
+      "latency_ms": 7155,
       "prompt_tokens": 616,
       "completion_tokens": 139,
       "total_tokens": 755,
@@ -5178,7 +5174,7 @@
       "retrieved_docs": [],
       "turns": 1,
       "hit_turn_limit": false,
-      "latency_ms": 3643,
+      "latency_ms": 3464,
       "prompt_tokens": 619,
       "completion_tokens": 65,
       "total_tokens": 684,
@@ -5279,7 +5275,7 @@
       ],
       "turns": 3,
       "hit_turn_limit": false,
-      "latency_ms": 38144,
+      "latency_ms": 29037,
       "prompt_tokens": 2939,
       "completion_tokens": 531,
       "total_tokens": 3470,
@@ -5374,7 +5370,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 24663,
+      "latency_ms": 21693,
       "prompt_tokens": 1801,
       "completion_tokens": 344,
       "total_tokens": 2145,
@@ -5453,7 +5449,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 16115,
+      "latency_ms": 13646,
       "prompt_tokens": 1503,
       "completion_tokens": 255,
       "total_tokens": 1758,
@@ -5523,7 +5519,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 12614,
+      "latency_ms": 11082,
       "prompt_tokens": 1357,
       "completion_tokens": 185,
       "total_tokens": 1542,
@@ -5618,7 +5614,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 15672,
+      "latency_ms": 11953,
       "prompt_tokens": 2016,
       "completion_tokens": 191,
       "total_tokens": 2207,
@@ -5711,7 +5707,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 13025,
+      "latency_ms": 11639,
       "prompt_tokens": 1497,
       "completion_tokens": 218,
       "total_tokens": 1715,
@@ -5817,7 +5813,7 @@
       "retrieved_docs": [],
       "turns": 3,
       "hit_turn_limit": false,
-      "latency_ms": 22417,
+      "latency_ms": 19885,
       "prompt_tokens": 2393,
       "completion_tokens": 358,
       "total_tokens": 2751,
@@ -5923,7 +5919,7 @@
       ],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 20344,
+      "latency_ms": 13386,
       "prompt_tokens": 1826,
       "completion_tokens": 234,
       "total_tokens": 2060,
@@ -6015,7 +6011,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 12825,
+      "latency_ms": 10373,
       "prompt_tokens": 1516,
       "completion_tokens": 154,
       "total_tokens": 1670,
@@ -6103,7 +6099,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 17304,
+      "latency_ms": 13670,
       "prompt_tokens": 1512,
       "completion_tokens": 246,
       "total_tokens": 1758,
@@ -6174,9 +6170,9 @@
           "turn": 1,
           "name": "lookup_visa_requirements",
           "arguments": {
+            "from_country": "US",
             "to_country": "Netherlands",
-            "visa_type": "dependent_residence",
-            "from_country": "US"
+            "visa_type": "dependent_residence"
           },
           "meta": {
             "found": true,
@@ -6195,7 +6191,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 12079,
+      "latency_ms": 11474,
       "prompt_tokens": 1450,
       "completion_tokens": 180,
       "total_tokens": 1630,
@@ -6267,8 +6263,8 @@
           "turn": 1,
           "name": "generate_document_checklist",
           "arguments": {
-            "destination": "Singapore",
-            "employee_type": "short_term_assignment"
+            "employee_type": "short_term_assignment",
+            "destination": "Singapore"
           },
           "meta": {
             "found": true,
@@ -6287,7 +6283,7 @@
       "retrieved_docs": [],
       "turns": 2,
       "hit_turn_limit": false,
-      "latency_ms": 16385,
+      "latency_ms": 14063,
       "prompt_tokens": 1566,
       "completion_tokens": 230,
       "total_tokens": 1796,
@@ -6339,5 +6335,6 @@
         "violations": []
       }
     }
-  ]
+  ],
+  "rescored": true
 }
