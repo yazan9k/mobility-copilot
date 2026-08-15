@@ -15,8 +15,8 @@ import time
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-from agent import llm, prompts, tools
-from config import AGENT_VERSION, MAX_AGENT_TURNS
+from agent import escalation_gate, llm, prompts, tools
+from config import AGENT_VERSION, ESCALATION_GATE_ENABLED, MAX_AGENT_TURNS
 
 
 @dataclass
@@ -46,6 +46,7 @@ class AgentResult:
     completion_tokens: int
     version: str
     hit_turn_limit: bool = False
+    gate_decision: dict[str, Any] | None = None
 
     def tool_names(self) -> list[str]:
         return [t.name for t in self.tool_calls]
@@ -79,6 +80,44 @@ def run(
     started = time.perf_counter()
     hit_limit = False
     reply = ""
+    gate_decision = None
+
+    # Escalation decision gate. Runs before the loop and calls the tool in code,
+    # because four prompt formulations across two model architectures could not
+    # get the model to reliably call it itself. See agent/escalation_gate.py.
+    #
+    # The escalation still enters the trace as a normal tool call, so trajectory
+    # and escalation metrics score it exactly as they would a model-initiated
+    # one — the gate changes how the decision is made, not how it is measured.
+    if ESCALATION_GATE_ENABLED:
+        decision = escalation_gate.decide(message, history)
+        gate_decision = decision.as_dict()
+        if decision.needs_human:
+            result = tools.dispatch(
+                "escalate_to_human",
+                {"reason": decision.reason or f"Escalation rule: {decision.rule}"},
+            )
+            trace.append(
+                TraceEntry(
+                    turn=0,  # turn 0: decided before the model's first turn
+                    name="escalate_to_human",
+                    arguments={"reason": decision.reason},
+                    result=result.display,
+                    meta={**result.meta, "source": "gate", "rule": decision.rule},
+                )
+            )
+            # Tell the loop what already happened, so it answers the answerable
+            # part rather than re-escalating or refusing the whole message.
+            messages.append({
+                "role": "system",
+                "content": (
+                    "This question has already been escalated to a Global Mobility "
+                    "adviser, and the employee has been told. Do not call "
+                    "escalate_to_human. Answer any part of their message that "
+                    "policy does cover, and say nothing about the part that was "
+                    "escalated."
+                ),
+            })
 
     for turn in range(1, MAX_AGENT_TURNS + 1):
         response = llm.chat(messages, tools=schemas)
@@ -140,4 +179,5 @@ def run(
         completion_tokens=completion_tokens,
         version=version,
         hit_turn_limit=hit_limit,
+        gate_decision=gate_decision,
     )

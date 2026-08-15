@@ -55,7 +55,11 @@ It earned its place immediately: **v4-principled scored best on the golden set (
 
 **What doesn't:** escalation, 20–40% across every version. It accounts for **59%** of v4-enumerated's remaining trajectory failures (13 of 22) and **76%** of v4-principled's (13 of 17).
 
+**Changing the model matched four rounds of prompt engineering.** `Ling-3.0-tiny` on the identical prompt: trajectory held-out 60.0% → **65.0%**, search rate 75.9% → **96.5%**, retrieval recall 67.2% → **96.5%**, and twice as fast on 1.3B active parameters. Four prompt iterations bought +5.0pp of held-out trajectory; one model swap bought another +5.0pp in an afternoon.
+
 **Answer quality barely moved.** Judged on 24 paired cases: task success 29.2% → 33.3% (one case, i.e. noise), clarity 25.0% → **41.7%**, faithfulness 91.3% → 95.0%. The deterministic metrics improved substantially and the answers did not follow. Tracking trajectory alone would have reported a 13-point win and called it a success — the three-level design is the only reason that claim wasn't made.
+
+**The escalation gate is the only thing that moved escalation.** Taking the decision out of free-form generation — a schema-constrained "does this need a human?" call, with the tool invoked in code — gave escalation 25% → **60%** on golden and 30% → **40%** on held-out, while **20–25% of its calls were failing outright**. It is off by default (`ESCALATION_GATE=1` to enable): a failure rate that fails toward under-escalation, over-escalation rising from 0% to 10%, and 3.7× latency are each disqualifying for a safety feature. The mechanism is proven; the prototype is not.
 
 **Every PRD success target was missed.** M2 trajectory 63.9% against >85%, M3 retrieval recall 67.2% against >90%, M5 escalation 35% against 100%. The project's stated deliverable was a documented, evidence-driven iteration loop rather than a passing scorecard, and that is what it produced — but the targets in [docs/prd.md](docs/prd.md) are not met and are not on track to be met by prompt changes.
 

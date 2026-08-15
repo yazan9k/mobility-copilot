@@ -287,6 +287,80 @@ quality was being lost somewhere else. Four cases per category, so directional o
 
 Two of seven versions are judged; judging one costs ~35 minutes on a local 14b model.
 
+### The cheapest improvement was the one I tried last
+
+Four prompt iterations, three of them falsified, produced +5.0pp of held-out trajectory.
+Swapping `qwen2.5:7b` for `Ling-3.0-tiny` — same prompt, same cases, same seed —
+produced another +5.0pp in an afternoon, most of which was spent compiling a patched
+llama.cpp because Ollama cannot load the `bailingmoe3` architecture.
+
+| Metric | qwen2.5:7b | Ling 3.0 Tiny |
+|---|---:|---:|
+| Trajectory held-out | 60.0% | **65.0%** |
+| Search rate | 75.9% | **96.5%** |
+| Retrieval recall | 67.2% | **96.5%** |
+| Median latency | 7,430ms | **5,156ms** |
+
+Better on eight of nine metrics, twice as fast, on 1.3B active parameters against 7B
+dense. The lesson is about sequencing: I spent days on prompt variations before trying
+the substitution that matched all of them combined, because the prompt was the thing I
+had already built tooling to measure.
+
+### Three silent-failure bugs, all the same shape
+
+The escalation gate produced the clearest cluster of these, and they are the most
+transferable finding in the project:
+
+| Bug | What it looked like | What it was |
+|---|---|---|
+| `num_ctx` unset | model ignoring instructions | prompt truncated before arrival |
+| `max_tokens` capped at 400 | gate deciding "no" | reasoning starved; degenerate but valid output |
+| `reason` string unbounded | gate rarely firing | 27% invalid JSON, defaulting to no-escalation |
+
+None raised an error. Each produced plausible output that was wrong, and each would have
+been reported as a *result* rather than a defect. The unbounded-string case is the one
+worth remembering: constrained decoding guarantees the output matches the schema, not
+that it terminates — an unbounded string generates until it hits the token ceiling and
+is then cut mid-value, producing invalid JSON from a schema that was doing its job.
+
+Combined with a failure path that defaulted to "no escalation", a crash rate became
+indistinguishable from conservative behaviour.
+
+### The escalation fix: right mechanism, unfinished implementation
+
+Four prompt formulations across two model architectures moved escalation by essentially
+nothing — 20-40% throughout. The diagnosis that unlocked it came from reading the
+failures rather than the scores: **64-85% of "missed" escalations were cases where the
+model stated in its own reply that the question needed a human, and then did not call
+the tool.** The judgement was right; the action never happened.
+
+So the decision moved out of free-form generation. A separate schema-constrained call
+answers one question — "does this need a human?" — and the tool is invoked in code.
+
+| | Ling | + gate | Held-out | + gate |
+|---|---:|---:|---:|---:|
+| Trajectory | 68.8% | **80.3%** | 65.0% | 65.0% |
+| Escalation | 25.0% | **60.0%** | 30.0% | **40.0%** |
+| Over-escalation | 0.0% | 8.0% | 0.0% | 10.0% |
+
+**+35pp on golden, +10pp on held-out** — and it achieved that while **20-25% of its
+calls were failing outright**. The mechanism is sound; the prototype is not shippable.
+
+It is not enabled by default. A 20% failure rate that fails toward under-escalation, a
+clean 0% over-escalation rising to 10%, and 3.7x latency are each disqualifying for a
+safety feature. What ships is the diagnosis, the working prototype behind a flag, and a
+precisely named defect: Ling emits reasoning before the JSON, and on harder questions
+that reasoning exhausts the token budget.
+
+Every attempted fix traded one failure for another — capping tokens starved the
+reasoning into confident nonsense, bounding the string fixed the wrong stage, disabling
+Thinking mode gave 5/5 recall with 4/5 false alarms. The answer is not a bigger budget;
+it is a gate that stops at the first complete JSON object instead of waiting for
+generation to end.
+
+I would rather end with a diagnosed root cause, a measured effect, and a named next step
+than with a prompt tweak that moved nothing.
+
 ## What I would build next
 
 **A schema-constrained decision gate.** The clear conclusion of the escalation work.

@@ -191,6 +191,108 @@ The honest summary is that most of the measured improvement is concentrated on t
 cases that shaped the prompts. Some of it generalises. Considerably less than the
 headline suggests.
 
+## Changing the model beat four rounds of prompt engineering
+
+`Ling-3.0-tiny` (inclusionAI, released 6 Aug 2026) is a mixture-of-experts model with
+1.3B active parameters of 7.9B total. Ollama cannot load it — the `bailingmoe3`
+architecture needs a patched llama.cpp build — so it runs behind `llama-server` through
+a second backend in `agent/llm.py`. Same prompt, same tool descriptions, same cases,
+same temperature and seed. **The model is the only variable.**
+
+| Metric | qwen2.5:7b | Ling 3.0 Tiny | Δ |
+|---|---:|---:|---:|
+| Trajectory golden | 63.9% | **68.8%** | +4.9 |
+| Trajectory held-out | 60.0% | **65.0%** | +5.0 |
+| Search rate | 75.9% | **96.5%** | **+20.7** |
+| Retrieval recall | 67.2% | **96.5%** | **+29.3** |
+| Recall \| searched | 88.6% | **100%** | +11.4 |
+| Over-escalation | 2.0% | **0.0%** | −2.0 |
+| Cases calling no tools | 12 | **3** | −9 |
+| Median latency | 7,430ms | **5,156ms** | −31% |
+| Escalation golden | **35.0%** | 25.0% | −10.0 |
+| Escalation held-out | 30.0% | 30.0% | 0.0 |
+
+Better on eight of nine metrics, twice as fast, on a third of the active parameters.
+
+The comparison worth drawing is against the prompt work:
+
+| Source of improvement | Golden | Held-out |
+|---|---:|---:|
+| Four prompt iterations (v1 → v4-enumerated) | +13.1pp | +5.0pp |
+| One model swap (same prompt) | +4.9pp | **+5.0pp** |
+
+**On unseen questions, swapping the model matched four rounds of prompt engineering.**
+The prompt work took days; the swap took an afternoon, most of it compiling llama.cpp.
+
+### Escalation is not a model-capacity problem
+
+Escalation stayed in the same 25-30% band, which rules out the capacity explanation the
+abandoned 14b diagnostic was meant to test. But the two models fail differently:
+
+| | escalated | said it, did not call |
+|---|---|---|
+| qwen2.5:7b golden | 7/20 | **10/13** — recognises it, does not act |
+| Ling golden | 5/20 | **7/15** |
+| Ling held-out | 3/10 | **1/7** — does not recognise it at all |
+
+qwen has an execution failure; Ling has a recognition failure. Two architectures, two
+different reasons, the same score. A single prompt asking one model to answer the
+question, choose among six tools, and remember a safety rule fails at whichever of
+those it is weakest on — which is the argument for taking the decision out of the
+prompt entirely.
+
+## The escalation gate: the mechanism works, the implementation does not
+
+Four prompt formulations across two architectures moved escalation by essentially
+nothing. The gate takes the decision out of free-form generation entirely: a separate
+schema-constrained call answers "does this need a human?", and the tool is invoked in
+code. See `agent/escalation_gate.py`. Enabled with `ESCALATION_GATE=1`, off by default.
+
+| Metric | Ling | +gate | Δ | Ling held-out | +gate held-out | Δ |
+|---|---:|---:|---:|---:|---:|---:|
+| Trajectory | 68.8% | **80.3%** | **+11.5** | 65.0% | 65.0% | **0.0** |
+| Escalation | 25.0% | **60.0%** | **+35.0** | 30.0% | **40.0%** | **+10.0** |
+| Over-escalation | 0.0% | 8.0% | +8.0 | 0.0% | 10.0% | +10.0 |
+| Median latency | 5,156ms | 19,009ms | 3.7x | — | — | — |
+| **Gate failures** | — | **14/70 (20%)** | — | — | **5/20 (25%)** | — |
+
+**+35pp escalation on golden, +10pp on held-out** — the same roughly one-third ratio
+between derived and unseen cases that this project has now measured three times.
+
+Trajectory does not move at all on held-out: the escalation gain is cancelled by 10%
+over-escalation, leaving net tool choice flat on unseen questions.
+
+Where the gate does fire it is reasonably precise — 8 of 12 correct on golden, 4 of 5 on
+held-out. It is not spraying escalations. The damage is in the 20-25% of calls that
+never return an answer, each defaulting silently to no-escalation.
+
+### Not shipped as default, for three reasons
+
+1. **20-25% failure rate**, and it fails toward under-escalation on a safety metric.
+2. **Over-escalation 0% to 10%** on held-out, from a clean baseline.
+3. **3.7x latency**, 5.2s to 19s.
+
+### The remaining defect, named precisely
+
+Ling emits reasoning tokens before the JSON. On harder questions those tokens exhaust
+the budget and the response comes back empty. Every attempted fix traded one failure for
+another:
+
+| Attempt | Result |
+|---|---|
+| `max_tokens` 400 | 0/5 escalation recall — reasoning starved, degenerate valid output |
+| `maxLength` on `reason` | Fixed the string running away, not the thinking before it |
+| Thinking disabled | 5/5 recall, **4/5 false alarms** — labels document checklists HIGH_CONSEQUENCE |
+| `max_tokens` 6000 | Failures 19% to 20%, one call at 111s |
+
+The fix is not a bigger budget. It is either a model whose reasoning is bounded, or a
+gate that streams and stops at the first complete JSON object rather than waiting for
+the generation to end.
+
+**The finding stands regardless:** the only intervention that moved escalation at all
+did so while a fifth of its calls were crashing. That is evidence about the mechanism,
+not about the prototype.
+
 ## Reproducibility, verified twice
 
 `v1_raw.json` and `v2_raw.json` originally carried no temperature, seed, or `num_ctx`

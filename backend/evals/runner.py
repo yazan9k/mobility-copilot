@@ -25,6 +25,8 @@ import yaml
 from agent import core, llm
 from config import (
     AGENT_MODEL,
+    ESCALATION_GATE_ENABLED,
+    LLM_BACKEND,
     AGENT_NUM_CTX,
     AGENT_SEED,
     AGENT_TEMPERATURE,
@@ -75,6 +77,8 @@ def run_fingerprint(version: str, case_set: str) -> dict[str, Any]:
     return {
         "version": version,
         "case_set": case_set,
+        "llm_backend": LLM_BACKEND,
+        "escalation_gate": ESCALATION_GATE_ENABLED,
         "agent_model": AGENT_MODEL,
         "temperature": AGENT_TEMPERATURE,
         "seed": AGENT_SEED,
@@ -142,6 +146,7 @@ def run_case(case: dict, version: str) -> dict[str, Any]:
         "retrieved_docs": result.retrieved_docs,
         "turns": result.turns,
         "hit_turn_limit": result.hit_turn_limit,
+        "gate_decision": result.gate_decision,
         "latency_ms": result.latency_ms,
         "prompt_tokens": result.prompt_tokens,
         "completion_tokens": result.completion_tokens,
@@ -247,6 +252,8 @@ def main() -> int:
         # this, which is how two runs of "the same" config differed by 15pp on
         # retrieval recall without the files showing any reason why.
         "config": {
+            "llm_backend": LLM_BACKEND,
+            "escalation_gate": ESCALATION_GATE_ENABLED,
             "agent_model": AGENT_MODEL,
             "judge_model": JUDGE_MODEL,
             "chunk_max_chars": CHUNK_MAX_CHARS,

@@ -30,6 +30,36 @@ COLLECTION_NAME = "mobility_policies"
 # actually ran, and the checkpoint refuses to resume across a model change.
 AGENT_MODEL = os.environ.get("AGENT_MODEL", "qwen2.5:7b")
 JUDGE_MODEL = "qwen2.5:14b"  # larger than the agent, deliberately
+
+# Which backend serves the agent. "ollama" is the default and everything from
+# v1 to v5 was measured on it.
+#
+# "openai" points at an OpenAI-compatible endpoint — in practice llama.cpp's
+# llama-server. It exists because Ling 3.0 Tiny uses the `bailingmoe3`
+# architecture, which Ollama cannot load; it needs a patched llama.cpp build
+# (aetherbird/llama.cpp:bailingmoe3-support, upstream PR pending).
+#
+#   ~/llama.cpp-bailing/build/bin/llama-server \
+#       -m ~/models/ling3-tiny/Ling-3.0-tiny-Q4_K_M.gguf \
+#       --host 127.0.0.1 --port 8080 -c 16384 -ngl 99 --jinja
+#
+#   LLM_BACKEND=openai AGENT_MODEL=ling-3.0-tiny \
+#       python -m evals.runner --version v4-enumerated
+#
+# The judge stays on Ollama regardless — its 0.900 kappa calibration was
+# measured against qwen2.5:14b, and changing the judge would invalidate it.
+LLM_BACKEND = os.environ.get("LLM_BACKEND", "ollama")
+
+# Escalation decision gate (agent/escalation_gate.py). Off by default so every
+# result up to this point stays reproducible; enable per run to A/B it:
+#
+#   ESCALATION_GATE=1 python -m evals.runner --version v4-enumerated
+#
+# Four prompt formulations and two model architectures all landed at 20-40%
+# escalation recall, so this moves the decision out of free-form generation
+# into a schema-constrained call whose result is acted on in code.
+ESCALATION_GATE_ENABLED = os.environ.get("ESCALATION_GATE", "") not in ("", "0", "false")
+OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "http://127.0.0.1:8080/v1")
 OLLAMA_HOST = "http://localhost:11434"
 
 # Determinism controls. These exist because of a measured problem, not caution.
