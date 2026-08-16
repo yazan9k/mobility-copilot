@@ -6,6 +6,14 @@ The chatbot is not the deliverable. The deliverable is a measurement harness and
 
 > **All content is synthetic.** Meridian Systems does not exist. Every policy document, visa record, employee, and persona is fabricated. Nothing here is scraped from real company policy or any government immigration source, and none of it is usable as immigration or tax advice.
 
+## Scope
+
+A portfolio project, built solo. Models run **locally at zero API spend** — `Ling-3.0-tiny` (1.3B active) for the agent, `qwen2.5:14b` for the judge — which caps answer quality below what a frontier model would produce. That constraint is deliberate and its cost is measured rather than assumed; the evaluation methodology is the part meant to transfer, not the scores.
+
+Not deployed. No real users, no production traffic, no frontend — [Phase 4 of the brief](docs/brief.md) was cut in favour of finishing the measurement work.
+
+**It has a known safety gap.** Escalation recall is 80% against a 100% requirement, and over-escalation is 30%. This is a working demonstration of an evaluation-driven build, not something to put in front of employees. Both figures are on the twenty held-out questions and are broken down in [docs/eval_comparison.md](docs/eval_comparison.md).
+
 ---
 
 ## What it does
