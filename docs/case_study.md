@@ -103,7 +103,40 @@ measurement. It is the number that decided the central question of this project.
 
 ## Results
 
-All figures on `qwen2.5:7b`, temperature 0, fixed seed. Deterministic metrics.
+**Baseline to final, on the twenty held-out questions** — written before the prompts that
+answer them, never used to derive a rule or a fix:
+
+| Held-out (20 unseen) | v1 baseline | final | Δ |
+|---|---:|---:|---:|
+| **Trajectory** | 55.0% | **75.0%** | **+20.0** |
+| **Escalation recall** | 20.0% | **80.0%** | **+60.0** |
+| Search rate | 90.0% | **100.0%** | +10.0 |
+| Retrieval recall | 90.0% | **100.0%** | +10.0 |
+| Over-escalation | 0.0% | 30.0% | +30.0 |
+| Median latency | 17,139ms | 24,151ms | +41% |
+
+On the golden set: trajectory 50.8% → **88.5%**, escalation 0% → **85.0%**.
+
+Final configuration: `Ling-3.0-tiny` via llama-server, prompt `v4-enumerated`, escalation
+gate on with a repetition penalty.
+
+**Where it came from matters more than the totals:**
+
+| Change | Held-out effect |
+|---|---|
+| Escalation gate + repetition penalty | **Most of it.** Escalation 30% → 80% |
+| Model swap, qwen2.5:7b → Ling 3.0 Tiny | Retrieval and search rate to ceiling |
+| Four rounds of prompt engineering | ~+5pp. Most apparent gains were overfitting |
+| Reasoning-parser bug fix | Recovered 36% of destroyed answers, **0pp on tool metrics** |
+
+Four prompt iterations bought about five points. Fixing one component's *reliability*
+bought fifty. The rest of this document is mostly about why that ordering was not
+obvious in advance, and about the four measurement bugs that had to be found before any
+of these numbers could be trusted.
+
+### The prompt-only phase
+
+All figures below on `qwen2.5:7b`, temperature 0, fixed seed. Deterministic metrics.
 
 | Version | chars | Traj golden | Traj held-out | Gap | Esc golden | Esc held-out | Over-esc | Search | Recall\|searched | No-tool |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -337,29 +370,59 @@ the tool.** The judgement was right; the action never happened.
 So the decision moved out of free-form generation. A separate schema-constrained call
 answers one question — "does this need a human?" — and the tool is invoked in code.
 
-| | Ling | + gate | Held-out | + gate |
-|---|---:|---:|---:|---:|
-| Trajectory | 68.8% | **80.3%** | 65.0% | 65.0% |
-| Escalation | 25.0% | **60.0%** | 30.0% | **40.0%** |
-| Over-escalation | 0.0% | 8.0% | 0.0% | 10.0% |
+The first version of the gate was **rejected**. It raised golden escalation to 60% but on
+held-out it gained one correct handoff while causing two wrong ones, and it *lowered*
+trajectory from 65.0% to 60.0%. It also failed outright on 20-25% of its calls.
 
-**+35pp on golden, +10pp on held-out** — and it achieved that while **20-25% of its
-calls were failing outright**. The mechanism is sound; the prototype is not shippable.
+That failure rate turned out to be the whole story, and the original diagnosis of it was
+wrong. I had recorded it as "Ling emits reasoning before the JSON and exhausts the token
+budget" — right about the symptom, wrong about the cause, which is why every fix derived
+from it failed. Capturing the raw output of the failing calls settled it: they are not
+truncated JSON, they contain no JSON at all. They are ~28,000 characters of the model
+arguing with itself. On `esc-007` it repeated **"But wait: the question is…" 24 times**,
+cycling 23 unique lines, until the budget ran out.
 
-It is not enabled by default. A 20% failure rate that fails toward under-escalation, a
-clean 0% over-escalation rising to 10%, and 3.7x latency are each disqualifying for a
-safety feature. What ships is the diagnosis, the working prototype behind a flag, and a
-precisely named defect: Ling emits reasoning before the JSON, and on harder questions
-that reasoning exhausts the token budget.
+A reasoning loop, not a budget shortfall. That explains why a bigger budget never helped —
+it buys a longer loop — and why disabling thinking "fixed" reliability while destroying
+judgement. A repetition penalty ends the loop and leaves the reasoning intact:
 
-Every attempted fix traded one failure for another — capping tokens starved the
-reasoning into confident nonsense, bounding the string fixed the wrong stage, disabling
-Thinking mode gave 5/5 recall with 4/5 false alarms. The answer is not a bigger budget;
-it is a gate that stops at the first complete JSON object instead of waiting for
-generation to end.
+| | Golden (70) | | | Held-out (20) | | |
+|---|---:|---:|---:|---:|---:|---:|
+| | no gate | gate | **gate+rp** | no gate | gate | **gate+rp** |
+| Trajectory | 68.8% | 78.7% | **88.5%** | 65.0% | 60.0% | **75.0%** |
+| Escalation | 25.0% | 60.0% | **85.0%** | 30.0% | 40.0% | **80.0%** |
+| Over-escalation | 0.0% | 8.0% | 12.0% | 0.0% | 20.0% | 30.0% |
+| Gate call failures | — | 16/70 | **2/70** | — | 3/20 | **1/20** |
 
-I would rather end with a diagnosed root cause, a measured effect, and a named next step
-than with a prompt tweak that moved nothing.
+One parameter took gate failures from 22% to 2%, and with them escalation recall from 30%
+to 80% on unseen questions. Those calls were never wrong answers — they were *absent*
+answers, silently scored as "do not escalate", and six of the nine loopers were
+escalation-required cases.
+
+**This ships as default.** Held-out trajectory rises 65.0% → 75.0%, and that figure is net
+of the false escalations: every answerable held-out case lists `escalate_to_human` in
+`forbidden_tool_calls`, so each one is already counted as a failure.
+
+### The fix that made it worse
+
+Over-escalation, 12% golden and 30% held-out, is what remains. Reading the nine false
+escalations, seven were one rule misfiring — on questions mentioning a family member
+(partner language lessons, spousal career support) and on questions merely phrased with
+"my" ("how much furniture can I ship"). Both are answerable from the corpus.
+
+So I narrowed that rule and added an explicit carve-out for dependant benefits. Both
+changes follow directly from the traces. **I abandoned it 12 cases into the sweep:** the
+new criteria are 26% longer, and gate call failures went from 1/40 to 4/12. The reasoning
+loop came back. The repetition penalty stops the model circling one thought; it does not
+reduce how much there is to weigh, and two more paragraphs of exclusions to check against
+is more deliberation, not less.
+
+That is the more useful result. **For a small reasoning model, fixing a wrong answer by
+adding a clarifying rule can make the component less reliable — and that cost shows up in
+no accuracy metric**, only in a failure rate that most eval suites never measure.
+Exclusions have to be encoded structurally rather than described: a deterministic
+pre-filter, or a gate that runs after retrieval and is *shown* the policy covering the
+question rather than told that such policy exists.
 
 ## What I would build next
 

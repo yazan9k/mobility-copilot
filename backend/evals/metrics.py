@@ -250,6 +250,25 @@ def aggregate(rows: list[dict]) -> dict[str, Any]:
             "mean_total_tokens": int(mean([r["total_tokens"] for r in rows]) or 0),
             "turn_limit_hits": sum(1 for r in rows if r.get("hit_turn_limit")),
             "no_tool_calls": sum(1 for r in rows if not r["tool_names"]),
+            # An empty reply is almost always a harness fault, not a model one,
+            # and nothing else here surfaces it. A parsing bug in the provider
+            # seam returned "" for 25 of 70 cases on one run — the model had
+            # produced complete answers — and every deterministic metric above
+            # kept reporting plausible numbers while it happened. Any value
+            # above zero means stop and look at the transport before reading
+            # the scores. See agent/llm.py::_chat_openai.
+            "empty_replies": sum(1 for r in rows if not (r.get("reply") or "").strip()),
+            # Gate health, for the same reason as empty_replies: a gate failure
+            # defaults to needs_human=False, so a run where EVERY gate call
+            # failed scores identically to a run with the gate switched off.
+            # That happened — 70/70 calls rejected with HTTP 400 — and produced
+            # a clean-looking run with no error anywhere in it. Counting the
+            # failures is the only thing that distinguishes "the gate did not
+            # help" from "the gate did not run".
+            "gate_calls": sum(1 for r in rows if r.get("gate_decision")),
+            "gate_failures": sum(
+                1 for r in rows if (r.get("gate_decision") or {}).get("failed")
+            ),
         },
     }
 

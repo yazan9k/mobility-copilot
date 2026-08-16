@@ -42,7 +42,10 @@
       "median_latency_ms": 7958,
       "mean_total_tokens": 3253,
       "turn_limit_hits": 0,
-      "no_tool_calls": 34
+      "no_tool_calls": 34,
+      "empty_replies": 0,
+      "gate_calls": 0,
+      "gate_failures": 0
     }
   },
   "cases": [

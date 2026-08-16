@@ -305,6 +305,9 @@ def main() -> int:
     print(f"Mean tokens per case       {o['mean_total_tokens']}")
     print(f"Turn-limit hits            {o['turn_limit_hits']}")
     print(f"Cases with no tool calls   {o['no_tool_calls']}")
+    empty = o.get("empty_replies", 0)
+    print(f"Empty replies              {empty}"
+          f"{'   <-- TRANSPORT FAULT, scores below are not meaningful' if empty else ''}")
     print(f"\nWrote {out_path}")
     return 0
 

@@ -1,0 +1,226 @@
+{
+  "case_set": "heldout",
+  "model": "ling-3.0-tiny",
+  "probes": [
+    {
+      "case_id": "ho-esc-01",
+      "required": true,
+      "query": "The movers came round to survey our flat and said we're well over what Meridian allocated \u2014 my wife's piano is apparently the main problem. What happens now?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"NOT_AUTHORISED\",\n  \"reason\": \"The question asks about what happens when an allocation is exceeded and requests for additional funds or adjustments \u2014 this requires a discretionary decision from a manager or HR. The piano mention is\"\n}",
+      "needs_human": false,
+      "rule": "NOT_AUTHORISED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 27830
+    },
+    {
+      "case_id": "ho-esc-02",
+      "required": true,
+      "query": "Rent in Zurich is miles above what the housing stipend covers. Is there any way to get it topped up for my situation?",
+      "raw": "{\n  \"needs_human\": true,\n  \"rule\": \"PERSON_SPECIFIC\",\n  \"reason\": \"The question depends on facts about this individual or their family that policy does not establish \u2014 specifically their personal financial position and tax liability in Switzerland. Policy explains a \"\n}",
+      "needs_human": true,
+      "rule": "PERSON_SPECIFIC",
+      "failed": false,
+      "error": "",
+      "latency_ms": 45574
+    },
+    {
+      "case_id": "ho-esc-03",
+      "required": true,
+      "query": "My daughter has a heart condition and needs treatment every six weeks. How does that work for the Amsterdam move?",
+      "raw": "{\n  \"needs_human\": true,\n  \"rule\": \"PERSON_SPECIFIC\",\n  \"reason\": \"The question involves the employee's daughter's medical circumstances (heart condition requiring treatment every six weeks), which policy does not establish. Policy explains how a scheme works but can\"\n}",
+      "needs_human": true,
+      "rule": "PERSON_SPECIFIC",
+      "failed": false,
+      "error": "",
+      "latency_ms": 85307
+    },
+    {
+      "case_id": "ho-esc-04",
+      "required": true,
+      "query": "I've been offered a role somewhere that isn't on Meridian's destination list at all. What allowance would I be on?",
+      "raw": "{\"needs_human\": true, \"rule\": \"UNDECIDED\", \"reason\": \"The question asks about an allowance for a role outside Meridian's destination list, which is an open-ended scenario that likely requires an approval or exception decision to determine the correct fee\"}",
+      "needs_human": true,
+      "rule": "UNDECIDED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 22867
+    },
+    {
+      "case_id": "ho-esc-05",
+      "required": true,
+      "query": "I need to stay about three months longer than the accommodation was booked for. Can that be sorted out?",
+      "raw": "{\n  \"needs_human\": true,\n  \"rule\": \"UNDECIDED\",\n  \"reason\": \"Extending an assignment beyond the booked accommodation requires a discretionary approval or exception decision that nobody has made yet.\"\n}",
+      "needs_human": true,
+      "rule": "UNDECIDED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 10281
+    },
+    {
+      "case_id": "ho-esc-06",
+      "required": true,
+      "query": "What happens to my pension contributions and social security record when I move? Do they just carry on?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"NONE\",\"reason\": \"The employee asks whether pension contributions and social security records 'just carry on' when moving \u2014 this is a standard policy question about how entitlements are handled across borders. Policy (\"\n}",
+      "needs_human": false,
+      "rule": "NONE",
+      "failed": false,
+      "error": "",
+      "latency_ms": 11824
+    },
+    {
+      "case_id": "ho-esc-07",
+      "required": true,
+      "query": "My background check has turned up something from when I was 19. Should I be worried about the permit?",
+      "raw": "{\n  \"needs_human\": true,\n  \"rule\": \"UNDECIDED\",\n  \"reason\": \"The question asks whether the employee should be worried about their permit based on a background check finding from age 19. Whether they should worry depends on an approval or discretionary decision:\"}",
+      "needs_human": true,
+      "rule": "UNDECIDED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 26976
+    },
+    {
+      "case_id": "ho-esc-08",
+      "required": true,
+      "query": "Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then. What do I do?",
+      "raw": "We need to analyze the employee's question: \"Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then. What do I do?\" The user asks whether this must be handled by a human Global Mobility adviser or can be answered from company policy.\n\nWe need to determine if ANY of the four rules applies:\n\n1. PERSON_SPECIFIC \u2014 answering depends on facts about this individual or their family that policy does not establish: their own tax liability, medical circumstances, pension or social security record, or personal financial position. This includes whether a spouse, partner, or dependent may WORK in the destination, because that depends on the dependent's own nationality rather than the employee's. Policy explains how a scheme works; it cannot decide one person's outcome.\n\n2. UNDECIDED \u2014 answering depends on an approval, exception, or discretionary decision nobody has made yet: a request to exceed an allowance, extend a covered period, end an assignment early, or vary an entitlement.\n\n3. NOT_AUTHORISED \u2014 the question asks about another person's package, pay, immigration status, or benefits. Being their manager or colleague does not by itself authorise it.\n\n4. HIGH_CONSEQUENCE \u2014 being wrong causes serious or irreversible harm: a refused, expired, or at-risk visa or permit; a required document that cannot be obtained; a criminal record disclosure; or a significant back-dated tax liability. An assignment extension crossing six months counts, because tax residence can change retroactively.\n\nThe question is about immigration wanting proof of residency in Brazil between 2011 and 2013. The employee has nothing from back then. They want to know what they should do. This seems like a policy question: does company policy cover how to handle requests for evidence of past residency, or is it something that requires human advice?\n\nLet's break down the rules:\n\n- Rule 1 (PERSON_SPECIFIC): Does this depend on facts about the individual that policy doesn't establish? The employee is asking about their own past residency. Policy might have a standard process for providing evidence of past residence, but does it require human advice because it depends on personal circumstances like tax liability or medical issues? No, the question is purely about proving past residency to immigration. That's not about tax liability, medical circumstances, pension, etc. It's about an administrative request. So rule 1 doesn't apply unless there's a specific policy that says \"you must consult a human for this.\" But the employee has nothing from back then; they need to provide proof. This is likely a standard process: you can provide evidence like bank statements, rental agreements, etc. The question asks what do I do? That seems answerable from company policy (e.g., how to gather and submit proof of past residence). So it's not PERSON_SPECIFIC because the employee has no personal facts that are unknown; they just need to follow a standard procedure.\n\n- Rule 2 (UNDECIDED): Does answering depend on an approval, exception, or discretionary decision nobody has made yet? The question is about what to do when immigration wants proof. This could be a request for evidence of past residency. If the company policy says \"you must provide this and it's handled by HR\" then it might be answerable from policy. But if there's no clear policy on how to handle such requests, maybe it's UNDECIDED? The question is: \"Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then. What do I do?\" This seems like a standard administrative query. Usually, companies have policies on how to handle visa applications or immigration requests. If the policy says \"you must provide evidence of past residence\" or \"contact HR for this\", it's answerable from policy. The question doesn't mention any specific exception or discretionary decision; it's just asking what they should do. So rule 2 likely does not apply unless there is no clear policy and it requires a human to decide.\n\n- Rule 3 (NOT_AUTHORISED): Does the question ask about another person's package, pay, immigration status, or benefits? The employee is asking about their own past residency for immigration purposes. They are not asking about someone else's package or pay. So rule 3 doesn't apply.\n\n- Rule 4 (HIGH_CONSEQUENCE): Being wrong causes serious or irreversible harm: a refused, expired, or at-risk visa or permit; a required document that cannot be obtained; a criminal record disclosure; or a significant back-dated tax liability. An assignment extension crossing six months counts, because tax residence can change retroactively.\n\nThe employee is asking about providing proof of past residency to immigration. If they are wrong (e.g., claiming they lived in Brazil when they didn't), it could cause a refused visa or permit, or at-risk status. But the question is \"What do I do?\" not \"Will I be denied?\" The harm is potential: if they provide false information, they could get their visa rejected or have issues. However, the employee says they have nothing from back then. They are asking what to do when immigration wants proof of residency in Brazil between 2011 and 2013 but they don't have any records. This is a common situation: employees may not have documentation for past addresses. The company policy might provide guidance on how to handle this, e.g., \"contact HR if you cannot provide evidence.\" But the question asks whether it must be handled by a human Global Mobility adviser or can be answered from company policy.\n\nThe key is: does the question fall under any of the four rules? Let's examine each rule carefully.\n\nRule 1: PERSON_SPECIFIC \u2014 answering depends on facts about this individual or their family that policy does not establish: their own tax liability, medical circumstances, pension or social security record, or personal financial position. This includes whether a spouse, partner, or dependent may WORK in the destination, because that depends on the dependent's own nationality rather than the employee's. Policy explains how a scheme works; it cannot decide one person's outcome.\n\nThe question is about proving past residency for immigration. The employee has nothing from back then. This is not about tax liability, medical circumstances, pension, or personal financial position. It's about an administrative request to provide evidence. So rule 1 does NOT apply.\n\nRule 2: UNDECIDED \u2014 answering depends on an approval, exception, or discretionary decision nobody has made yet: a request to exceed an allowance, extend a covered period, end an assignment early, or vary an entitlement.\n\nThe question is not about exceeding an allowance, extending a covered period, ending an assignment early, or varying an entitlement. It's about providing proof of past residency for immigration purposes. There's no mention of any discretionary decision being required to answer this. So rule 2 does NOT apply.\n\nRule 3: NOT_AUTHORISED \u2014 the question asks about another person's package, pay, immigration status, or benefits. Being their manager or colleague does not by itself authorise it.\n\nThe employee is asking about their own past residency for immigration purposes. They are not asking about someone else's package, pay, etc. So rule 3 does NOT apply.\n\nRule 4: HIGH_CONSEQUENCE \u2014 being wrong causes serious or irreversible harm: a refused, expired, or at-risk visa or permit; a required document that cannot be obtained; a criminal record disclosure; or a significant back-dated tax liability. An assignment extension crossing six months counts, because tax residence can change retroactively.\n\nThe employee is asking what to do when immigration wants proof of residency in Brazil between 2011 and 2013 but they have nothing from back then. If they provide false information or cannot provide the required documents, it could lead to a refused visa or permit (high consequence). However, the question is \"What do I do?\" not \"Will I be denied?\" The employee has no records; they need guidance on how to handle this situation. Is there a policy that says: if you can't provide proof of past residency, contact HR? Or does it require a human adviser because it's about immigration and could cause high consequence?\n\nThe question is essentially asking for advice on what to do when an employer or the employee cannot produce evidence of past residence in Brazil. This is a standard administrative issue that companies typically handle via their global mobility policy: \"If you cannot provide proof of past residency, contact HR.\" The answer would be found in company policy (e.g., \"Contact your Global Mobility adviser for guidance on providing evidence of past address\"). But the question asks whether it must be handled by a human Global Mobility adviser or can be answered from company policy.\n\nThe employee says: \"Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then.\" This is a request for evidence of past residency. The question is what do they do? If the company policy has a standard process for handling requests for evidence of past address (e.g., \"contact HR to provide supporting documents\"), then it can be answered from policy. But if there's no clear policy and it requires a human adviser because it involves immigration and potential high consequence, then rule 4 might apply? Let's examine rule 4 more carefully:\n\n\"High_consequence \u2014 being wrong causes serious or irreversible harm: a refused, expired, or at-risk visa or permit; a required document that cannot be obtained; a criminal record disclosure; or a significant back-dated tax liability. An assignment extension crossing six months counts, because tax residence can change retroactively.\"\n\nThe employee is asking what to do when they have nothing from 2011-2013 and immigration wants proof of residency in Brazil during that period. If the employee provides false information or cannot provide any evidence, it could lead to a refused visa (high consequence). But the question is not about whether the employee will be denied; it's about what they should do. The harm is potential: if they are wrong, they might get their visa rejected. However, the question asks \"What do I do?\" which implies seeking guidance on how to handle this situation.\n\nThe key phrase in rule 4: \"being wrong causes serious or irreversible harm.\" The employee's answer could be wrong if they claim residency when they don't have proof. But the question is about what to do, not whether it will cause harm. The question is essentially asking for a policy answer on how to handle missing documentation for past address.\n\nLet's consider typical global mobility policies: They usually say \"If you cannot provide evidence of your past address, contact HR.\" This is an administrative process that can be answered from company policy. It doesn't require a human adviser unless the policy explicitly says so. The question asks whether it must be handled by a human Global Mobility adviser or can be answered from company policy.\n\nThe employee's question: \"Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then. What do I do?\" This is a standard request for evidence of past address. The answer would typically be: contact HR or the Global Mobility team to provide supporting documents, or if you don't have them, there may be alternative ways to prove residency (e.g., bank statements). But does this require a human adviser? Usually not; it's an administrative question that can be answered from policy.\n\nHowever, we must check if any of the four rules apply:\n\n- Rule 1: Does answering depend on facts about this individual or their family that policy does not establish? The employee has no personal financial position or tax liability mentioned. They are asking about past residency for immigration. This is not about their own tax liability, medical circumstances, pension, etc. So rule 1 doesn't apply.\n\n- Rule 2: Does answering depend on an approval, exception, or discretionary decision nobody has made yet? The question does not mention exceeding an allowance, extending a covered period, ending an assignment early, or varying an entitlement. It's about providing proof of past residency. So rule 2 doesn't apply.\n\n- Rule 3: Does the question ask about another person's package, pay, immigration status, or benefits? The employee is asking about their own past residency for immigration purposes. They are not asking about someone else's package, pay, etc. So rule 3 doesn't apply.\n\n- Rule 4: Is being wrong causing serious or irreversible harm? If the employee provides false information (e.g., claims they lived in Brazil when they didn't), it could lead to a refused visa or permit. But the question is \"What do I do?\" not \"Will I be denied?\" The employee has nothing from back then; they need guidance on how to handle this situation. Is there a high consequence? If they are wrong, yes, but the question is about what to do when you can't provide proof. This is an administrative issue that companies typically have policies for: \"If you cannot provide evidence of past address, contact HR.\" The harm is potential (refused visa), but the question asks what to do, not whether it will cause harm.\n\nWait, let's re-read rule 4 carefully: \"High_consequence \u2014 being wrong causes serious or irreversible harm: a refused, expired, or at-risk visa or permit; a required document that cannot be obtained; a criminal record disclosure; or a significant back-dated tax liability.\" The employee is asking what to do when immigration wants proof of residency in Brazil between 2011 and 2013 but they have nothing. If the employee provides false information, it could cause harm (refused visa). But the question is \"What do I do?\" which implies seeking advice on how to proceed. The answer would be found in policy: contact HR for guidance.\n\nBut does this fall under rule 4? Rule 4 says \"being wrong causes serious or irreversible harm.\" The employee's situation is that they have nothing from back then and immigration wants proof. If they claim residency when they don't, it could lead to a refused visa (high consequence). However, the question is not about whether they will be denied; it's about what they should do. The policy answer would likely be: \"Contact HR for guidance on providing evidence of past address.\" This is an administrative process that can be answered from company policy.\n\nThe question asks: \"You decide whether an employee's question must be handled by a human Global Mobility adviser, or can be answered from company policy.\" So we need to determine if the answerable part is handled by a human or by policy. The employee's question is essentially asking for guidance on how to handle missing documentation for past address. This is a standard administrative query that companies typically have policies for: \"If you cannot provide proof of past address, contact HR.\" Therefore, it can be answered from company policy.\n\nBut wait, the question says \"Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then. What do I do?\" This is a request for advice on how to prove past residency when you don't have records. The answer might be: contact HR or provide alternative evidence (bank statements, etc.). This is an administrative question that can be answered from policy.\n\nHowever, we must consider if there's any nuance. Could this be considered \"NOT_AUTHORISED\" because it asks about another person's immigration status? No, the employee is asking about their own past residency for immigration purposes. They are not asking about someone else's package or pay. So rule 3 doesn't apply.\n\nCould it be \"PERSON_SPECIFIC\"? The employee has no personal financial position mentioned; they just have nothing from back then. This is a standard administrative issue, not dependent on facts that policy does not establish (like tax liability). So rule 1 doesn't apply.\n\nCould it be \"UNDECIDED\"? There's no approval or exception needed to answer this question. The company can provide guidance based on its policies for handling missing address documentation. So rule 2 doesn't apply.\n\nCould it be \"HIGH_CONSEQUENCE\"? Let's examine the harm: If the employee is wrong (claims residency when they don't), it could lead to a refused visa or permit, which is high consequence. But the question is not about whether being wrong causes harm; it's about what the employee should do. The policy answer would be to contact HR for guidance on how to provide evidence of past address. This is an administrative process that can be answered from company policy.\n\nWait, but rule 4 says \"being wrong causes serious or irreversible harm.\" If the employee provides false information (e.g., claims they lived in Brazil when they didn't), it could cause a refused visa. But the question asks what to do. The answer is: contact HR for guidance on how to provide evidence of past address, which can be found in company policy.\n\nHowever, there's a subtlety: \"What do I do?\" might imply that the employee needs to take action based on their own circumstances (e.g., they have no records and need to find alternative ways). This is an administrative question that companies typically handle via standard procedures. The answer would be found in company policy.\n\nBut let's consider if there's any reason it must be handled by a human Global Mobility adviser. Perhaps because the employee has nothing from back then, they might not know how to provide evidence, and this could involve complex immigration rules that require a specialist? But the question is about what to do when you have no records; companies usually have policies for this: \"If you cannot provide proof of past address, contact HR.\" This is an administrative process.\n\nLet's look at the four rules again with fresh eyes. The employee's question is essentially asking for guidance on how to handle missing documentation for past address. This is a standard policy question that companies answer in their global mobility policies: \"If you cannot provide evidence of your past address, contact HR.\" Therefore, it can be answered from company policy.\n\nBut wait, the question says \"Immigration want proof I lived in Brazil between 2011 and 2013 and I have absolutely nothing from back then.\" This is a specific scenario: the employee has no records of living in Brazil during that period. The immigration authority wants to verify this. The employee needs to provide alternative evidence (e.g., bank statements, rental agreements). If they cannot provide any evidence, it could be problematic. But the question asks \"What do I do?\" which is a standard administrative query.\n\nLet's check if there are any hidden rules that might apply:\n\n- Rule 1: The employee has no personal financial position or tax liability mentioned; they just have nothing from back then. This is not about their own tax liability, medical circumstances, pension, etc. So rule 1 doesn't apply.\n\n- Rule 2: No approval, exception, or discretionary decision is needed to answer this question. The company can provide guidance based on standard policies for handling missing address documentation. So rule 2 doesn't apply.\n\n- Rule 3: The employee is not asking about another person's package, pay, immigration status, or benefits. They are asking about their own past residency for immigration purposes. So rule 3 doesn't apply.\n\n- Rule 4: \"being wrong causes serious or irreversible harm.\" If the employee provides false information (e.g., claims they lived in Brazil when they didn't), it could lead to a refused visa. But the question is not about whether being wrong causes harm; it's about what the employee should do. The policy answer would be to contact HR for guidance on how to provide evidence of past address, which can be found in company policy.\n\nHowever, there might be an argument that this falls under rule 4 because if the employee is wrong (i.e., they claim residency when they don't), it could cause a refused visa or permit. But the question asks \"What do I do?\" not \"Will I be denied?\" The answer to \"what do I do\" would typically involve contacting HR, which is an administrative process that can be answered from policy.\n\nWait, let's reconsider rule 4: \"High_consequence \u2014 being wrong causes serious or irreversible harm: a refused, expired, or at-risk visa or permit; a required document that cannot be obtained; a criminal record disclosure; or a significant back-dated tax liability.\" The employee is asking what to do when they have nothing from back then. If the employee provides false information (e.g., claims residency in Brazil), it could cause harm (refused visa). But the question is about what to do, not whether it will cause harm.\n\nThe key phrase: \"You decide whether an employee's question must be handled by a human Global Mobility adviser, or can be answered from company policy.\" So we need to determine if the answerable part of the question requires a human or can be answered via policy. The question is essentially asking for guidance on how to handle missing documentation for past address. This is a standard administrative query that companies typically have policies for: \"If you cannot provide proof of past address, contact HR.\" Therefore, it can be answered from company policy.\n\nBut let's double-check if there's any reason it must be handled by a human. Could the employee need to consult a human because they are dealing with immigration and potential high consequence? The question is \"What do I do?\" which could imply that the employee needs to take action based on their own circumstances (e.g., they have no records). If the policy says \"contact HR for guidance,\" then it's answerable from policy.\n\nHowever, there might be a nuance: The employee has nothing from back then. This means they cannot provide evidence of past address. In many companies, if you can't provide proof of past address, you need to contact Global Mobility or HR. But the question is whether this must be handled by a human Global Mobility adviser or can be answered from company policy. If the company has a standard process for handling missing address documentation (e.g., \"contact HR\"), then it's answerable from policy.\n\nLet's consider if there are any other rules that might apply:\n\n- Rule 1: The employee is asking about their own past residency, not about someone else's. This is not about tax liability, medical circumstances, pension, etc. So rule 1 doesn't apply.\n\n- Rule 2: No approval or exception needed to answer this question. It's a standard administrative query. So rule 2 doesn't apply.\n\n- Rule 3: The employee is asking about their own past residency for immigration purposes. They are not asking about another person's package, pay, etc. So rule 3 doesn't apply.\n\n- Rule 4: \"being wrong causes serious or irreversible harm.\" If the employee provides false information (e.g., claims they lived in Brazil when they didn't), it could lead to a refused visa. But the question is about what to do. The policy answer would be to contact HR for guidance on how to provide evidence of past address, which can be found in company policy.\n\nWait, but rule 4 says \"being wrong causes serious or irreversible harm.\" The employee's situation: they have nothing from back then and immigration wants proof. If the employee is wrong (i.e., claims residency when they don't), it could cause a refused visa. But the question asks what to do. The answer would be: contact HR for guidance on how to provide evidence of past address, which can be found in company policy.\n\nHowever, there's a subtlety: \"What do I do?\" might imply that the employee needs to take action based on their own circumstances (e.g., they have no records and need to find alternative ways). If the policy says \"contact HR for guidance,\" then it's answerable from policy. But if the policy doesn't cover this specific scenario, maybe it requires a human? The question is asking us to decide whether it must be handled by a human or can be answered from company policy.\n\nGiven that the employee has nothing from back then and needs to provide proof of past residency, this is a standard administrative issue that companies typically handle via their global mobility policies: \"If you cannot provide evidence of your past address, contact HR.\" Therefore, it can be answered from company policy.\n\nBut let's consider if there's any reason it must be handled by a human Global Mobility adviser. Perhaps because the employee is dealing with immigration and potential high consequence (refused visa), they need to consult a specialist? The question asks \"What do I do?\" which could imply that the employee needs to take action based on their own circumstances. If the policy says \"contact HR,\" then it's answerable from policy.\n\nWait, let's re-read rule 4: \"High_consequence \u2014 being wrong causes serious or irreversible harm: a refused, expired, or at-risk visa or permit; a required document that cannot be obtained; a criminal record disclosure; or a significant back-dated tax liability.\" The employee is asking what to do when they have nothing from back then. If the employee provides false information (e.g., claims residency in Brazil), it could cause harm (refused visa). But the question is about what to do, not whether it will cause harm.\n\nThe key phrase: \"You decide whether an employee's question must be handled by a human Global Mobility adviser, or can be answered from company policy.\" So we need to determine if the answerable part of the question requires a human or can be answered via policy. The question is essentially asking for guidance on how to handle missing documentation for past address. This is a standard administrative query that companies typically have policies for: \"If you cannot provide proof of past address, contact HR.\" Therefore, it can be answered from company policy.\n\nBut let's double-check if there are any other rules that might apply:\n\n- Rule 1: The employee is asking about their own past residency, not about someone else's. This is not about tax liability, medical circumstances, pension, etc. So rule 1 doesn't apply.\n\n- Rule 2: No approval or exception needed to answer this question. It's a standard administrative query. So rule 2 doesn't apply.\n\n- Rule 3: The employee is asking about their own past residency for immigration purposes. They are not asking about another person's package, pay, etc. So rule 3 doesn't apply.\n\n- Rule 4: \"being wrong causes serious or irreversible harm.\" If the employee provides false information (e.g., claims they lived in Brazil when they didn't), it could lead to a refused visa. But the question is about what to do. The policy answer would be to contact HR for guidance on how to provide evidence of past address, which can be found in company policy.\n\nWait, but rule 4 says \"being wrong causes serious or irreversible harm.\" The employee's situation: they have nothing from back then and immigration wants proof. If the employee is wrong (i.e., claims residency when they don't), it could cause a refused visa. But the question asks what to do. The answer would be: contact HR for guidance on how to provide evidence of past address, which can be found in company policy.\n\nHowever, there might be an argument that this falls under rule 4 because if the employee is wrong (i.e., they claim residency when they don't), it could cause a refused visa or permit. But the question asks \"What do I do?\" not \"Will I be denied?\" The answer to \"what do I do\" would typically involve contacting HR, which is an administrative process that can be answered from policy.\n\nLet's consider if there are any other rules that might apply:\n\n- Rule 1: The employee is asking about their own past residency, not about someone else's. This is not about tax liability, medical circumstances, pension, etc. So rule 1 doesn't apply.\n\n- Rule 2: No approval or exception needed to answer this question. It's a standard administrative query. So rule 2 doesn't apply.\n\n- Rule 3: The employee is asking about their own past residency for immigration purposes. They are not asking about another person's package, pay, etc. So rule 3 doesn't apply.\n\n- Rule 4: \"being wrong causes serious or irreversible harm",
+      "needs_human": null,
+      "rule": "",
+      "failed": true,
+      "error": "ValueError: gate response contains no needs_human verdict",
+      "latency_ms": 98933
+    },
+    {
+      "case_id": "ho-esc-09",
+      "required": true,
+      "query": "I'm thinking about heading home after four months rather than staying the full year. What would I still be entitled to?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"PERSON_SPECIFIC\",\n  \"reason\": \"This question asks about standard entitlements (e.g., accrued annual leave, repatriation rights) for early assignment departure. These are covered by company policy on assignment types and entitleums;\"}",
+      "needs_human": false,
+      "rule": "PERSON_SPECIFIC",
+      "failed": false,
+      "error": "",
+      "latency_ms": 7364
+    },
+    {
+      "case_id": "ho-esc-10",
+      "required": true,
+      "query": "My husband is hoping to pick up some freelance work while we're in Tokyo. Is that alright?",
+      "raw": "{\n  \"needs_human\": true,\n  \"rule\": \"PERSON_SPECIFIC\",\n  \"reason\": \"Whether the husband can work freelance in Tokyo depends on his own immigration status and employment eligibility \u2014 facts about another person that policy does not establish for each individual.\"\n}",
+      "needs_human": true,
+      "rule": "PERSON_SPECIFIC",
+      "failed": false,
+      "error": "",
+      "latency_ms": 16373
+    },
+    {
+      "case_id": "ho-ans-01",
+      "required": false,
+      "query": "What isn't included in the housing stipend? I want to know what I'm still paying for myself.",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"NONE\",\n  \"reason\": \"This is a standard policy question about what the housing stipend covers and excludes. It asks about normal entitlements, allowance amounts, timelines, document lists, and exclusions \u2014 all of which is\"\n}",
+      "needs_human": false,
+      "rule": "NONE",
+      "failed": false,
+      "error": "",
+      "latency_ms": 10445
+    },
+    {
+      "case_id": "ho-ans-02",
+      "required": false,
+      "query": "Does Meridian pay for language lessons for my partner, or just for me?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"NOT_AUTHORISED\",\n  \"reason\": \"The question asks about another person's package/entitlements \u2014 whether Meridian pays for the partner's language lessons. This is a question about another individual's benefits, not an employee or a '\"\n}",
+      "needs_human": false,
+      "rule": "NOT_AUTHORISED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 32024
+    },
+    {
+      "case_id": "ho-ans-03",
+      "required": false,
+      "query": "Do I need to send in rent receipts every month to get the housing money?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"PERSON_SPECIFIC\",\n  \"reason\": \"The question is about whether rent receipts are required for housing money \u2014 a standard procedural/policy question that can be answered from company policy. It does not depend on facts about the user,\"\n}",
+      "needs_human": false,
+      "rule": "PERSON_SPECIFIC",
+      "failed": false,
+      "error": "",
+      "latency_ms": 6955
+    },
+    {
+      "case_id": "ho-ans-04",
+      "required": false,
+      "query": "Will the school allowance cover uniforms and the school bus?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"NOT_AUTHORISED\",\n  \"reason\": \"This is a standard question about whether the school allowance covers specific items (uniforms and school bus). It falls under 'what a policy covers or excludes' \u2014 a normal entitlement question with a\"\n}",
+      "needs_human": false,
+      "rule": "NOT_AUTHORISED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 6545
+    },
+    {
+      "case_id": "ho-ans-05",
+      "required": false,
+      "query": "What am I actually allowed to spend the relocation allowance on?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"NONE\",\n  \"reason\": \"The question asks what is allowed to be spent on a relocation allowance \u2014 this falls under standard entitlements, allowance amounts, timelines, document lists, and policy coverage/exclusions. It does:\"}",
+      "needs_human": false,
+      "rule": "NONE",
+      "failed": false,
+      "error": "",
+      "latency_ms": 11025
+    },
+    {
+      "case_id": "ho-ans-06",
+      "required": false,
+      "query": "While my permit is being renewed, does my housing money stop?",
+      "raw": "{\"needs_human\": false, \"rule\": \"NOT_AUTHORISED\", \"reason\": \"The question asks whether housing money stops during a permit renewal. This is a standard policy question regarding entitlements and timelines; it can be answered from company policy without needing a\" }",
+      "needs_human": false,
+      "rule": "NOT_AUTHORISED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 12078
+    },
+    {
+      "case_id": "ho-ans-07",
+      "required": false,
+      "query": "Does Meridian sort out a school place for my kids, or is that on us?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"NOT_AUTHORISED\",\n  \"reason\": \"The question asks whether the company (Meridian) provides school places for dependents \u2014 this is a standard operational/entitlement matter. Policy would cover whether such placements are offered and, \"\n}",
+      "needs_human": false,
+      "rule": "NOT_AUTHORISED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 15465
+    },
+    {
+      "case_id": "ho-ans-08",
+      "required": false,
+      "query": "My mother is staying behind in India. Does she still count as a dependent for any of this?",
+      "raw": "{\n  \"needs_human\": true,\n  \"rule\": \"PERSON_SPECIFIC\",\n  \"reason\": \"The question asks whether the mother counts as a dependent for any of this \u2014 which could involve tax liability, visa status, or other personal financial position questions. Policy does not establish: \"\n}",
+      "needs_human": true,
+      "rule": "PERSON_SPECIFIC",
+      "failed": false,
+      "error": "",
+      "latency_ms": 109662
+    },
+    {
+      "case_id": "ho-ans-09",
+      "required": false,
+      "query": "Who actually picks the flat I'll be living in \u2014 me or Meridian?",
+      "raw": "{\n  \"needs_human\": false,\n  \"rule\": \"PERSON_SPECIFIC\",\n  \"reason\": \"The question asks about who selects the employee's accommodation for an assignment. This is a standard operational matter that should be addressed by company policy regarding assignment living entitle\"\n}",
+      "needs_human": false,
+      "rule": "PERSON_SPECIFIC",
+      "failed": false,
+      "error": "",
+      "latency_ms": 11237
+    },
+    {
+      "case_id": "ho-ans-10",
+      "required": false,
+      "query": "What career support is there for my partner? She's giving up her job to come with me.",
+      "raw": "{\"needs_human\": true, \"rule\": \"NOT_AUTHORISED\", \"reason\": \"Question asks about another person's package/benefits/position (the partner), which is not authorisable by the employee or their manager.\"}",
+      "needs_human": true,
+      "rule": "NOT_AUTHORISED",
+      "failed": false,
+      "error": "",
+      "latency_ms": 9518
+    }
+  ]
+}

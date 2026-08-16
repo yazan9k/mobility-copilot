@@ -48,7 +48,10 @@
       "median_latency_ms": 24767,
       "mean_total_tokens": 5953,
       "turn_limit_hits": 0,
-      "no_tool_calls": 0
+      "no_tool_calls": 0,
+      "empty_replies": 8,
+      "gate_calls": 20,
+      "gate_failures": 5
     }
   },
   "cases": [
@@ -2512,5 +2515,6 @@
         "violations": []
       }
     }
-  ]
+  ],
+  "rescored": true
 }

@@ -11,6 +11,7 @@ decision rather than a fork.
 
 from __future__ import annotations
 
+import re
 import time
 from dataclasses import dataclass, field
 from typing import Any
@@ -113,6 +114,58 @@ def _to_openai_messages(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
+_THINK_CLOSE = "</think>"
+_TOOL_CALL_RE = re.compile(r"<tool_call>\s*(?P<name>[A-Za-z_][A-Za-z0-9_]*)(?P<body>.*?)</tool_call>", re.S)
+_ARG_RE = re.compile(r"<arg_key>(?P<key>.*?)</arg_key>\s*<arg_value>(?P<value>.*?)</arg_value>", re.S)
+
+
+def _split_thinking(raw: str) -> str:
+    """Drop Ling's thinking block, returning the part meant for the employee.
+
+    We ask llama-server for `reasoning_format: none`, so the raw generation
+    arrives intact in `content` and the split happens here instead of on the
+    server. That is deliberate — the server's own split was wrong often enough
+    to invalidate a run. See `_chat_openai` for the measurement.
+
+    The template opens the thinking block in the prompt, so a response may end
+    with `</think>` present and no opening tag. Only the closing tag is a
+    reliable delimiter; text with no closing tag never entered a think block as
+    far as we can tell, and is returned as-is.
+    """
+    if _THINK_CLOSE in raw:
+        return raw.rsplit(_THINK_CLOSE, 1)[1].strip()
+    return raw.strip()
+
+
+def _recover_tool_calls(raw: str) -> list[ToolCall]:
+    """Parse tool calls llama-server failed to parse out of the raw generation.
+
+    Ling emits calls as
+        <tool_call>name<arg_key>k</arg_key><arg_value>v</arg_value></tool_call>
+    and llama-server's bailingmoe3 handler does not always convert them into
+    the `tool_calls` field. When it doesn't, the call is left as plain text and
+    the agent loop sees a turn with no tool calls and no answer, so it stops
+    mid-investigation and returns nothing.
+
+    Every argument recovered here is a string, because the XML carries no
+    types. Tool implementations take strings for these parameters already, and
+    a wrong-typed argument would be a scored failure rather than a silent one.
+    """
+    calls: list[ToolCall] = []
+    for match in _TOOL_CALL_RE.finditer(raw):
+        arguments = {
+            m.group("key").strip(): m.group("value").strip()
+            for m in _ARG_RE.finditer(match.group("body"))
+        }
+        calls.append(ToolCall(name=match.group("name").strip(), arguments=arguments))
+    return calls
+
+
+def _strip_tool_call_xml(text: str) -> str:
+    """Remove recovered call markup so it never reaches the employee."""
+    return _TOOL_CALL_RE.sub("", text).strip()
+
+
 def _chat_openai(
     messages: list[dict[str, Any]],
     tools: list[dict[str, Any]] | None,
@@ -132,6 +185,24 @@ def _chat_openai(
         the agent loop.
       * `num_ctx` is fixed when the server starts, not per request, so it is a
         server flag rather than an option here. Temperature and seed still are.
+      * reasoning is split here rather than on the server — see below.
+
+    `reasoning_format: none` is the fix for the largest defect this project
+    measured. By default llama-server splits the generation into
+    `reasoning_content` and `content`, and for this model it splits it wrong:
+    the template opens the thinking block in the prompt, so any response that
+    never emits `</think>` is classified as thinking in its entirety and
+    `content` comes back empty.
+
+    That silently destroyed 25 of 70 golden cases and 7 of 20 held-out cases.
+    On doc-001 the model wrote a complete, correct document checklist and the
+    run recorded an empty reply, because the whole answer landed in
+    `reasoning_content` and this function only read `content`. Tool calls were
+    lost the same way, which killed the agent loop mid-investigation.
+
+    Asking for the raw generation and splitting it in `_split_thinking` /
+    `_recover_tool_calls` removes the server's classifier from the measurement
+    path entirely.
     """
     import json as _json
     import urllib.request
@@ -141,6 +212,8 @@ def _chat_openai(
         "messages": _to_openai_messages(messages),
         "temperature": AGENT_TEMPERATURE if temperature is None else temperature,
         "seed": AGENT_SEED,
+        # Return the generation unparsed; we split it ourselves.
+        "reasoning_format": "none",
     }
     if tools:
         payload["tools"] = tools
@@ -169,9 +242,23 @@ def _chat_openai(
             arguments = {}
         tool_calls.append(ToolCall(name=function.get("name", ""), arguments=arguments))
 
+    # With reasoning_format=none the whole generation is in `content`. Older
+    # runs and any server that ignores the flag still populate
+    # `reasoning_content`, so fall back to it rather than losing the turn.
+    raw = message.get("content") or message.get("reasoning_content") or ""
+    text = _split_thinking(raw)
+
+    # Only recover calls the server did not already parse. Doing this
+    # unconditionally would double-count a call that appears both as parsed
+    # output and as markup left behind in the text.
+    if not tool_calls:
+        tool_calls = _recover_tool_calls(raw)
+    if tool_calls:
+        text = _strip_tool_call_xml(text)
+
     usage = body.get("usage") or {}
     return LLMResponse(
-        text=(message.get("content") or "").strip(),
+        text=text,
         tool_calls=tool_calls,
         prompt_tokens=usage.get("prompt_tokens", 0) or 0,
         completion_tokens=usage.get("completion_tokens", 0) or 0,
@@ -228,7 +315,13 @@ def chat(
     )
 
 
-def generate_json(prompt: str, schema: dict, model: str, temperature: float = 0.0) -> str:
+def generate_json(
+    prompt: str,
+    schema: dict,
+    model: str,
+    temperature: float = 0.0,
+    repeat_penalty: float | None = None,
+) -> str:
     """Constrained generation against a JSON schema.
 
     Used by the eval judge and the escalation gate. Passing the schema to the
@@ -236,6 +329,19 @@ def generate_json(prompt: str, schema: dict, model: str, temperature: float = 0.
     output. Without this, judge score extraction fails often enough to make
     LLM-scored metrics unusable — and the gate would be able to narrate instead
     of deciding, which is the exact failure it exists to remove.
+
+    `repeat_penalty` exists for a specific measured failure. A reasoning model
+    under a JSON grammar can loop: on 22% of gate calls Ling repeated the same
+    three sentences — "But wait: the question is..." 24 times on one case —
+    until it exhausted the token budget and emitted no JSON at all. The grammar
+    only constrains the answer, not the thinking that precedes it, so nothing
+    stopped it.
+
+    Raising max_tokens does not help; it buys a longer loop. Changing the seed
+    unsticks it but produces different, worse answers. A repetition penalty
+    stops the loop while leaving the reasoning intact: 3 of 3 known-looping
+    cases completed, one in 14s where it had previously burned 96s and
+    returned nothing.
     """
     if LLM_BACKEND == "openai":
         import json as _json
@@ -246,6 +352,7 @@ def generate_json(prompt: str, schema: dict, model: str, temperature: float = 0.
             "messages": [{"role": "user", "content": prompt}],
             "temperature": temperature,
             "seed": AGENT_SEED,
+            **({"repeat_penalty": repeat_penalty} if repeat_penalty else {}),
             # Thinking mode stays ON here, which is a measured decision.
             #
             # Ling emits reasoning tokens before the JSON, and on harder
@@ -271,6 +378,22 @@ def generate_json(prompt: str, schema: dict, model: str, temperature: float = 0.
             #
             # 3000 leaves room to reason while still bounding the outlier.
             "max_tokens": 6000,
+            # NOTE: unlike _chat_openai, this path must NOT send
+            # `reasoning_format: "none"`. Combined with `response_format`,
+            # llama-server rejects the request outright:
+            #
+            #   HTTP 400 — Failed to initialize samplers: std::exception
+            #
+            # The two cannot be used together on this build, and the failure is
+            # per-request rather than at startup, so it only shows up under the
+            # exact combination. Sending it here failed all 70 gate calls in a
+            # run; because a gate failure defaults to needs_human=False, the
+            # scores came back as a perfect match for the gate being disabled
+            # rather than as anything that looked like an error.
+            #
+            # Constrained decoding makes the flag unnecessary anyway — the
+            # grammar forces the JSON into `content`. The reasoning_content
+            # fallback below covers the case where it still ends up misfiled.
             # llama-server enforces the schema via GBNF, the same guarantee
             # Ollama's `format` gives.
             "response_format": {
@@ -285,13 +408,18 @@ def generate_json(prompt: str, schema: dict, model: str, temperature: float = 0.
         )
         with urllib.request.urlopen(request, timeout=300) as response:
             body = _json.loads(response.read())
-        return (body["choices"][0].get("message", {}) or {}).get("content", "") or ""
+        message = body["choices"][0].get("message", {}) or {}
+        raw = message.get("content") or message.get("reasoning_content") or ""
+        return _split_thinking(raw)
 
     response = _get_client().chat(
         model=model,
         messages=[{"role": "user", "content": prompt}],
         format=schema,
-        options={"temperature": temperature},
+        options={
+            "temperature": temperature,
+            **({"repeat_penalty": repeat_penalty} if repeat_penalty else {}),
+        },
     )
     return (response.get("message", {}) or {}).get("content", "") or ""
 

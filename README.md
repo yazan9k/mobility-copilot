@@ -39,6 +39,34 @@ It earned its place immediately: **v4-principled scored best on the golden set (
 
 ## Results
 
+**Baseline → final, on the 20 held-out questions** (written before the prompts that answer them, never used to derive a rule or fix):
+
+| Held-out (20 unseen) | v1 baseline | final | Δ |
+|---|---:|---:|---:|
+| **Trajectory** | 55.0% | **75.0%** | **+20.0** |
+| **Escalation recall** | 20.0% | **80.0%** | **+60.0** |
+| Search rate | 90.0% | **100.0%** | +10.0 |
+| Retrieval recall | 90.0% | **100.0%** | +10.0 |
+| Over-escalation | 0.0% | 30.0% | +30.0 |
+| Median latency | 17,139ms | 24,151ms | +41% |
+
+Golden set (70 cases): trajectory 50.8% → **88.5%**, escalation 0% → **85.0%**.
+
+Final config: `Ling-3.0-tiny` via llama-server, prompt `v4-enumerated`, escalation gate on with `repeat_penalty` 1.15.
+
+**Where the gain came from, largest first:**
+
+| Change | Held-out effect |
+|---|---|
+| Escalation gate + `repeat_penalty` | **Most of it.** Escalation 30% → 80% |
+| Model swap to Ling 3.0 Tiny | Retrieval and search rate to ceiling |
+| Four rounds of prompt engineering | ~+5pp — most apparent gains were overfitting |
+| Reasoning-parser bug fix | Recovered 36% of destroyed answers, **0pp on tool metrics** |
+
+Four prompt iterations bought ~5 points. Fixing one component's *reliability* bought 50. The detail is in [docs/eval_comparison.md](docs/eval_comparison.md).
+
+### The prompt-only phase
+
 `qwen2.5:7b`, temperature 0, fixed seed. Deterministic metrics — no LLM scores these.
 
 | Version | Traj (golden) | Traj (held-out) | Gap | Escalation | Search rate | Recall \| searched |
@@ -59,9 +87,22 @@ It earned its place immediately: **v4-principled scored best on the golden set (
 
 **Answer quality barely moved.** Judged on 24 paired cases: task success 29.2% → 33.3% (one case, i.e. noise), clarity 25.0% → **41.7%**, faithfulness 91.3% → 95.0%. The deterministic metrics improved substantially and the answers did not follow. Tracking trajectory alone would have reported a 13-point win and called it a success — the three-level design is the only reason that claim wasn't made.
 
-**The escalation gate is the only thing that moved escalation.** Taking the decision out of free-form generation — a schema-constrained "does this need a human?" call, with the tool invoked in code — gave escalation 25% → **60%** on golden and 30% → **40%** on held-out, while **20–25% of its calls were failing outright**. It is off by default (`ESCALATION_GATE=1` to enable): a failure rate that fails toward under-escalation, over-escalation rising from 0% to 10%, and 3.7× latency are each disqualifying for a safety feature. The mechanism is proven; the prototype is not.
+**The escalation gate is what fixed escalation** — but only after its own reliability bug was found. Taking the decision out of free-form generation (a schema-constrained "does this need a human?" call, tool invoked in code) initially gave 60% golden / 40% held-out while **22% of its calls failed outright**, and it *lowered* held-out trajectory 65% → 60%. It was rejected.
 
-**Every PRD success target was missed.** M2 trajectory 63.9% against >85%, M3 retrieval recall 67.2% against >90%, M5 escalation 35% against 100%. The project's stated deliverable was a documented, evidence-driven iteration loop rather than a passing scorecard, and that is what it produced — but the targets in [docs/prd.md](docs/prd.md) are not met and are not on track to be met by prompt changes.
+Those failures were not truncated output — they were ~28,000 characters of the model looping, repeating *"But wait: the question is…"* 24 times on one case without ever reaching an answer. A **reasoning loop**, not the token-budget shortfall it had been recorded as, which is why every fix derived from that diagnosis had failed. `repeat_penalty=1.15` ends the loop:
+
+| | Golden | | Held-out | |
+|---|---:|---:|---:|---:|
+| | gate | **gate+rp** | gate | **gate+rp** |
+| Trajectory | 78.7% | **88.5%** | 60.0% | **75.0%** |
+| Escalation | 60.0% | **85.0%** | 40.0% | **80.0%** |
+| Gate call failures | 16/70 | **2/70** | 3/20 | **1/20** |
+
+Now **on by default** (`ESCALATION_GATE=0` to reproduce earlier runs).
+
+**Fixing the remaining over-escalation made things worse — and that is the more useful finding.** 7 of 9 false escalations were one rule misfiring on questions that merely mention family or say "my". Narrowing the rule and adding explicit carve-outs made the criteria 26% longer, and gate failures went from 1/40 to 4/12: the reasoning loop returned. `repeat_penalty` stops the model circling one thought; it does not reduce how much there is to weigh. **For a small reasoning model, correcting a wrong answer by adding a clarifying rule can make the component less reliable — and that cost appears in no accuracy metric.** Reverted; kept behind `GATE_PROMPT_VERSION`.
+
+**Three PRD targets: one met, two missed.** M3 retrieval recall **100%** against >90% ✅. M2 trajectory 75.0% against >85% ✗. M5 escalation 80% against 100% ✗. Over-escalation at 30% is the largest open defect. Targets in [docs/prd.md](docs/prd.md).
 
 **On unseen questions, the improvement is about a third of what the golden set reports.**
 
